@@ -40,7 +40,18 @@ Nunca mais perca uma data de vencimento. Configure lembretes para despesas futur
 - **PostCSS**: Uma ferramenta para transformar estilos com plugins JavaScript, necessário para o MantineUI.
 - **Day.js**: Uma biblioteca JavaScript minimalista para lidar com datas e horários.
 - **ESLint**: Uma ferramenta de lint pluggable e configurável para identificar e corrigir problemas em seu código.
+- **SWR**: Uma biblioteca para gerenciamento de dados remotos, garantindo que os dados estejam sempre atualizados.
 - **[Outras Tecnologias]**: O FINSTASH é modular e permite a fácil adição de outras tecnologias conforme necessário para atender às suas necessidades específicas.
+
+## Estrutura do Backend
+
+Atualmente, o backend do FINSTASH é construído na estrutura do [Supabase](https://supabase.io/), uma plataforma de banco de dados como serviço que oferece uma API PostgreSQL poderosa e fácil de usar. O Supabase simplifica a gestão do banco de dados e fornece uma API robusta que é integrada ao frontend deste aplicativo.
+
+Estamos planejando criar um backend oficial usando [Spring Boot](https://spring.io/projects/spring-boot) no futuro para proporcionar ainda mais flexibilidade e controle sobre a lógica de negócios. A migração para o Spring Boot está nos nossos planos para garantir escalabilidade e atender às necessidades específicas do projeto.
+
+### Diagrama do Banco de Dados
+
+![Alt text](/public/bd.png)
 
 ## Como Começar
 
