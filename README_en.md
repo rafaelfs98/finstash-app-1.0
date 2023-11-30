@@ -40,19 +40,7 @@ Never miss a due date again. Set reminders for upcoming expenses and receive not
 - **PostCSS**: A tool for transforming styles with JavaScript plugins, required for MantineUI.
 - **Day.js**: A minimalist JavaScript library for handling dates and times.
 - **ESLint**: A pluggable and configurable linter tool for identifying and fixing problems in your code.
-- **SWR**: A library for remote data management, ensuring that data is always up-to-date.
 - **[Other Technologies]**: FINSTASH is modular, allowing for the easy addition of other technologies as needed to meet your specific requirements.
-
-## Backend Structure
-
-Currently, the backend of FINSTASH is built on the [Supabase](https://supabase.io/) framework, a database-as-a-service platform that provides a powerful and user-friendly PostgreSQL API. Supabase simplifies database management and offers a robust API seamlessly integrated with the frontend of this application.
-
-We are planning to establish an official backend using [Spring Boot](https://spring.io/projects/spring-boot) in the future to provide even more flexibility and control over business logic. The migration to Spring Boot is on our roadmap to ensure scalability and cater to the specific needs of the project.
-
-### Database Diagram
-
-![Alt text](/public/bd.png)
-
 
 ## Getting Started
 

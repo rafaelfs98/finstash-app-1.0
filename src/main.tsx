@@ -1,9 +1,9 @@
 import { Root, createRoot } from "react-dom/client";
 
 import React from "react";
-import { App } from "./App";
+import {App} from "./App";
 
-class finstash extends HTMLElement {
+class SuiteOS extends HTMLElement {
   private root: Root | undefined;
 
   connectedCallback() {
@@ -19,8 +19,8 @@ class finstash extends HTMLElement {
   }
 }
 
-const ELEMENT_ID = "fin-stash";
+const ELEMENT_ID = "finstash";
 
 if (!customElements.get(ELEMENT_ID)) {
-  customElements.define(ELEMENT_ID, finstash);
+  customElements.define(ELEMENT_ID, SuiteOS);
 }
