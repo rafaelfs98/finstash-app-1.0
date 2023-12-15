@@ -1,13 +1,11 @@
 import {
   AppShell,
   Burger,
-  Group,
+  Flex,
   Image,
-  UnstyledButton,
   useMantineColorScheme,
 } from "@mantine/core";
 import React from "react";
-
 import ThemeTogle from "./ThemeToglle";
 
 type HeaderProps = {
@@ -29,18 +27,23 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
 
   return (
     <AppShell.Header>
-      <Group h="100%" px="md" justify="space-between">
-        <UnstyledButton>
-          <Image
-            width={200}
-            height={60}
-            fit="contain"
-            src={handleThemeChange()}
-          />
-        </UnstyledButton>
-        <ThemeTogle visibleFrom="sm" />
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-      </Group>
+      <Flex
+        h="100%"
+        px="md"
+        justify="space-between"
+        direction="row"
+        wrap="nowrap"
+      >
+        <Image w="auto" h={70} fit="contain" src={handleThemeChange()} />
+        <ThemeTogle mt="md" visibleFrom="sm" />
+        <Burger
+          mt="md"
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom="sm"
+          size="sm"
+        />
+      </Flex>
     </AppShell.Header>
   );
 };

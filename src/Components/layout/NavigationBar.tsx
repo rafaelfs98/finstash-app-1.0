@@ -1,12 +1,13 @@
 import {
   AppShell,
   Divider,
-  Group,
+  Flex,
   NavLink,
   ScrollArea,
   Stack,
   Title,
 } from "@mantine/core";
+import { useState } from "react";
 
 import {
   IconArrowDown,
@@ -19,47 +20,59 @@ import {
 import ThemeTogle from "./ThemeToglle";
 
 const NavigationBar = () => {
+  const [activeItem, setActiveItem] = useState<string>("Inicio");
+
+  const handleItemClick = (title: string) => {
+    setActiveItem(title);
+  };
+
   return (
     <AppShell.Navbar aria-label="menu">
       <AppShell.Section p="xs">
-        <Group justify="space-between" mb="xl">
-          <Title hiddenFrom="sm" mt="md" order={3}>
+        <Flex
+          h="100%"
+          px="md"
+          justify="space-between"
+          direction="row"
+          wrap="nowrap"
+        >
+          <Title mt={8} order={3} hiddenFrom="sm">
             Menu
           </Title>
-          <ThemeTogle hiddenFrom="sm" />
-        </Group>
+          <ThemeTogle hiddenFrom="sm" mt={8} />
+        </Flex>
       </AppShell.Section>
-      <AppShell.Section grow>
+      <AppShell.Section mt="md" grow>
         <ScrollArea>
           <Stack justify="center" gap={0}>
             <NavLink
               title="Inicio"
               label="Inicio"
-              leftSection={<IconHome size="1rem" stroke={1.5} />}
-              variant="filled"
-              active
+              leftSection={<IconHome size="1.2rem" stroke={2} />}
+              onClick={() => handleItemClick("Inicio")}
+              active={activeItem === "Inicio"}
             />
             <NavLink
               title="Entrada"
               label="Entrada"
-              leftSection={<IconArrowUp size="1rem" stroke={1.5} />}
-              variant="subtle"
-              color="dark"
+              leftSection={<IconArrowUp size="1.2rem" stroke={2} />}
+              onClick={() => handleItemClick("Entrada")}
+              active={activeItem === "Entrada"}
             />
             <NavLink
               title="Saida"
               label="Saida"
-              leftSection={<IconArrowDown size="1rem" stroke={1.5} />}
-              variant="subtle"
-              color="dark"
+              leftSection={<IconArrowDown size="1.2rem" stroke={2} />}
+              onClick={() => handleItemClick("Saida")}
+              active={activeItem === "Saida"}
             />
             <NavLink
               title="Lista de Compras"
               label="Lista de Compras"
-              leftSection={<IconShoppingCart size="1rem" stroke={1.5} />}
-              variant="subtle"
-              color="dark"
-            ></NavLink>
+              leftSection={<IconShoppingCart size="1.2rem" stroke={2} />}
+              onClick={() => handleItemClick("Lista de Compras")}
+              active={activeItem === "Lista de Compras"}
+            />
           </Stack>
         </ScrollArea>
       </AppShell.Section>
@@ -68,10 +81,10 @@ const NavigationBar = () => {
         <Stack justify="center" gap={10}>
           <NavLink
             title="Configuracoes"
-            leftSection={<IconSettings size="1rem" stroke={1.5} />}
+            leftSection={<IconSettings size="1.2rem" stroke={2} />}
             label="Configuracoes"
-            variant="subtle"
-            color="dark"
+            onClick={() => handleItemClick("Configuracoes")}
+            active={activeItem === "Configuracoes"}
           />
           <Divider />
         </Stack>

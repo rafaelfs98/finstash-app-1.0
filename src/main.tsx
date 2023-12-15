@@ -2,6 +2,7 @@ import { Root, createRoot } from "react-dom/client";
 
 import React from "react";
 import { App } from "./App";
+import "./Styles/index.scss";
 
 class finstash extends HTMLElement {
   private root: Root | undefined;
