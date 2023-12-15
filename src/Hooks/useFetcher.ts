@@ -7,7 +7,7 @@ interface Query {
   select?: string;
 }
 
-export function useFether<T>({ uri, select = "*" }: Query) {
+export function useFetcher<T>({ uri, select = "*" }: Query) {
   const fetcher = async (url: string) => {
     const { data, error } = await supabase.from(url).select(select);
     if (error) {
