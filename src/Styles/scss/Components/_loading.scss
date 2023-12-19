@@ -1,0 +1,9 @@
+.loading {
+  &__container {
+    align-items: center;
+    display: flex;
+    margin-top: 300px;
+    justify-content: center;
+    flex-direction: row;
+  }
+}
