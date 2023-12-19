@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
 import {
   Button,
   Group,
+  Kbd,
   Pagination,
   ScrollArea,
   Table,
   TableProps,
+  Text,
   TextInput,
   rem,
-  Text,
-  Kbd,
 } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ListViewHeader from "./ListViewHeader";
-import ListViewRow from "./ListViewRow";
 import { useFetcher } from "../../Hooks/useFetcher";
 import Loading from "../Loader";
+import { Action } from "./ListViewActions";
+import ListViewHeader from "./ListViewHeader";
+import ListViewRow from "./ListViewRow";
 
 export interface TableColumn {
   key: string;
@@ -27,14 +28,14 @@ export interface TableColumn {
 type ListViewProps = {
   columns: TableColumn[];
   resource: string;
-  ActionComponent?: React.FC<{ rowData: any }>;
+  actions?: Action[];
   itemsPerPage?: number;
 } & TableProps;
 
 const ListView: React.FC<ListViewProps> = ({
   columns,
   resource,
-  ActionComponent = () => null,
+  actions = [],
   itemsPerPage = 10,
   ...otherprops
 }) => {
@@ -90,12 +91,7 @@ const ListView: React.FC<ListViewProps> = ({
   };
 
   const rows = sliceData().map((item, index) => (
-    <ListViewRow
-      key={index}
-      columns={columns}
-      item={item}
-      ActionComponent={ActionComponent}
-    />
+    <ListViewRow key={index} columns={columns} item={item} actions={actions} />
   ));
 
   return (
