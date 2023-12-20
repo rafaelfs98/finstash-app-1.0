@@ -1,26 +1,26 @@
 import { Button, Divider, Group, SimpleGrid, Title, rem } from "@mantine/core";
 import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import InputText from "../../../Components/Inputs/InputText";
-import { useForm } from "react-hook-form";
-import InputColor from "../../../Components/Inputs/InputColor";
-import useFormActions from "../../../Hooks/useFormActions";
-import zodSchema, { zodResolver } from "../../../schema/zod";
-import { z } from "zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { upsertCategories } from "../../../Services/Categories";
-import { CategoriesData } from "../../../Services/Types/finStash";
 import { KeyedMutator } from "swr";
+import { z } from "zod";
+import InputColor from "../../../Components/Inputs/InputColor";
+import InputText from "../../../Components/Inputs/InputText";
+import useFormActions from "../../../Hooks/useFormActions";
+import { upsertTag } from "../../../Services/Tags";
+import { TagsData } from "../../../Services/Types/finStash";
+import zodSchema, { zodResolver } from "../../../schema/zod";
 
-type CategoriesInfo = z.infer<typeof zodSchema.categories>;
+type TagsInfo = z.infer<typeof zodSchema.tags>;
 
-const CategoriesForm: React.FC = () => {
+const TagsForm: React.FC = () => {
   const navigate = useNavigate();
-  const { categorieId } = useParams();
+  const { tagId } = useParams();
 
   const context = useOutletContext<{
-    categories: CategoriesData[];
-    mutateCategories: KeyedMutator<CategoriesData[]>;
+    tag: TagsData[];
+    mutateTag: KeyedMutator<TagsData[]>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -30,26 +30,26 @@ const CategoriesForm: React.FC = () => {
     handleSubmit,
     register,
     setValue,
-  } = useForm<CategoriesInfo>({
+  } = useForm<TagsInfo>({
     defaultValues: context
-      ? context?.categories[0]
+      ? context?.tag[0]
       : {
           name: "",
           color: "",
         },
 
-    resolver: zodResolver(zodSchema.categories),
+    resolver: zodResolver(zodSchema.tags),
   });
   const { onError, onSave } = useFormActions();
 
-  const _onSubmit = async (form: CategoriesInfo) => {
+  const _onSubmit = async (form: TagsInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertCategories(form, Number(categorieId));
+      const response = await upsertTag(form, Number(tagId));
 
-      context?.mutateCategories(response);
+      context?.mutateTag(response);
       setLoadingButton(false);
-      navigate("/cadastros/categories");
+      navigate("/cadastros/tags");
       return onSave();
     } catch (error) {
       setLoadingButton(false);
@@ -72,9 +72,9 @@ const CategoriesForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.categories[0]?.color}
-            label={"Cor da Categoria"}
-            placeholder={"Defina uma Cor para Categoria"}
+            defaultValue={context?.tag[0]?.color}
+            label={"Cor da Tag"}
+            placeholder={"Defina uma Cor para Tag"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
           />
         </SimpleGrid>
@@ -109,4 +109,4 @@ const CategoriesForm: React.FC = () => {
   );
 };
 
-export default CategoriesForm;
+export default TagsForm;

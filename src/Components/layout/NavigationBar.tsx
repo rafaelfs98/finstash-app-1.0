@@ -130,7 +130,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
                 title="Tags"
                 label="Tags"
                 leftSection={<IconTag size="1.2rem" stroke={2} />}
-                onClick={() => handleLinkChildrenClick("Tags")}
+                onClick={() => {
+                  navigate("cadastros/tags");
+                  toggle();
+                  handleLinkChildrenClick("Tags");
+                }}
                 active={activeLinkChildren === "Tags"}
               />
               <NavLink
