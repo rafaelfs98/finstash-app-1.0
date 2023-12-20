@@ -149,7 +149,7 @@ const ListView: React.FC<ListViewProps> = ({
                   rows
                 ) : (
                   <Table.Tr>
-                    <Table.Td colSpan={Object.keys(dataItems[0]).length}>
+                    <Table.Td colSpan={columns.length}>
                       <Text fw={500} ta="center">
                         Nothing found
                       </Text>

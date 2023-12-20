@@ -18,6 +18,9 @@ export const upsertCategories = async (
     throw Error(error?.message);
   }
 
-  console.log(data);
   return data as CategoriesData[];
+};
+
+export const deleteCategories = async (categoriesId: string) => {
+  await supabase.from("categories").delete().eq("id", categoriesId);
 };
