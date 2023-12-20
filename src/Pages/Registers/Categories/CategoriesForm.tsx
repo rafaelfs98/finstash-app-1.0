@@ -47,7 +47,9 @@ const CategoriesForm: React.FC = () => {
       setLoadingButton(true);
       const response = await upsertCategories(form, Number(categorieId));
 
-      context.mutateCategories(response);
+      console.log(response);
+
+      context?.mutateCategories(response);
       setLoadingButton(false);
       navigate("/categories");
       return onSave();

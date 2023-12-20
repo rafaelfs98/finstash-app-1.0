@@ -12,18 +12,31 @@ import { useState } from "react";
 import {
   IconArrowDown,
   IconArrowUp,
+  IconCategory,
   IconHome,
   IconSettings,
   IconShoppingCart,
+  IconTable,
+  IconTag,
+  IconWallet,
+  IconWalletOff,
 } from "@tabler/icons-react";
 
 import ThemeTogle from "./ThemeToglle";
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
-  const [activeItem, setActiveItem] = useState<string>("Inicio");
+  const navigate = useNavigate();
+  const [activeLinkMain, setActiveLinkMain] = useState<string>("Inicio");
+  const [activeLinkChildren, setActiveLinkChildren] = useState<string>("");
 
-  const handleItemClick = (title: string) => {
-    setActiveItem(title);
+  const handleLinkMainClick = (title: string) => {
+    setActiveLinkMain(title);
+    setActiveLinkChildren("");
+  };
+
+  const handleLinkChildrenClick = (title: string) => {
+    setActiveLinkChildren(title);
   };
 
   return (
@@ -49,30 +62,74 @@ const NavigationBar = () => {
               title="Inicio"
               label="Inicio"
               leftSection={<IconHome size="1.2rem" stroke={2} />}
-              onClick={() => handleItemClick("Inicio")}
-              active={activeItem === "Inicio"}
+              onClick={() => handleLinkMainClick("Inicio")}
+              active={activeLinkMain === "Inicio"}
             />
             <NavLink
               title="Entrada"
               label="Entrada"
               leftSection={<IconArrowUp size="1.2rem" stroke={2} />}
-              onClick={() => handleItemClick("Entrada")}
-              active={activeItem === "Entrada"}
+              onClick={() => handleLinkMainClick("Entrada")}
+              active={activeLinkMain === "Entrada"}
             />
             <NavLink
               title="Saida"
               label="Saida"
               leftSection={<IconArrowDown size="1.2rem" stroke={2} />}
-              onClick={() => handleItemClick("Saida")}
-              active={activeItem === "Saida"}
+              onClick={() => handleLinkMainClick("Saida")}
+              active={activeLinkMain === "Saida"}
             />
             <NavLink
               title="Lista de Compras"
               label="Lista de Compras"
               leftSection={<IconShoppingCart size="1.2rem" stroke={2} />}
-              onClick={() => handleItemClick("Lista de Compras")}
-              active={activeItem === "Lista de Compras"}
+              onClick={() => handleLinkMainClick("Lista de Compras")}
+              active={activeLinkMain === "Lista de Compras"}
             />
+            <NavLink
+              title="Cadastros"
+              label="Cadastros"
+              leftSection={<IconTable size="1.2rem" stroke={2} />}
+              onClick={() => handleLinkMainClick("Cadastros")}
+              active={activeLinkMain === "Cadastros"}
+            >
+              <NavLink
+                mt="sm"
+                variant="subtle"
+                title="Categorias"
+                label="Categorias"
+                leftSection={<IconCategory size="1.2rem" stroke={2} />}
+                onClick={() => {
+                  handleLinkChildrenClick("Categorias");
+                  navigate("/categories");
+                }}
+                active={activeLinkChildren === "Categorias"}
+              />
+              <NavLink
+                variant="subtle"
+                title="Tags"
+                label="Tags"
+                leftSection={<IconTag size="1.2rem" stroke={2} />}
+                onClick={() => handleLinkChildrenClick("Tags")}
+                active={activeLinkChildren === "Tags"}
+              />
+              <NavLink
+                variant="subtle"
+                title="Fontes de Entradas"
+                label="Fontes de Entradas"
+                leftSection={<IconWallet size="1.2rem" stroke={2} />}
+                onClick={() => handleLinkChildrenClick("Fontes Entradas")}
+                active={activeLinkChildren === "Fontes Entradas"}
+              />
+              <NavLink
+                variant="subtle"
+                title="Fontes de Saidas"
+                label="Fontes de Saidas"
+                leftSection={<IconWalletOff size="1.2rem" stroke={2} />}
+                onClick={() => handleLinkChildrenClick("Fontes Saidas")}
+                active={activeLinkChildren === "Fontes Saidas"}
+              />
+            </NavLink>
           </Stack>
         </ScrollArea>
       </AppShell.Section>
@@ -83,8 +140,8 @@ const NavigationBar = () => {
             title="Configuracoes"
             leftSection={<IconSettings size="1.2rem" stroke={2} />}
             label="Configuracoes"
-            onClick={() => handleItemClick("Configuracoes")}
-            active={activeItem === "Configuracoes"}
+            onClick={() => handleLinkMainClick("Configuracoes")}
+            active={activeLinkMain === "Configuracoes"}
           />
           <Divider />
         </Stack>

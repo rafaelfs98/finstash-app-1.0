@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notifications } from "@mantine/notifications";
-import { useState } from "react";
 
 export type FormOptions = {
-  forceRefetch: number;
-
   onError: (error?: any) => void;
   onSave: () => void;
 };
@@ -27,15 +24,11 @@ const onSucess = () => {
 };
 
 const useFormActions = (): FormOptions => {
-  const [forceRefetch, setForceRefetch] = useState(0);
-
   const onSave = () => {
     onSucess();
-    setForceRefetch(new Date().getTime());
   };
 
   return {
-    forceRefetch,
     onError,
     onSave,
   };
