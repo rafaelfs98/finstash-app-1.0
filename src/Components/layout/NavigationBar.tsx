@@ -7,7 +7,7 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   IconArrowDown,
@@ -25,19 +25,34 @@ import {
 import ThemeTogle from "./ThemeToglle";
 import { useNavigate } from "react-router-dom";
 
-const NavigationBar = () => {
+type NavigationBarProps = {
+  toggle: () => void;
+};
+
+const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
   const navigate = useNavigate();
-  const [activeLinkMain, setActiveLinkMain] = useState<string>("Inicio");
-  const [activeLinkChildren, setActiveLinkChildren] = useState<string>("");
+  const [activeLinkMain, setActiveLinkMain] = useState<string>(
+    sessionStorage.getItem("activeLinkMain") || "Inicio"
+  );
+  const [activeLinkChildren, setActiveLinkChildren] = useState<string>(
+    sessionStorage.getItem("activeLinkChildren") || ""
+  );
 
   const handleLinkMainClick = (title: string) => {
     setActiveLinkMain(title);
-    setActiveLinkChildren("");
   };
 
   const handleLinkChildrenClick = (title: string) => {
     setActiveLinkChildren(title);
   };
+
+  useEffect(() => {
+    if (activeLinkMain !== "Cadastros") {
+      setActiveLinkChildren("");
+    }
+    sessionStorage.setItem("activeLinkMain", activeLinkMain);
+    sessionStorage.setItem("activeLinkChildren", activeLinkChildren);
+  }, [activeLinkMain, activeLinkChildren]);
 
   return (
     <AppShell.Navbar aria-label="menu">
@@ -62,7 +77,11 @@ const NavigationBar = () => {
               title="Inicio"
               label="Inicio"
               leftSection={<IconHome size="1.2rem" stroke={2} />}
-              onClick={() => handleLinkMainClick("Inicio")}
+              onClick={() => {
+                navigate("/");
+                toggle();
+                handleLinkMainClick("Inicio");
+              }}
               active={activeLinkMain === "Inicio"}
             />
             <NavLink
@@ -101,7 +120,8 @@ const NavigationBar = () => {
                 leftSection={<IconCategory size="1.2rem" stroke={2} />}
                 onClick={() => {
                   handleLinkChildrenClick("Categorias");
-                  navigate("/categories");
+                  toggle();
+                  navigate("cadastros/categories");
                 }}
                 active={activeLinkChildren === "Categorias"}
               />

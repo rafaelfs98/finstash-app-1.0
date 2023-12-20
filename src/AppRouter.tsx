@@ -12,7 +12,7 @@ const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="categories" element={<OutletBridge />}>
+          <Route path="cadastros/categories" element={<OutletBridge />}>
             <Route element={<Categories />} index />
             <Route element={<CategoriesForm />} path="create" />
             <Route element={<CategoriesOutlet />} path=":categorieId">

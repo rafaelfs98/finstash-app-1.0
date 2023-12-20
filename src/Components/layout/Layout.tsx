@@ -18,7 +18,7 @@ export default function Layout() {
       padding="md"
     >
       <Header toggle={toggle} opened={false} />
-      <NavigationBar />
+      <NavigationBar toggle={toggle} />
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
