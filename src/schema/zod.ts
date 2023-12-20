@@ -6,6 +6,10 @@ const zodSchema = {
     color: z.string(),
     name: z.string(),
   }),
+  tags: z.object({
+    color: z.string(),
+    name: z.string(),
+  }),
 };
 
 export { zodResolver };
