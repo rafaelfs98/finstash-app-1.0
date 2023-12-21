@@ -7,7 +7,7 @@ import FonteDespesaActions from "./FonteDespesasActions";
 const FonteDespesas: React.FC = () => {
   return (
     <>
-      <Title order={2}>FonteDespesa</Title>
+      <Title order={2}>Fontes de Despesas</Title>
       <ListView
         columns={[
           { key: "name", label: "Fonte de Despesa" },

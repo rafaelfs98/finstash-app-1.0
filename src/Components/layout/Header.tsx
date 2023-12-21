@@ -1,11 +1,6 @@
-import {
-  AppShell,
-  Burger,
-  Flex,
-  Image,
-  useMantineColorScheme,
-} from "@mantine/core";
+import { AppShell, Burger, Flex, Image } from "@mantine/core";
 import React from "react";
+
 import ThemeTogle from "./ThemeToglle";
 
 type HeaderProps = {
@@ -14,17 +9,6 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
-  const { colorScheme } = useMantineColorScheme();
-
-  const handleThemeChange = () => {
-    const logoSrc =
-      colorScheme === "dark"
-        ? "./FinStash-logos_white.png"
-        : "./FinStash-logos_black.png";
-
-    return logoSrc;
-  };
-
   return (
     <AppShell.Header>
       <Flex
@@ -34,7 +18,12 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
         direction="row"
         wrap="nowrap"
       >
-        <Image w="auto" h={70} fit="contain" src={handleThemeChange()} />
+        <Image
+          w="auto"
+          h={70}
+          fit="contain"
+          src="/FinStash-logos_transparent.jpeg"
+        />
         <ThemeTogle mt="md" visibleFrom="sm" />
         <Burger
           mt="md"

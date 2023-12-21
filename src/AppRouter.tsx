@@ -37,7 +37,7 @@ const AppRouter = () => {
           <Route path="cadastros/fonteDespesas" element={<OutletBridge />}>
             <Route element={<FontesDespesas />} index />
             <Route element={<FonteDespesaForm />} path="create" />
-            <Route element={<FonteDespesaOutlet />} path=":fonteReceitaId">
+            <Route element={<FonteDespesaOutlet />} path=":fonteDespesaId">
               <Route element={<FonteDespesaForm />} path="update" />
               <Route element={<FonteDespesaForm />} path="view" />
             </Route>

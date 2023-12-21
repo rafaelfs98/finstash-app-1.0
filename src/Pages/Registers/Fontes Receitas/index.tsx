@@ -7,7 +7,7 @@ import FontesReceitaActions from "./FontesReceitasActions";
 const FonteReceitas: React.FC = () => {
   return (
     <>
-      <Title order={2}>FonteReceitas</Title>
+      <Title order={2}>Fontes de Receitas</Title>
       <ListView
         columns={[
           { key: "name", label: "Fonte de Receitas" },
