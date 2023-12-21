@@ -10,20 +10,19 @@ import {
 import { useEffect, useState } from "react";
 
 import {
-  IconArrowDown,
-  IconArrowUp,
   IconCategory,
   IconHome,
+  IconPigMoney,
+  IconReceipt,
   IconSettings,
   IconShoppingCart,
   IconTable,
-  IconTag,
   IconWallet,
   IconWalletOff,
 } from "@tabler/icons-react";
 
-import ThemeTogle from "./ThemeToglle";
 import { useNavigate } from "react-router-dom";
+import ThemeTogle from "./ThemeToglle";
 
 type NavigationBarProps = {
   toggle: () => void;
@@ -85,18 +84,18 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               active={activeLinkMain === "Inicio"}
             />
             <NavLink
-              title="Entrada"
-              label="Entrada"
-              leftSection={<IconArrowUp size="1.2rem" stroke={2} />}
-              onClick={() => handleLinkMainClick("Entrada")}
-              active={activeLinkMain === "Entrada"}
+              title="Receitas"
+              label="Receitas"
+              leftSection={<IconPigMoney size="1.2rem" stroke={2} />}
+              onClick={() => handleLinkMainClick("Receitas")}
+              active={activeLinkMain === "Receitas"}
             />
             <NavLink
-              title="Saida"
-              label="Saida"
-              leftSection={<IconArrowDown size="1.2rem" stroke={2} />}
-              onClick={() => handleLinkMainClick("Saida")}
-              active={activeLinkMain === "Saida"}
+              title="Despesas"
+              label="Despesas"
+              leftSection={<IconReceipt size="1.2rem" stroke={2} />}
+              onClick={() => handleLinkMainClick("Despesas")}
+              active={activeLinkMain === "Despesas"}
             />
             <NavLink
               title="Lista de Compras"
@@ -127,31 +126,27 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               />
               <NavLink
                 variant="subtle"
-                title="Tags"
-                label="Tags"
-                leftSection={<IconTag size="1.2rem" stroke={2} />}
-                onClick={() => {
-                  navigate("cadastros/tags");
-                  toggle();
-                  handleLinkChildrenClick("Tags");
-                }}
-                active={activeLinkChildren === "Tags"}
-              />
-              <NavLink
-                variant="subtle"
-                title="Fontes de Entradas"
-                label="Fontes de Entradas"
+                title="Fontes de Receitas"
+                label="Fontes de Receitas"
                 leftSection={<IconWallet size="1.2rem" stroke={2} />}
-                onClick={() => handleLinkChildrenClick("Fontes Entradas")}
-                active={activeLinkChildren === "Fontes Entradas"}
+                onClick={() => {
+                  handleLinkChildrenClick("Fontes Receitas");
+                  toggle();
+                  navigate("cadastros/fonteReceitas");
+                }}
+                active={activeLinkChildren === "Fontes Receitas"}
               />
               <NavLink
                 variant="subtle"
-                title="Fontes de Saidas"
-                label="Fontes de Saidas"
+                title="Fontes de Despesas"
+                label="Fontes de Despesas"
                 leftSection={<IconWalletOff size="1.2rem" stroke={2} />}
-                onClick={() => handleLinkChildrenClick("Fontes Saidas")}
-                active={activeLinkChildren === "Fontes Saidas"}
+                onClick={() => {
+                  handleLinkChildrenClick("Fontes Despesas");
+                  toggle();
+                  navigate("cadastros/fonteDespesas");
+                }}
+                active={activeLinkChildren === "Fontes Despesas"}
               />
             </NavLink>
           </Stack>

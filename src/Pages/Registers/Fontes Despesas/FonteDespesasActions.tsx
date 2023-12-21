@@ -3,27 +3,27 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Action } from "../../../Components/ListView/ListViewActions";
-import { deleteTag } from "../../../Services/Tags";
+import { deleteFonteDespesa } from "../../../Services/FonteDespesas";
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 
-const TagsActions = () => {
+const FonteDespesaActions = () => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const handleDelete = async () => {
-    if (!confirm("Deseja excluir este equipemanto?")) {
+    if (!confirm("Deseja excluir esta Fonte de Despesa?")) {
       return;
     }
 
     setIsDeleting(true);
     try {
-      await deleteTag(selectedItemId as string);
+      await deleteFonteDespesa(selectedItemId as string);
       window.location.reload();
     } catch (error) {
       console.error(error);
       setIsDeleting(false);
-      alert("Ocorreu um erro ao excluir o servico.");
+      alert("Ocorreu um erro ao excluir a Fonte de Despesa.");
     }
   };
 
@@ -44,4 +44,4 @@ const TagsActions = () => {
   return actions;
 };
 
-export default TagsActions;
+export default FonteDespesaActions;

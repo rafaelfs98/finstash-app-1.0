@@ -3,7 +3,12 @@ export type CategoriesData = {
   name: string;
   color: string;
 };
-export type TagsData = {
+export type FonteReceitaData = {
+  id?: number;
+  name: string;
+  color: string;
+};
+export type FonteDespesaData = {
   id?: number;
   name: string;
   color: string;

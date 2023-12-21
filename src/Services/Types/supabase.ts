@@ -105,14 +105,17 @@ export interface Database {
         Row: {
           id: number;
           name: string | null;
+          color: string | null;
         };
         Insert: {
           id?: number;
           name?: string | null;
+          color?: string | null;
         };
         Update: {
           id?: number;
           name?: string | null;
+          color?: string | null;
         };
         Relationships: [];
       };
