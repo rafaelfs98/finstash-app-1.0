@@ -8,19 +8,19 @@ import { z } from "zod";
 import InputColor from "../../../Components/Inputs/InputColor";
 import InputText from "../../../Components/Inputs/InputText";
 import useFormActions from "../../../Hooks/useFormActions";
-import { upsertTag } from "../../../Services/Tags";
-import { TagsData } from "../../../Services/Types/finStash";
+import { upsertFonteDespesa } from "../../../Services/FonteDespesas";
+import { FonteDespesaData } from "../../../Services/Types/finStash";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 
-type TagsInfo = z.infer<typeof zodSchema.tags>;
+type FonteDespesaInfo = z.infer<typeof zodSchema.fonteDespesas>;
 
-const TagsForm: React.FC = () => {
+const FonteDespesaForm: React.FC = () => {
   const navigate = useNavigate();
-  const { tagId } = useParams();
+  const { fonteDespesaId } = useParams();
 
   const context = useOutletContext<{
-    tag: TagsData[];
-    mutateTag: KeyedMutator<TagsData[]>;
+    fonteDespesa: FonteDespesaData[];
+    mutateFonteDespesa: KeyedMutator<FonteDespesaData[]>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -30,26 +30,26 @@ const TagsForm: React.FC = () => {
     handleSubmit,
     register,
     setValue,
-  } = useForm<TagsInfo>({
+  } = useForm<FonteDespesaInfo>({
     defaultValues: context
-      ? context?.tag[0]
+      ? context?.fonteDespesa[0]
       : {
           name: "",
           color: "",
         },
 
-    resolver: zodResolver(zodSchema.tags),
+    resolver: zodResolver(zodSchema.fonteDespesas),
   });
   const { onError, onSave } = useFormActions();
 
-  const _onSubmit = async (form: TagsInfo) => {
+  const _onSubmit = async (form: FonteDespesaInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertTag(form, Number(tagId));
+      const response = await upsertFonteDespesa(form, Number(fonteDespesaId));
 
-      context?.mutateTag(response);
+      context?.mutateFonteDespesa(response);
       setLoadingButton(false);
-      navigate("/cadastros/tags");
+      navigate("/cadastros/fonteDespesas");
       return onSave();
     } catch (error) {
       setLoadingButton(false);
@@ -59,7 +59,11 @@ const TagsForm: React.FC = () => {
 
   return (
     <div>
-      <Title order={2}>Criar Categorias</Title>
+      <Title order={2}>
+        {context
+          ? `Editar Fonte de Despesa # ${context?.fonteDespesa[0].id}`
+          : `Criar Fonte de Despesa`}
+      </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
         <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
           <InputText
@@ -72,9 +76,9 @@ const TagsForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.tag[0]?.color}
-            label={"Cor da Tag"}
-            placeholder={"Defina uma Cor para Tag"}
+            defaultValue={context?.fonteDespesa[0]?.color}
+            label={"Cor da Fonte de Despesa"}
+            placeholder={"Defina uma Cor para a Fonte da Despesa"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
           />
         </SimpleGrid>
@@ -109,4 +113,4 @@ const TagsForm: React.FC = () => {
   );
 };
 
-export default TagsForm;
+export default FonteDespesaForm;

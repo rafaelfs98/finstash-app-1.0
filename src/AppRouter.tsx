@@ -6,9 +6,12 @@ import OutletBridge from "./OutletBridge";
 import Categories from "./Pages/Registers/Categories";
 import CategoriesForm from "./Pages/Registers/Categories/CategoriesForm";
 import CategoriesOutlet from "./Pages/Registers/Categories/CategoriesOutlet";
-import Tags from "./Pages/Registers/Tags";
-import TagsForm from "./Pages/Registers/Tags/TagsForm";
-import TagsOutlet from "./Pages/Registers/Tags/TagsOutlet";
+import FontesDespesas from "./Pages/Registers/Fontes Despesas";
+import FonteDespesaForm from "./Pages/Registers/Fontes Despesas/FonteDespesasForm";
+import FonteDespesaOutlet from "./Pages/Registers/Fontes Despesas/FonteDespesasOutlet";
+import { default as FontesReceitas } from "./Pages/Registers/Fontes Receitas";
+import { default as FontesReceitasForm } from "./Pages/Registers/Fontes Receitas/FontesReceitasForm";
+import { default as FonteReceitaOutlet } from "./Pages/Registers/Fontes Receitas/FontesReceitasOutlet";
 
 const AppRouter = () => {
   return (
@@ -23,12 +26,20 @@ const AppRouter = () => {
               <Route element={<CategoriesForm />} path="view" />
             </Route>
           </Route>
-          <Route path="cadastros/tags" element={<OutletBridge />}>
-            <Route element={<Tags />} index />
-            <Route element={<TagsForm />} path="create" />
-            <Route element={<TagsOutlet />} path=":tagId">
-              <Route element={<TagsForm />} path="update" />
-              <Route element={<TagsForm />} path="view" />
+          <Route path="cadastros/fonteReceitas" element={<OutletBridge />}>
+            <Route element={<FontesReceitas />} index />
+            <Route element={<FontesReceitasForm />} path="create" />
+            <Route element={<FonteReceitaOutlet />} path=":fonteReceitaId">
+              <Route element={<FontesReceitasForm />} path="update" />
+              <Route element={<FontesReceitasForm />} path="view" />
+            </Route>
+          </Route>
+          <Route path="cadastros/fonteDespesas" element={<OutletBridge />}>
+            <Route element={<FontesDespesas />} index />
+            <Route element={<FonteDespesaForm />} path="create" />
+            <Route element={<FonteDespesaOutlet />} path=":fonteReceitaId">
+              <Route element={<FonteDespesaForm />} path="update" />
+              <Route element={<FonteDespesaForm />} path="view" />
             </Route>
           </Route>
         </Route>
