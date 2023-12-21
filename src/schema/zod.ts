@@ -6,7 +6,11 @@ const zodSchema = {
     color: z.string(),
     name: z.string(),
   }),
-  tags: z.object({
+  fonteReceitas: z.object({
+    color: z.string(),
+    name: z.string(),
+  }),
+  fonteDespesas: z.object({
     color: z.string(),
     name: z.string(),
   }),
