@@ -6,7 +6,7 @@ export const upsertFonteDespesa = async (
   fonteDespesaId?: number
 ) => {
   const { data, error } = await supabase
-    .from("expenseSources")
+    .from("expense_sources")
     .upsert({
       id: fonteDespesaId ? fonteDespesaId : undefined,
       name: fonteDespesa.name,
@@ -22,5 +22,5 @@ export const upsertFonteDespesa = async (
 };
 
 export const deleteFonteDespesa = async (fonteDespesaId: string) => {
-  await supabase.from("expenseSources").delete().eq("id", fonteDespesaId);
+  await supabase.from("expense_sources").delete().eq("id", fonteDespesaId);
 };

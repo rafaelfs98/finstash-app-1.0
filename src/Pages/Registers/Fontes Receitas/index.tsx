@@ -13,7 +13,7 @@ const FonteReceitas: React.FC = () => {
           { key: "name", label: "Fonte de Receitas" },
           { key: "color", label: "Cor" },
         ]}
-        resource="incomeSources?order=id.asc"
+        resource="income_sources?order=id.asc"
         actions={FontesReceitaActions()}
       />
     </>

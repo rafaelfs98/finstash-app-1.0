@@ -7,7 +7,7 @@ const FonteReceitaOutlet = () => {
 
   const { data: fonteReceita, mutate: mutateFonteReceita } =
     useFetcher<FonteReceitaData>({
-      uri: `/incomeSources?id=eq.${fonteReceitaId}`,
+      uri: `/income_sources?id=eq.${fonteReceitaId}`,
     });
 
   if (fonteReceita) {

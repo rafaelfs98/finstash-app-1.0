@@ -27,7 +27,7 @@ export interface Database {
         };
         Relationships: [];
       };
-      expenseSources: {
+      expense_sources: {
         Row: {
           id: number;
           name: string | null;
@@ -82,7 +82,7 @@ export interface Database {
             foreignKeyName: "expenseTransactions_sourceId_fkey";
             columns: ["sourceId"];
             isOneToOne: false;
-            referencedRelation: "expenseSources";
+            referencedRelation: "expense_sources";
             referencedColumns: ["id"];
           },
           {
@@ -101,7 +101,7 @@ export interface Database {
           }
         ];
       };
-      incomeSources: {
+      income_sources: {
         Row: {
           id: number;
           name: string | null;
@@ -119,7 +119,7 @@ export interface Database {
         };
         Relationships: [];
       };
-      incomeTransactions: {
+      income_transactions: {
         Row: {
           amount: number | null;
           categoryId: number | null;
@@ -149,28 +149,28 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "incomeTransactions_categoryId_fkey";
+            foreignKeyName: "income_transactions_categoryId_fkey";
             columns: ["categoryId"];
             isOneToOne: false;
             referencedRelation: "categories";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "incomeTransactions_sourceId_fkey";
+            foreignKeyName: "income_transactions_sourceId_fkey";
             columns: ["sourceId"];
             isOneToOne: false;
-            referencedRelation: "incomeSources";
+            referencedRelation: "income_sources";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "incomeTransactions_tagsId_fkey";
+            foreignKeyName: "income_transactions_tagsId_fkey";
             columns: ["tagsId"];
             isOneToOne: false;
             referencedRelation: "tags";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "incomeTransactions_userId_fkey";
+            foreignKeyName: "income_transactions_userId_fkey";
             columns: ["userId"];
             isOneToOne: false;
             referencedRelation: "users";

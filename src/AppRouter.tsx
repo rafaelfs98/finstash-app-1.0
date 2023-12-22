@@ -12,12 +12,16 @@ import FonteDespesaOutlet from "./Pages/Registers/Fontes Despesas/FonteDespesasO
 import { default as FontesReceitas } from "./Pages/Registers/Fontes Receitas";
 import { default as FontesReceitasForm } from "./Pages/Registers/Fontes Receitas/FontesReceitasForm";
 import { default as FonteReceitaOutlet } from "./Pages/Registers/Fontes Receitas/FontesReceitasOutlet";
+import Receitas from "./Pages/Receitas";
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route path="receitas" element={<OutletBridge />}>
+            <Route element={<Receitas />} index />
+          </Route>
           <Route path="cadastros/categories" element={<OutletBridge />}>
             <Route element={<Categories />} index />
             <Route element={<CategoriesForm />} path="create" />

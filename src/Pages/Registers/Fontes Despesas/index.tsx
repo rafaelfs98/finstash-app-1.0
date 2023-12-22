@@ -13,7 +13,7 @@ const FonteDespesas: React.FC = () => {
           { key: "name", label: "Fonte de Despesa" },
           { key: "color", label: "Cor" },
         ]}
-        resource="expenseSources?order=id.asc"
+        resource="expense_sources?order=id.asc"
         actions={FonteDespesaActions()}
       />
     </>

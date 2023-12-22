@@ -29,11 +29,13 @@ type ListViewProps = {
   columns: TableColumn[];
   resource: string;
   actions?: Action[];
+  relationships?: string;
   itemsPerPage?: number;
 } & TableProps;
 
 const ListView: React.FC<ListViewProps> = ({
   columns,
+  relationships,
   resource,
   actions = [],
   itemsPerPage = 10,
@@ -47,9 +49,12 @@ const ListView: React.FC<ListViewProps> = ({
 
   const { data, isLoading } = useFetcher<any>({
     uri: resource,
+    select: relationships,
   });
 
   const dataItems = data || [];
+
+  console.log(dataItems);
 
   const handleSort = (columnKey: string) => {
     if (columnKey === sortColumn) {
