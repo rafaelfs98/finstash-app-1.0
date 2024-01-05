@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React from "react";
 import { Badge, Table } from "@mantine/core";
 import { TableColumn } from "./ListView";
 import ListViewActions, { Action } from "./ListViewActions";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br"; // Importe o locale para português brasileiro
 
 type ListViewRowProps = {
   columns: TableColumn[];
   item: any;
   actions: Action[];
 };
+
+dayjs.locale("pt-br"); // Configura o locale do dayjs
 
 const renderValue = (key: string, item: any): React.ReactNode => {
   const keys = key.split(".");
@@ -36,6 +41,10 @@ const renderValue = (key: string, item: any): React.ReactNode => {
     }).format(value || 0);
 
     return formattedAmount;
+  } else if (key.includes("Date")) {
+    // Adiciona formatação da data
+    const formattedDate = dayjs(value).format("DD/MM/YYYY");
+    return formattedDate;
   }
 
   return value;
