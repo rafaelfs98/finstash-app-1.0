@@ -11,111 +11,103 @@ export interface Database {
     Tables: {
       categories: {
         Row: {
+          color: string | null;
           id: number;
           name: string | null;
-          color: string | null;
         };
         Insert: {
+          color?: string | null;
           id?: number;
           name?: string | null;
-          color?: string | null;
         };
         Update: {
+          color?: string | null;
           id?: number;
           name?: string | null;
-          color?: string | null;
         };
         Relationships: [];
       };
       expense_sources: {
         Row: {
+          color: string | null;
           id: number;
           name: string | null;
         };
         Insert: {
+          color?: string | null;
           id?: number;
           name?: string | null;
         };
         Update: {
+          color?: string | null;
           id?: number;
           name?: string | null;
         };
         Relationships: [];
       };
-      expenseTransactions: {
+      expense_transactions: {
         Row: {
           amount: number | null;
           categoryId: number | null;
+          dueDate: string | null;
           id: number;
           sourceId: number | null;
           tagsId: number | null;
-          transactionDate: string | null;
+          paymentDate: string | null;
           userId: number | null;
         };
         Insert: {
           amount?: number | null;
           categoryId?: number | null;
+          dueDate?: string | null;
           id?: number;
           sourceId?: number | null;
           tagsId?: number | null;
-          transactionDate?: string | null;
+          paymentDate?: string | null;
           userId?: number | null;
         };
         Update: {
           amount?: number | null;
           categoryId?: number | null;
+          dueDate?: string | null;
           id?: number;
           sourceId?: number | null;
           tagsId?: number | null;
-          transactionDate?: string | null;
+          paymentDate?: string | null;
           userId?: number | null;
         };
         Relationships: [
           {
-            foreignKeyName: "expenseTransactions_categoryId_fkey";
+            foreignKeyName: "expense_transactions_categoryId_fkey";
             columns: ["categoryId"];
             isOneToOne: false;
             referencedRelation: "categories";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "expenseTransactions_sourceId_fkey";
+            foreignKeyName: "expense_transactions_sourceId_fkey";
             columns: ["sourceId"];
             isOneToOne: false;
             referencedRelation: "expense_sources";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "expenseTransactions_tagsId_fkey";
-            columns: ["tagsId"];
-            isOneToOne: false;
-            referencedRelation: "tags";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "expenseTransactions_userId_fkey";
-            columns: ["userId"];
-            isOneToOne: false;
-            referencedRelation: "users";
             referencedColumns: ["id"];
           }
         ];
       };
       income_sources: {
         Row: {
+          color: string | null;
           id: number;
           name: string | null;
-          color: string | null;
         };
         Insert: {
+          color?: string | null;
           id?: number;
           name?: string | null;
-          color?: string | null;
         };
         Update: {
+          color?: string | null;
           id?: number;
           name?: string | null;
-          color?: string | null;
         };
         Relationships: [];
       };
@@ -125,27 +117,21 @@ export interface Database {
           categoryId: number | null;
           id: number;
           sourceId: number | null;
-          tagsId: number | null;
           transactionDate: string | null;
-          userId: number | null;
         };
         Insert: {
           amount?: number | null;
           categoryId?: number | null;
           id?: number;
           sourceId?: number | null;
-          tagsId?: number | null;
           transactionDate?: string | null;
-          userId?: number | null;
         };
         Update: {
           amount?: number | null;
           categoryId?: number | null;
           id?: number;
           sourceId?: number | null;
-          tagsId?: number | null;
           transactionDate?: string | null;
-          userId?: number | null;
         };
         Relationships: [
           {
@@ -161,65 +147,22 @@ export interface Database {
             isOneToOne: false;
             referencedRelation: "income_sources";
             referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "income_transactions_tagsId_fkey";
-            columns: ["tagsId"];
-            isOneToOne: false;
-            referencedRelation: "tags";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "income_transactions_userId_fkey";
-            columns: ["userId"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
           }
         ];
-      };
-      tags: {
-        Row: {
-          id: number;
-          name: string;
-        };
-        Insert: {
-          id?: number;
-          name: string;
-        };
-        Update: {
-          id?: number;
-          name?: string;
-        };
-        Relationships: [];
-      };
-      users: {
-        Row: {
-          email: string | null;
-          id: number;
-          name: string | null;
-          password: string | null;
-        };
-        Insert: {
-          email?: string | null;
-          id?: number;
-          name?: string | null;
-          password?: string | null;
-        };
-        Update: {
-          email?: string | null;
-          id?: number;
-          name?: string | null;
-          password?: string | null;
-        };
-        Relationships: [];
       };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      enviar_email: {
+        Args: {
+          destinatario: string;
+          assunto: string;
+          corpo: string;
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
       [_ in never]: never;

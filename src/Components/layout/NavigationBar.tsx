@@ -98,7 +98,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               title="Despesas"
               label="Despesas"
               leftSection={<IconReceipt size="1.2rem" stroke={2} />}
-              onClick={() => handleLinkMainClick("Despesas")}
+              onClick={() => {
+                handleLinkMainClick("Despesas");
+                toggle();
+                navigate("despesas");
+              }}
               active={activeLinkMain === "Despesas"}
             />
             <NavLink

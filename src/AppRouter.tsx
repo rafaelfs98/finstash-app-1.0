@@ -13,6 +13,7 @@ import { default as FontesReceitas } from "./Pages/Registers/Fontes Receitas";
 import { default as FontesReceitasForm } from "./Pages/Registers/Fontes Receitas/FontesReceitasForm";
 import { default as FonteReceitaOutlet } from "./Pages/Registers/Fontes Receitas/FontesReceitasOutlet";
 import Receitas from "./Pages/Receitas";
+import Despesas from "./Pages/Despesas";
 
 const AppRouter = () => {
   return (
@@ -21,6 +22,9 @@ const AppRouter = () => {
         <Route path="/" element={<Layout />}>
           <Route path="receitas" element={<OutletBridge />}>
             <Route element={<Receitas />} index />
+          </Route>
+          <Route path="despesas" element={<OutletBridge />}>
+            <Route element={<Despesas />} index />
           </Route>
           <Route path="cadastros/categories" element={<OutletBridge />}>
             <Route element={<Categories />} index />
