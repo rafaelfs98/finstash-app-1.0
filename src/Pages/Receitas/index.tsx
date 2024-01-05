@@ -1,4 +1,3 @@
-// Categories.tsx
 import React from "react";
 import { Title } from "@mantine/core";
 import ListView from "../../Components/ListView/ListView";
@@ -9,7 +8,7 @@ const Receitas: React.FC = () => {
       <Title order={2}>Receitas</Title>
       <ListView
         columns={[
-          { key: "id", label: "ID" },
+          { key: "transactionDate", label: "Data de Trasancao" },
           { key: "income_sources.name", label: "Origem da Receita" },
           { key: "categories.name", label: "Categoria" },
           { key: "amount", label: "Valor" },
@@ -18,6 +17,7 @@ const Receitas: React.FC = () => {
         relationships={`
             id,
             amount,
+            transactionDate,
             categories (
              id,
              name
