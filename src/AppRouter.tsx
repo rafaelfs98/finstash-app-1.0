@@ -3,17 +3,17 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Components/layout/Layout";
 
 import OutletBridge from "./OutletBridge";
+import ExpanseTransactiosTable from "./Pages/Expense Transactions/ExpanseTransactiosTable";
+import IncomeTransactionsTable from "./Pages/Income Transactions/IncomeTransactionsTable";
 import Categories from "./Pages/Registers/Categories";
 import CategoriesForm from "./Pages/Registers/Categories/CategoriesForm";
 import CategoriesOutlet from "./Pages/Registers/Categories/CategoriesOutlet";
-import FontesDespesas from "./Pages/Registers/Fontes Despesas";
-import FonteDespesaForm from "./Pages/Registers/Fontes Despesas/FonteDespesasForm";
-import FonteDespesaOutlet from "./Pages/Registers/Fontes Despesas/FonteDespesasOutlet";
-import { default as FontesReceitas } from "./Pages/Registers/Fontes Receitas";
-import { default as FontesReceitasForm } from "./Pages/Registers/Fontes Receitas/FontesReceitasForm";
-import { default as FonteReceitaOutlet } from "./Pages/Registers/Fontes Receitas/FontesReceitasOutlet";
-import Receitas from "./Pages/Receitas";
-import Despesas from "./Pages/Despesas";
+import ExpenseSourceForm from "./Pages/Registers/Expense Sources/ExpenseSourceForm";
+import ExpenseSourceOutlet from "./Pages/Registers/Expense Sources/ExpenseSourceOutlet";
+import ExpenseSourceTable from "./Pages/Registers/Expense Sources/ExpenseSourceTable";
+import IncomeSourcesForm from "./Pages/Registers/Income Sources/IncomeSourcesForm";
+import IncomeSourcesOutlet from "./Pages/Registers/Income Sources/IncomeSourcesOutlet";
+import IncomeSourcesTable from "./Pages/Registers/Income Sources/IncomeSourcesTable";
 
 const AppRouter = () => {
   return (
@@ -21,10 +21,10 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="receitas" element={<OutletBridge />}>
-            <Route element={<Receitas />} index />
+            <Route element={<IncomeTransactionsTable />} index />
           </Route>
           <Route path="despesas" element={<OutletBridge />}>
-            <Route element={<Despesas />} index />
+            <Route element={<ExpanseTransactiosTable />} index />
           </Route>
           <Route path="cadastros/categories" element={<OutletBridge />}>
             <Route element={<Categories />} index />
@@ -35,19 +35,19 @@ const AppRouter = () => {
             </Route>
           </Route>
           <Route path="cadastros/fonteReceitas" element={<OutletBridge />}>
-            <Route element={<FontesReceitas />} index />
-            <Route element={<FontesReceitasForm />} path="create" />
-            <Route element={<FonteReceitaOutlet />} path=":fonteReceitaId">
-              <Route element={<FontesReceitasForm />} path="update" />
-              <Route element={<FontesReceitasForm />} path="view" />
+            <Route element={<IncomeSourcesTable />} index />
+            <Route element={<IncomeSourcesForm />} path="create" />
+            <Route element={<IncomeSourcesOutlet />} path=":incomeSourcesId">
+              <Route element={<IncomeSourcesForm />} path="update" />
+              <Route element={<IncomeSourcesForm />} path="view" />
             </Route>
           </Route>
           <Route path="cadastros/fonteDespesas" element={<OutletBridge />}>
-            <Route element={<FontesDespesas />} index />
-            <Route element={<FonteDespesaForm />} path="create" />
-            <Route element={<FonteDespesaOutlet />} path=":fonteDespesaId">
-              <Route element={<FonteDespesaForm />} path="update" />
-              <Route element={<FonteDespesaForm />} path="view" />
+            <Route element={<ExpenseSourceTable />} index />
+            <Route element={<ExpenseSourceForm />} path="create" />
+            <Route element={<ExpenseSourceOutlet />} path=":expenseSourceId">
+              <Route element={<ExpenseSourceForm />} path="update" />
+              <Route element={<ExpenseSourceForm />} path="view" />
             </Route>
           </Route>
         </Route>

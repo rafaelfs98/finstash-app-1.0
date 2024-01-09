@@ -3,12 +3,12 @@ export type CategoriesData = {
   name: string;
   color: string;
 };
-export type FonteReceitaData = {
+export type IncomeSourcesData = {
   id?: number;
   name: string;
   color: string;
 };
-export type FonteDespesaData = {
+export type ExpenseSourceData = {
   id?: number;
   name: string;
   color: string;
