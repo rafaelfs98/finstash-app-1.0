@@ -8,19 +8,19 @@ import { z } from "zod";
 import InputColor from "../../../Components/Inputs/InputColor";
 import InputText from "../../../Components/Inputs/InputText";
 import useFormActions from "../../../Hooks/useFormActions";
-import { upsertFonteDespesa } from "../../../Services/FonteDespesas";
-import { FonteDespesaData } from "../../../Services/Types/finStash";
+import { upsertExpenseSource } from "../../../Services/ExpenseSource";
+import { ExpenseSourceData } from "../../../Services/Types/finStash";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 
-type FonteDespesaInfo = z.infer<typeof zodSchema.fonteDespesas>;
+type ExpenseSourceInfo = z.infer<typeof zodSchema.expenseSource>;
 
-const FonteDespesaForm: React.FC = () => {
+const ExpenseSourceForm: React.FC = () => {
   const navigate = useNavigate();
-  const { fonteDespesaId } = useParams();
+  const { expenseSourceId } = useParams();
 
   const context = useOutletContext<{
-    fonteDespesa: FonteDespesaData[];
-    mutateFonteDespesa: KeyedMutator<FonteDespesaData[]>;
+    expenseSource: ExpenseSourceData[];
+    mutateExpenseSource: KeyedMutator<ExpenseSourceData[]>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -30,24 +30,24 @@ const FonteDespesaForm: React.FC = () => {
     handleSubmit,
     register,
     setValue,
-  } = useForm<FonteDespesaInfo>({
+  } = useForm<ExpenseSourceInfo>({
     defaultValues: context
-      ? context?.fonteDespesa[0]
+      ? context?.expenseSource[0]
       : {
           name: "",
           color: "",
         },
 
-    resolver: zodResolver(zodSchema.fonteDespesas),
+    resolver: zodResolver(zodSchema.expenseSource),
   });
   const { onError, onSave } = useFormActions();
 
-  const _onSubmit = async (form: FonteDespesaInfo) => {
+  const _onSubmit = async (form: ExpenseSourceInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertFonteDespesa(form, Number(fonteDespesaId));
+      const response = await upsertExpenseSource(form, Number(expenseSourceId));
 
-      context?.mutateFonteDespesa(response);
+      context?.mutateExpenseSource(response);
       setLoadingButton(false);
       navigate("/cadastros/fonteDespesas");
       return onSave();
@@ -61,7 +61,7 @@ const FonteDespesaForm: React.FC = () => {
     <div>
       <Title order={2}>
         {context
-          ? `Editar Fonte de Despesa # ${context?.fonteDespesa[0].id}`
+          ? `Editar Fonte de Despesa # ${context?.expenseSource[0].id}`
           : `Criar Fonte de Despesa`}
       </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
@@ -76,7 +76,7 @@ const FonteDespesaForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.fonteDespesa[0]?.color}
+            defaultValue={context?.expenseSource[0]?.color}
             label={"Cor da Fonte de Despesa"}
             placeholder={"Defina uma Cor para a Fonte da Despesa"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
@@ -113,4 +113,4 @@ const FonteDespesaForm: React.FC = () => {
   );
 };
 
-export default FonteDespesaForm;
+export default ExpenseSourceForm;
