@@ -2,7 +2,7 @@ import React from "react";
 import { Title } from "@mantine/core";
 import ListView from "../../Components/ListView/ListView";
 
-const Despesas: React.FC = () => {
+const ExpanseTransactiosTable: React.FC = () => {
   return (
     <>
       <Title order={2}>Despesas</Title>
@@ -34,4 +34,4 @@ const Despesas: React.FC = () => {
   );
 };
 
-export default Despesas;
+export default ExpanseTransactiosTable;
