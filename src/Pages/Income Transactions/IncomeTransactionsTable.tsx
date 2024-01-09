@@ -2,7 +2,7 @@ import React from "react";
 import { Title } from "@mantine/core";
 import ListView from "../../Components/ListView/ListView";
 
-const Receitas: React.FC = () => {
+const IncomeTransactionsTable: React.FC = () => {
   return (
     <>
       <Title order={2}>Receitas</Title>
@@ -32,4 +32,4 @@ const Receitas: React.FC = () => {
   );
 };
 
-export default Receitas;
+export default IncomeTransactionsTable;
