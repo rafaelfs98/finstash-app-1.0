@@ -8,19 +8,19 @@ import { z } from "zod";
 import InputColor from "../../../Components/Inputs/InputColor";
 import InputText from "../../../Components/Inputs/InputText";
 import useFormActions from "../../../Hooks/useFormActions";
-import { upsertFonteReceita } from "../../../Services/FonteReceitas";
-import { FonteReceitaData } from "../../../Services/Types/finStash";
+import { upsertIncomeSources } from "../../../Services/IncomeSources";
+import { IncomeSourcesData } from "../../../Services/Types/finStash";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 
-type FonteReceitasInfo = z.infer<typeof zodSchema.fonteReceitas>;
+type IncomeSourcesInfo = z.infer<typeof zodSchema.incomeSources>;
 
-const FonteReceitasForm: React.FC = () => {
+const IncomeSourcesForm: React.FC = () => {
   const navigate = useNavigate();
-  const { fonteReceitaId } = useParams();
+  const { incomeSourcesId } = useParams();
 
   const context = useOutletContext<{
-    fonteReceita: FonteReceitaData[];
-    mutateFonteReceita: KeyedMutator<FonteReceitaData[]>;
+    incomeSources: IncomeSourcesData[];
+    mutateIncomeSources: KeyedMutator<IncomeSourcesData[]>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -30,24 +30,24 @@ const FonteReceitasForm: React.FC = () => {
     handleSubmit,
     register,
     setValue,
-  } = useForm<FonteReceitasInfo>({
+  } = useForm<IncomeSourcesInfo>({
     defaultValues: context
-      ? context?.fonteReceita[0]
+      ? context?.incomeSources[0]
       : {
           name: "",
           color: "",
         },
 
-    resolver: zodResolver(zodSchema.fonteReceitas),
+    resolver: zodResolver(zodSchema.incomeSources),
   });
   const { onError, onSave } = useFormActions();
 
-  const _onSubmit = async (form: FonteReceitasInfo) => {
+  const _onSubmit = async (form: IncomeSourcesInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertFonteReceita(form, Number(fonteReceitaId));
+      const response = await upsertIncomeSources(form, Number(incomeSourcesId));
 
-      context?.mutateFonteReceita(response);
+      context?.mutateIncomeSources(response);
       setLoadingButton(false);
       navigate("/cadastros/fonteReceitas");
       return onSave();
@@ -61,7 +61,7 @@ const FonteReceitasForm: React.FC = () => {
     <div>
       <Title order={2}>
         {context
-          ? `Editar Fonte de Receita # ${context?.fonteReceita[0].id}`
+          ? `Editar Fonte de Receita # ${context?.incomeSources[0].id}`
           : `Criar Fonte de Receita`}
       </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
@@ -76,7 +76,7 @@ const FonteReceitasForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.fonteReceita[0]?.color}
+            defaultValue={context?.incomeSources[0]?.color}
             label={"Cor da Fonte de Receita"}
             placeholder={"Defina uma Cor para a Fonte da Receita"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
@@ -113,4 +113,4 @@ const FonteReceitasForm: React.FC = () => {
   );
 };
 
-export default FonteReceitasForm;
+export default IncomeSourcesForm;

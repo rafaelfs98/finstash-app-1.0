@@ -3,10 +3,10 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Action } from "../../../Components/ListView/ListViewActions";
-import { deleteFonteReceita } from "../../../Services/FonteReceitas";
+import { deleteIncomeSources } from "../../../Services/IncomeSources";
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 
-const FontesReceitaActions = () => {
+const IncomeSourcesActions = () => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const FontesReceitaActions = () => {
 
     setIsDeleting(true);
     try {
-      await deleteFonteReceita(selectedItemId as string);
+      await deleteIncomeSources(selectedItemId as string);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -44,4 +44,4 @@ const FontesReceitaActions = () => {
   return actions;
 };
 
-export default FontesReceitaActions;
+export default IncomeSourcesActions;
