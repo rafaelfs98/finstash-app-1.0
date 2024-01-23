@@ -1,4 +1,3 @@
-// CategoryActions.tsx
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
