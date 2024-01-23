@@ -14,6 +14,7 @@ import ExpenseSourceTable from "./Pages/Registers/Expense Sources/ExpenseSourceT
 import IncomeSourcesForm from "./Pages/Registers/Income Sources/IncomeSourcesForm";
 import IncomeSourcesOutlet from "./Pages/Registers/Income Sources/IncomeSourcesOutlet";
 import IncomeSourcesTable from "./Pages/Registers/Income Sources/IncomeSourcesTable";
+import IncomeTransactionsForm from "./Pages/Income Transactions/IncomeTransactionsForm";
 
 const AppRouter = () => {
   return (
@@ -22,6 +23,7 @@ const AppRouter = () => {
         <Route path="/" element={<Layout />}>
           <Route path="receitas" element={<OutletBridge />}>
             <Route element={<IncomeTransactionsTable />} index />
+            <Route element={<IncomeTransactionsForm />} path="create" />
           </Route>
           <Route path="despesas" element={<OutletBridge />}>
             <Route element={<ExpanseTransactiosTable />} index />
