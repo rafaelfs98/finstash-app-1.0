@@ -19,12 +19,7 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
         direction="row"
         wrap="nowrap"
       >
-        <Image
-          w="auto"
-          h={70}
-          fit="contain"
-          src="/FinStash-logos_transparent.jpeg"
-        />
+        <Image w="auto" h={80} fit="contain" src="/Finstash_Pesonal.png" />
         <ThemeTogle mt="md" visibleFrom="sm" />
         <Burger
           mt="md"
