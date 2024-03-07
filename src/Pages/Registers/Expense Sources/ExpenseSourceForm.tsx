@@ -76,7 +76,7 @@ const ExpenseSourceForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.expenseSource[0]?.color}
+            // defaultValue={context?.expenseSource[0]?.color}
             label={"Cor da Fonte de Despesa"}
             placeholder={"Defina uma Cor para a Fonte da Despesa"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
