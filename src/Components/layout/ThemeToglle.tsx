@@ -19,7 +19,7 @@ const ThemeTogle: React.FC<ActionIconProps> = ({ ...otherProps }) => {
       onClick={() =>
         setColorScheme(computedColorScheme === "light" ? "dark" : "light")
       }
-      variant="default"
+      variant="light"
       size="md"
       aria-label="Toggle color scheme"
       {...otherProps}

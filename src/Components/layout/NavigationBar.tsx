@@ -23,6 +23,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import ThemeTogle from "./ThemeToglle";
+import classes from "../../Styles/MantineCss/Navbar.module.css";
 
 type NavigationBarProps = {
   toggle: () => void;
@@ -54,8 +55,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
   }, [activeLinkMain, activeLinkChildren]);
 
   return (
-    <AppShell.Navbar aria-label="menu">
-      <AppShell.Section p="xs">
+    <AppShell.Navbar aria-label="menu" className={classes.navbar}>
+      <AppShell.Section p="xs" className={classes.main}>
         <Flex
           h="100%"
           px="md"
@@ -69,10 +70,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
           <ThemeTogle hiddenFrom="sm" mt={8} />
         </Flex>
       </AppShell.Section>
-      <AppShell.Section mt="md" grow>
+      <AppShell.Section grow className={classes.main}>
         <ScrollArea>
           <Stack justify="center" gap={0}>
             <NavLink
+              mt="xl"
               title="Inicio"
               label="Inicio"
               leftSection={<IconHome size="1.2rem" stroke={2} />}
@@ -161,7 +163,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
         </ScrollArea>
       </AppShell.Section>
 
-      <AppShell.Section>
+      <AppShell.Section className={classes.main}>
         <Stack justify="center" gap={10}>
           <NavLink
             title="Configuracoes"
