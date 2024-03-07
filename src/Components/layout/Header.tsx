@@ -2,6 +2,7 @@ import { AppShell, Burger, Flex, Image } from "@mantine/core";
 import React from "react";
 
 import ThemeTogle from "./ThemeToglle";
+import classes from "../../Styles/MantineCss/Header.module.css";
 
 type HeaderProps = {
   toggle: () => void;
@@ -10,7 +11,7 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
   return (
-    <AppShell.Header>
+    <AppShell.Header className={classes.header} withBorder>
       <Flex
         h="100%"
         px="md"
@@ -18,12 +19,7 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
         direction="row"
         wrap="nowrap"
       >
-        <Image
-          w="auto"
-          h={70}
-          fit="contain"
-          src="/FinStash-logos_transparent.jpeg"
-        />
+        <Image w="auto" h={80} fit="contain" src="/Finstash_Pesonal.png" />
         <ThemeTogle mt="md" visibleFrom="sm" />
         <Burger
           mt="md"

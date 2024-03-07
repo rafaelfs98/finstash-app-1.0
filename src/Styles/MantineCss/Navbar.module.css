@@ -1,0 +1,6 @@
+.navbar {
+  background-color: light-dark(
+    var(--mantine-primary-color-light),
+    var(--mantine-color-dark-6)
+  );
+}

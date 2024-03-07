@@ -54,8 +54,6 @@ const ListView: React.FC<ListViewProps> = ({
 
   const dataItems = data || [];
 
-  console.log(dataItems);
-
   const handleSort = (columnKey: string) => {
     if (columnKey === sortColumn) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
