@@ -12,7 +12,7 @@ import {
   rem,
 } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetcher } from "../../Hooks/useFetcher";
 import Loading from "../Loader";
@@ -87,13 +87,13 @@ const ListView: React.FC<ListViewProps> = ({
     setCurrentPage(page);
   };
 
-  const sliceData = () => {
+  const slicedData = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return filteredData.slice(startIndex, endIndex);
-  };
+  }, [currentPage, filteredData, itemsPerPage]);
 
-  const rows = sliceData().map((item, index) => (
+  const rows = slicedData.map((item, index) => (
     <ListViewRow key={index} columns={columns} item={item} actions={actions} />
   ));
 

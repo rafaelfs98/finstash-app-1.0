@@ -18,7 +18,7 @@ import {
 } from "@mantine/core";
 import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Loading from "../../Components/Loader";
 import { useFetcher } from "../../Hooks/useFetcher";
 import classes from "../../Styles/MantineCss/Cards.module.css";
@@ -83,11 +83,11 @@ const ExpanseTransactiosTable: React.FC = () => {
     setSelectedItemId(id);
   };
 
-  const sliceData = () => {
+  const slicedData = useMemo(() => {
     const startIndex = (currentPage - 1) * 4;
     const endIndex = startIndex + 4;
     return filteredData.slice(startIndex, endIndex);
-  };
+  }, [currentPage, filteredData]);
 
   const formattedAmount = (value: number) =>
     new Intl.NumberFormat("pt-BR", {
@@ -121,9 +121,9 @@ const ExpanseTransactiosTable: React.FC = () => {
           </Group>
 
           <ScrollArea>
-            {sliceData().length > 0 ? (
+            {slicedData.length > 0 ? (
               <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
-                {sliceData().map((item, index) => {
+                {slicedData.map((item, index) => {
                   return (
                     <Card
                       key={index}

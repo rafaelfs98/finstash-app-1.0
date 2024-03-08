@@ -7,7 +7,6 @@ import {
   Group,
   Menu,
   Pagination,
-  ScrollArea,
   SimpleGrid,
   Stack,
   Text,
@@ -16,15 +15,16 @@ import {
   UnstyledButton,
   rem,
 } from "@mantine/core";
+
 import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import { useAtom } from "jotai";
+import React, { useMemo, useState } from "react";
 import Loading from "../../Components/Loader";
 import { useFetcher } from "../../Hooks/useFetcher";
 import classes from "../../Styles/MantineCss/Cards.module.css";
-import IncomeTransactionsActions from "./IncomeTransactionsActions";
 import { selectedItemIdAtom } from "../../atoms/app.atom";
-import { useAtom } from "jotai";
+import IncomeTransactionsActions from "./IncomeTransactionsActions";
 
 dayjs.locale("pt-br");
 
@@ -83,11 +83,11 @@ const IncomeTransactionsTable: React.FC = () => {
     setSelectedItemId(id);
   };
 
-  const sliceData = () => {
+  const slicedData = useMemo(() => {
     const startIndex = (currentPage - 1) * 4;
     const endIndex = startIndex + 4;
     return filteredData.slice(startIndex, endIndex);
-  };
+  }, [currentPage, filteredData]);
 
   const formattedAmount = (value: number) =>
     new Intl.NumberFormat("pt-BR", {
@@ -121,82 +121,81 @@ const IncomeTransactionsTable: React.FC = () => {
             </Button>
           </Group>
 
-          <ScrollArea>
-            {sliceData().length > 0 ? (
-              <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
-                {sliceData().map((item, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      shadow="sm"
-                      padding="lg"
-                      radius="md"
+          {slicedData.length > 0 ? (
+            <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
+              {slicedData.map((item, index) => {
+                return (
+                  <Card
+                    key={index}
+                    shadow="sm"
+                    padding="lg"
+                    radius="md"
+                    withBorder
+                  >
+                    <CardSection
+                      className={classes.section}
                       withBorder
+                      inheritPadding
+                      py="xs"
+                      mb={10}
                     >
-                      <CardSection
-                        className={classes.section}
-                        withBorder
-                        inheritPadding
-                        py="xs"
-                        mb={10}
-                      >
-                        <Group justify="flex-end">
-                          <Menu shadow="md" position="bottom" offset={-1}>
-                            <Menu.Target>
-                              <UnstyledButton
-                                onClick={() => handleActionClick(item.id)}
+                      <Group justify="flex-end">
+                        <Menu shadow="md" position="bottom" offset={-1}>
+                          <Menu.Target>
+                            <UnstyledButton
+                              onClick={() => handleActionClick(item.id)}
+                            >
+                              <IconDotsVertical />
+                            </UnstyledButton>
+                          </Menu.Target>
+                          <Menu.Dropdown>
+                            {actions.map((action, index) => (
+                              <Menu.Item
+                                key={index}
+                                onClick={action.onClick}
+                                leftSection={action.icon}
+                                disabled={action.disabled}
                               >
-                                <IconDotsVertical />
-                              </UnstyledButton>
-                            </Menu.Target>
-                            <Menu.Dropdown>
-                              {actions.map((action, index) => (
-                                <Menu.Item
-                                  key={index}
-                                  onClick={action.onClick}
-                                  leftSection={action.icon}
-                                  disabled={action.disabled}
-                                >
-                                  {action.label}
-                                </Menu.Item>
-                              ))}
-                            </Menu.Dropdown>
-                          </Menu>
-                        </Group>
-                      </CardSection>
-
-                      <Group justify="space-between" mb="xs">
-                        <Text fw={500}>{item.name}</Text>
-                        <Text fw={500}>
-                          {dayjs(item?.transactionDate).format("DD/MM/YYYY")}
-                        </Text>
+                                {action.label}
+                              </Menu.Item>
+                            ))}
+                          </Menu.Dropdown>
+                        </Menu>
                       </Group>
-                      <Group justify="space-between" mt="md" mb="xs">
-                        <Stack>
-                          <Badge color={item?.categories?.color}>
-                            {item?.categories?.name}
-                          </Badge>
-                          <Badge color={item?.income_sources?.color}>
-                            {item?.income_sources?.name}
-                          </Badge>
-                        </Stack>
+                    </CardSection>
 
-                        <Text size="xl">{formattedAmount(item?.amount)}</Text>
-                      </Group>
-                    </Card>
-                  );
-                })}
-              </SimpleGrid>
-            ) : (
-              <SimpleGrid mt="xl" cols={{ base: 1, sm: 1 }}>
-                <Card shadow="sm" padding="lg" radius="md" withBorder>
-                  <Text ta="center" fw={500}>
-                    Ops! Não encontramos nenhum resultado.
-                  </Text>
-                </Card>
-              </SimpleGrid>
-            )}
-          </ScrollArea>
+                    <Group justify="space-between" mb="xs">
+                      <Text fw={500}>{item.name}</Text>
+                      <Text fw={500}>
+                        {dayjs(item?.transactionDate).format("DD/MM/YYYY")}
+                      </Text>
+                    </Group>
+                    <Group justify="space-between" mt="md" mb="xs">
+                      <Stack>
+                        <Badge color={item?.categories?.color}>
+                          {item?.categories?.name}
+                        </Badge>
+                        <Badge color={item?.income_sources?.color}>
+                          {item?.income_sources?.name}
+                        </Badge>
+                      </Stack>
+
+                      <Text size="xl">{formattedAmount(item?.amount)}</Text>
+                    </Group>
+                  </Card>
+                );
+              })}
+            </SimpleGrid>
+          ) : (
+            <SimpleGrid mt="xl" cols={{ base: 1, sm: 1 }}>
+              <Card shadow="sm" padding="lg" radius="md" withBorder>
+                <Text ta="center" fw={500}>
+                  Ops! Não encontramos nenhum resultado.
+                </Text>
+              </Card>
+            </SimpleGrid>
+          )}
+
           <Group justify="flex-end">
             <Pagination
               mt={20}
