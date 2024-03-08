@@ -22,12 +22,18 @@ import React, { useState } from "react";
 import Loading from "../../Components/Loader";
 import { useFetcher } from "../../Hooks/useFetcher";
 import classes from "../../Styles/MantineCss/Cards.module.css";
+import IncomeTransactionsActions from "./IncomeTransactionsActions";
+import { selectedItemIdAtom } from "../../atoms/app.atom";
+import { useAtom } from "jotai";
 
 dayjs.locale("pt-br");
 
 const IncomeTransactionsTable: React.FC = () => {
-  const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>("");
+  const [, setSelectedItemId] = useAtom(selectedItemIdAtom);
+
+  const actions = IncomeTransactionsActions();
 
   const { data, isLoading } = useFetcher<any>({
     uri: "income_transactions?order=transactionDate.asc",
@@ -73,6 +79,10 @@ const IncomeTransactionsTable: React.FC = () => {
     setCurrentPage(page);
   };
 
+  const handleActionClick = (id: string) => {
+    setSelectedItemId(id);
+  };
+
   const sliceData = () => {
     const startIndex = (currentPage - 1) * 6;
     const endIndex = startIndex + 6;
@@ -116,54 +126,64 @@ const IncomeTransactionsTable: React.FC = () => {
               <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
                 {sliceData().map((item, index) => {
                   return (
-                    <>
-                      <Card
-                        key={index}
-                        shadow="sm"
-                        padding="lg"
-                        radius="md"
+                    <Card
+                      key={index}
+                      shadow="sm"
+                      padding="lg"
+                      radius="md"
+                      withBorder
+                    >
+                      <CardSection
+                        className={classes.section}
                         withBorder
-                        onClick={() => alert(item.id)}
+                        inheritPadding
+                        py="xs"
+                        mb={10}
                       >
-                        <CardSection
-                          className={classes.section}
-                          withBorder
-                          inheritPadding
-                          py="xs"
-                          mb={10}
-                        >
-                          <Group justify="flex-end">
-                            <Menu shadow="md" position="bottom" offset={-1}>
-                              <Menu.Target>
-                                <UnstyledButton>
-                                  <IconDotsVertical />
-                                </UnstyledButton>
-                              </Menu.Target>
-
-                              <Menu.Dropdown></Menu.Dropdown>
-                            </Menu>
-                          </Group>
-                        </CardSection>
-                        <Group justify="space-between" mb="xs">
-                          <Text fw={500}>{item.name}</Text>
-                          <Text fw={500}>
-                            {dayjs(item?.transactionDate).format("DD/MM/YYYY")}
-                          </Text>
+                        <Group justify="flex-end">
+                          <Menu shadow="md" position="bottom" offset={-1}>
+                            <Menu.Target>
+                              <UnstyledButton
+                                onClick={() => handleActionClick(item.id)}
+                              >
+                                <IconDotsVertical />
+                              </UnstyledButton>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                              {actions.map((action, index) => (
+                                <Menu.Item
+                                  key={index}
+                                  onClick={action.onClick}
+                                  leftSection={action.icon}
+                                  disabled={action.disabled}
+                                >
+                                  {action.label}
+                                </Menu.Item>
+                              ))}
+                            </Menu.Dropdown>
+                          </Menu>
                         </Group>
-                        <Group justify="space-between" mt="md" mb="xs">
-                          <Stack>
-                            <Badge color={item?.categories?.color}>
-                              {item?.categories?.name}
-                            </Badge>
-                            <Badge color={item?.income_sources?.color}>
-                              {item?.income_sources?.name}
-                            </Badge>
-                          </Stack>
+                      </CardSection>
 
-                          <Text size="xl">{formattedAmount(item?.amount)}</Text>
-                        </Group>
-                      </Card>
-                    </>
+                      <Group justify="space-between" mb="xs">
+                        <Text fw={500}>{item.name}</Text>
+                        <Text fw={500}>
+                          {dayjs(item?.transactionDate).format("DD/MM/YYYY")}
+                        </Text>
+                      </Group>
+                      <Group justify="space-between" mt="md" mb="xs">
+                        <Stack>
+                          <Badge color={item?.categories?.color}>
+                            {item?.categories?.name}
+                          </Badge>
+                          <Badge color={item?.income_sources?.color}>
+                            {item?.income_sources?.name}
+                          </Badge>
+                        </Stack>
+
+                        <Text size="xl">{formattedAmount(item?.amount)}</Text>
+                      </Group>
+                    </Card>
                   );
                 })}
               </SimpleGrid>
