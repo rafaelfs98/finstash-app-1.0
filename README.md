@@ -1,5 +1,7 @@
 # FINSTASH - Aplicativo de Gerenciamento Financeiro Pessoal
 
+![FINSTASH](/public/Finstash_Pesonal.png)
+
 ## Visão Geral
 
 Bem-vindo ao FINSTASH, o seu Aplicativo de Gerenciamento Financeiro Pessoal! Desenvolvido com Vite, React e TypeScript, e aprimorado com MantineUI para uma interface do usuário elegante e responsiva. Este aplicativo foi projetado para ajudar você a gerenciar suas finanças pessoais de maneira eficiente, permitindo rastrear receitas e despesas, categorizar transações e até mesmo anexar fotos de recibos. Com suporte multiusuário, listas de compras, lembretes e notificações por e-mail para despesas vencidas, o FINSTASH é a solução completa para o gerenciamento financeiro.
