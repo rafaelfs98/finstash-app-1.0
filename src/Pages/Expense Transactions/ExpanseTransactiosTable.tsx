@@ -84,8 +84,8 @@ const ExpanseTransactiosTable: React.FC = () => {
   };
 
   const sliceData = () => {
-    const startIndex = (currentPage - 1) * 6;
-    const endIndex = startIndex + 6;
+    const startIndex = (currentPage - 1) * 4;
+    const endIndex = startIndex + 4;
     return filteredData.slice(startIndex, endIndex);
   };
 
@@ -122,7 +122,7 @@ const ExpanseTransactiosTable: React.FC = () => {
 
           <ScrollArea>
             {sliceData().length > 0 ? (
-              <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
+              <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
                 {sliceData().map((item, index) => {
                   return (
                     <Card

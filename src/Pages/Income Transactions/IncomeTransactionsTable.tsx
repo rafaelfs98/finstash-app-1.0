@@ -36,7 +36,7 @@ const IncomeTransactionsTable: React.FC = () => {
   const actions = IncomeTransactionsActions();
 
   const { data, isLoading } = useFetcher<any>({
-    uri: "income_transactions?order=transactionDate.asc",
+    uri: "income_transactions?order=transactionDate.desc",
     select: `
             id,
             amount,
@@ -84,8 +84,8 @@ const IncomeTransactionsTable: React.FC = () => {
   };
 
   const sliceData = () => {
-    const startIndex = (currentPage - 1) * 6;
-    const endIndex = startIndex + 6;
+    const startIndex = (currentPage - 1) * 4;
+    const endIndex = startIndex + 4;
     return filteredData.slice(startIndex, endIndex);
   };
 
@@ -123,7 +123,7 @@ const IncomeTransactionsTable: React.FC = () => {
 
           <ScrollArea>
             {sliceData().length > 0 ? (
-              <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
+              <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
                 {sliceData().map((item, index) => {
                   return (
                     <Card
