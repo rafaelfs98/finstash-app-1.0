@@ -25,10 +25,12 @@ import { useFetcher } from "../../Hooks/useFetcher";
 import classes from "../../Styles/MantineCss/Cards.module.css";
 import { selectedItemIdAtom } from "../../atoms/app.atom";
 import IncomeTransactionsActions from "./IncomeTransactionsActions";
+import { useNavigate } from "react-router-dom";
 
 dayjs.locale("pt-br");
 
 const IncomeTransactionsTable: React.FC = () => {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
   const [, setSelectedItemId] = useAtom(selectedItemIdAtom);
@@ -116,7 +118,11 @@ const IncomeTransactionsTable: React.FC = () => {
               value={search}
               onChange={(event) => setSearch(event.currentTarget.value)}
             />
-            <Button mb="md" size="compact-lg">
+            <Button
+              mb="md"
+              size="compact-lg"
+              onClick={() => navigate("create")}
+            >
               <IconPlus size="1rem" />
             </Button>
           </Group>

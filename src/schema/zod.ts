@@ -10,6 +10,14 @@ const zodSchema = {
     color: z.string(),
     name: z.string(),
   }),
+  incomeTransactions: z.object({
+    amount: z.number(),
+    categoryId: z.number(),
+    name: z.string(),
+    sourceId: z.number(),
+    transactionDate: z.string(),
+  }),
+
   expenseSource: z.object({
     color: z.string(),
     name: z.string(),
