@@ -1,10 +1,10 @@
 import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Action } from "../../Components/ListView/ListViewActions";
-import { deleteExpenseSource } from "../../Services/ExpenseSource";
+import { deleteIncomeTransactions } from "../../Services/IncomeTransactions";
 import { selectedItemIdAtom } from "../../atoms/app.atom";
-import { useAtom } from "jotai";
 
 const IncomeTransactionsActions = () => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
@@ -18,12 +18,12 @@ const IncomeTransactionsActions = () => {
 
     setIsDeleting(true);
     try {
-      await deleteExpenseSource(selectedItemId as string);
+      await deleteIncomeTransactions(selectedItemId as string);
       window.location.reload();
     } catch (error) {
       console.error(error);
       setIsDeleting(false);
-      alert("Ocorreu um erro ao excluir a Fonte de Despesa.");
+      alert("Ocorreu um erro ao excluir Entrada.");
     }
   };
 
