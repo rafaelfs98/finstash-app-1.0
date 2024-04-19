@@ -11,7 +11,7 @@ import {
   rem,
 } from "@mantine/core";
 import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { z } from "zod";
@@ -50,9 +50,9 @@ const IncomeTransactionsForm: React.FC = () => {
     register,
     setValue,
   } = useForm<IncomeTransactionsInfo>({
-    defaultValues: context
+    defaultValues: context?.incomeTransactions
       ? {
-          name: context.incomeTransactions[0].name,
+          name: context?.incomeTransactions[0].name,
         }
       : {
           amount: 0,
@@ -64,10 +64,6 @@ const IncomeTransactionsForm: React.FC = () => {
 
     resolver: zodResolver(zodSchema.incomeTransactions),
   });
-
-  console.log("errors:", errors);
-
-  console.log(context);
 
   const { onError, onSave } = useFormActions();
 
@@ -93,7 +89,9 @@ const IncomeTransactionsForm: React.FC = () => {
         Number(incomeTransactionsId)
       );
 
-      console.log(response);
+      if (context) {
+        context?.mutateIncomeTransactions(response);
+      }
 
       setLoadingButton(false);
       navigate("/receitas");
@@ -103,6 +101,17 @@ const IncomeTransactionsForm: React.FC = () => {
       onError(error);
     }
   };
+
+  useEffect(() => {
+    if (context?.incomeTransactions) {
+      setValue("amount", Number(context?.incomeTransactions[0]?.amount));
+      setValue(
+        "categoryId",
+        Number(context?.incomeTransactions[0]?.categoryId)
+      );
+      setValue("sourceId", Number(context?.incomeTransactions[0]?.sourceId));
+    }
+  }, [context?.incomeTransactions, setValue]);
 
   const optionsFilter: OptionsFilter = ({ options, search }) => {
     const splittedSearch = search.toLowerCase().trim().split(" ");
@@ -158,8 +167,9 @@ const IncomeTransactionsForm: React.FC = () => {
             }
           />
           <Select
-            defaultValue={
-              context && String(context.incomeTransactions[0].categoryId)
+            value={
+              context?.incomeTransactions &&
+              String(context.incomeTransactions[0].categoryId)
             }
             radius="lg"
             nothingFoundMessage
@@ -176,7 +186,10 @@ const IncomeTransactionsForm: React.FC = () => {
             onChange={(value) => setValue("categoryId", Number(value))}
           />
           <Select
-            value={context && String(context.incomeTransactions[0].sourceId)}
+            value={
+              context?.incomeTransactions &&
+              String(context.incomeTransactions[0].sourceId)
+            }
             radius="lg"
             nothingFoundMessage
             label="Origem"

@@ -25,13 +25,17 @@ const IncomeSourcesForm: React.FC = () => {
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
 
+  if (!context.incomeSources) {
+    alert("test");
+  }
+
   const {
     formState: { errors },
     handleSubmit,
     register,
     setValue,
   } = useForm<IncomeSourcesInfo>({
-    defaultValues: context
+    defaultValues: context.incomeSources
       ? context?.incomeSources[0]
       : {
           name: "",
@@ -58,7 +62,7 @@ const IncomeSourcesForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <>
       <Title order={2}>
         {context
           ? `Editar Fonte de Receita # ${context?.incomeSources[0].id}`
@@ -109,7 +113,7 @@ const IncomeSourcesForm: React.FC = () => {
           </Button>
         </Group>
       </form>
-    </div>
+    </>
   );
 };
 
