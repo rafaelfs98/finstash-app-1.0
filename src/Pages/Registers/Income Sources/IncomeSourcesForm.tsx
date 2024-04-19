@@ -25,17 +25,13 @@ const IncomeSourcesForm: React.FC = () => {
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
 
-  if (!context.incomeSources) {
-    alert("test");
-  }
-
   const {
     formState: { errors },
     handleSubmit,
     register,
     setValue,
   } = useForm<IncomeSourcesInfo>({
-    defaultValues: context.incomeSources
+    defaultValues: context?.incomeSources
       ? context?.incomeSources[0]
       : {
           name: "",
