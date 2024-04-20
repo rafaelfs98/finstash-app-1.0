@@ -10,7 +10,7 @@ const IncomeTransactionsOutlet = () => {
   }>();
 
   const {
-    data: incomeTransactions,
+    data,
     mutate: mutateIncomeTransactions,
     isLoading,
   } = useFetcher<incomeTransactionsData>({
@@ -21,7 +21,9 @@ const IncomeTransactionsOutlet = () => {
     return <Loading />;
   }
 
-  if (incomeTransactions) {
+  if (data) {
+    const incomeTransactions = data[0];
+
     return (
       <Outlet
         context={{

@@ -1,3 +1,8 @@
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { z } from "zod";
+import { rem } from "@mantine/core";
 import {
   Button,
   ComboboxItem,
@@ -8,13 +13,10 @@ import {
   Select,
   SimpleGrid,
   Title,
-  rem,
 } from "@mantine/core";
 import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { z } from "zod";
+import dayjs from "dayjs";
+
 import InputText from "../../Components/Inputs/InputText";
 import { useFetcher } from "../../Hooks/useFetcher";
 import useFormActions from "../../Hooks/useFormActions";
@@ -26,34 +28,32 @@ import {
 } from "../../Services/Types/finStash";
 import zodSchema, { zodResolver } from "../../schema/zod";
 import { KeyedMutator } from "swr";
-import dayjs from "dayjs";
+
+dayjs.locale("pt-br");
 
 type IncomeTransactionsInfo = z.infer<typeof zodSchema.incomeTransactions>;
 
-dayjs.locale("pt-br");
+type OutletContext = {
+  incomeTransactions: incomeTransactionsData;
+  mutateIncomeTransactions: KeyedMutator<incomeTransactionsData[]>;
+};
 
 const IncomeTransactionsForm: React.FC = () => {
   const navigate = useNavigate();
   const { incomeTransactionsId } = useParams();
-
   const [loadingButton, setLoadingButton] = useState<boolean>();
 
-  const context = useOutletContext<{
-    incomeTransactions: incomeTransactionsData[];
-    mutateIncomeTransactions: KeyedMutator<incomeTransactionsData[]>;
-  }>();
+  const { incomeTransactions, mutateIncomeTransactions } =
+    useOutletContext<OutletContext>() || {};
 
   const {
     formState: { errors },
-
     handleSubmit,
     register,
     setValue,
   } = useForm<IncomeTransactionsInfo>({
-    defaultValues: context?.incomeTransactions
-      ? {
-          name: context?.incomeTransactions[0].name,
-        }
+    defaultValues: incomeTransactions
+      ? { ...incomeTransactions }
       : {
           amount: 0,
           categoryId: 0,
@@ -61,24 +61,21 @@ const IncomeTransactionsForm: React.FC = () => {
           sourceId: 0,
           transactionDate: "",
         },
-
     resolver: zodResolver(zodSchema.incomeTransactions),
   });
+
+  console.log(incomeTransactions);
 
   const { onError, onSave } = useFormActions();
 
   const { data: categories } = useFetcher<CategoriesData>({
     uri: "categories?order=name.asc",
-    select: `
-            id, 
-            name`,
+    select: "id, name",
   });
 
-  const { data: IncomeSources } = useFetcher<IncomeSourcesData>({
+  const { data: incomeSources } = useFetcher<IncomeSourcesData>({
     uri: "income_sources?order=name.asc",
-    select: `
-            id, 
-            name`,
+    select: "id, name",
   });
 
   const _onSubmit = async (form: IncomeTransactionsInfo) => {
@@ -89,13 +86,11 @@ const IncomeTransactionsForm: React.FC = () => {
         Number(incomeTransactionsId)
       );
 
-      if (context) {
-        context?.mutateIncomeTransactions(response);
-      }
+      incomeTransactions ?? mutateIncomeTransactions(response);
 
       setLoadingButton(false);
       navigate("/receitas");
-      return onSave();
+      onSave();
     } catch (error) {
       setLoadingButton(false);
       onError(error);
@@ -103,24 +98,22 @@ const IncomeTransactionsForm: React.FC = () => {
   };
 
   useEffect(() => {
-    if (context?.incomeTransactions) {
-      setValue("amount", Number(context?.incomeTransactions[0]?.amount));
-      setValue(
-        "categoryId",
-        Number(context?.incomeTransactions[0]?.categoryId)
-      );
-      setValue("sourceId", Number(context?.incomeTransactions[0]?.sourceId));
+    if (incomeTransactions) {
+      const { amount, categoryId, sourceId } = incomeTransactions;
+
+      setValue("amount", Number(amount));
+      setValue("categoryId", Number(categoryId));
+      setValue("sourceId", Number(sourceId));
     }
-  }, [context?.incomeTransactions, setValue]);
+  }, [incomeTransactions, setValue]);
 
   const optionsFilter: OptionsFilter = ({ options, search }) => {
     const splittedSearch = search.toLowerCase().trim().split(" ");
-    return (options as ComboboxItem[]).filter((option) => {
-      const words = option.label.toLowerCase().trim().split(" ");
-      return splittedSearch.every((searchWord) =>
-        words.some((word) => word.includes(searchWord))
-      );
-    });
+    return (options as ComboboxItem[]).filter((option) =>
+      splittedSearch.every((searchWord) =>
+        option.label.toLowerCase().includes(searchWord)
+      )
+    );
   };
 
   const formattedAmount = (value: number) =>
@@ -131,26 +124,25 @@ const IncomeTransactionsForm: React.FC = () => {
 
   return (
     <div>
-      <Title order={2}>{`Adcionar Entrada`}</Title>
+      <Title order={2}>{"Adcionar Entrada"}</Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
         <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
           <InputText
             error={errors.name?.message as string}
-            label={"Name"}
-            name={"name"}
-            placeholder={"digite o name"}
-            type={"text"}
+            label="Name"
+            name="name"
+            placeholder="Digite o name"
+            type="text"
             register={register}
             required
           />
-
           <NumberInput
             radius="lg"
             prefix="R$ "
             label="Valor"
             required
             name="amount"
-            placeholder="Sigite o valor"
+            placeholder="Digite o valor"
             decimalSeparator=","
             thousandSeparator="."
             rightSection={
@@ -161,16 +153,13 @@ const IncomeTransactionsForm: React.FC = () => {
             }
             onValueChange={({ value }) => setValue("amount", Number(value))}
             value={
-              context
-                ? formattedAmount(context.incomeTransactions[0].amount)
+              incomeTransactions
+                ? formattedAmount(incomeTransactions.amount)
                 : ""
             }
           />
           <Select
-            value={
-              context?.incomeTransactions &&
-              String(context.incomeTransactions[0].categoryId)
-            }
+            value={incomeTransactions && String(incomeTransactions.categoryId)}
             radius="lg"
             nothingFoundMessage
             label="Categoria"
@@ -186,16 +175,13 @@ const IncomeTransactionsForm: React.FC = () => {
             onChange={(value) => setValue("categoryId", Number(value))}
           />
           <Select
-            value={
-              context?.incomeTransactions &&
-              String(context.incomeTransactions[0].sourceId)
-            }
+            value={incomeTransactions && String(incomeTransactions.sourceId)}
             radius="lg"
             nothingFoundMessage
             label="Origem"
             placeholder="Selecione a Origem da Entrada"
             data={
-              IncomeSources?.map((item) => ({
+              incomeSources?.map((item) => ({
                 label: String(item.name),
                 value: String(item.id),
               })) || []
@@ -205,12 +191,12 @@ const IncomeTransactionsForm: React.FC = () => {
             onChange={(value) => setValue("sourceId", Number(value))}
           />
           <InputText
-            value={context && context.incomeTransactions[0].transactionDate}
+            value={incomeTransactions && incomeTransactions.transactionDate}
             error={errors.name?.message as string}
-            label={"Data da Transacao (mm/dd/aaaa)"}
-            name={"transactionDate"}
-            placeholder={""}
-            type={"date"}
+            label="Data da Transacao (mm/dd/aaaa)"
+            name="transactionDate"
+            placeholder=""
+            type="date"
             register={register}
             required
           />
@@ -227,7 +213,6 @@ const IncomeTransactionsForm: React.FC = () => {
           >
             {"Cancelar"}
           </Button>
-
           <Button
             loading={loadingButton}
             rightSection={
@@ -236,7 +221,7 @@ const IncomeTransactionsForm: React.FC = () => {
                 stroke={1.5}
               />
             }
-            type={"submit"}
+            type="submit"
           >
             {"Submit"}
           </Button>
