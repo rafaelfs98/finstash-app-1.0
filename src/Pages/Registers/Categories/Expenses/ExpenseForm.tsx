@@ -1,26 +1,26 @@
-import { Button, Divider, Group, SimpleGrid, Title, rem } from "@mantine/core";
+import { Button, Divider, Group, SimpleGrid, rem } from "@mantine/core";
 import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import InputText from "../../../Components/Inputs/InputText";
-import { useForm } from "react-hook-form";
-import InputColor from "../../../Components/Inputs/InputColor";
-import useFormActions from "../../../Hooks/useFormActions";
-import zodSchema, { zodResolver } from "../../../schema/zod";
-import { z } from "zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { upsertCategories } from "../../../Services/Categories";
-import { CategoriesData } from "../../../Services/Types/finStash";
 import { KeyedMutator } from "swr";
+import { z } from "zod";
+import InputColor from "../../../../Components/Inputs/InputColor";
+import InputText from "../../../../Components/Inputs/InputText";
+import useFormActions from "../../../../Hooks/useFormActions";
+import { upsertCategories } from "../../../../Services/Categories";
+import { CategoriesType } from "../../../../Services/Types/finStash";
+import zodSchema, { zodResolver } from "../../../../schema/zod";
 
-type CategoriesInfo = z.infer<typeof zodSchema.categories>;
+type ExpenseInfo = z.infer<typeof zodSchema.categories>;
 
-const CategoriesForm: React.FC = () => {
+const ExpenseForm: React.FC = () => {
   const navigate = useNavigate();
-  const { categorieId } = useParams();
+  const { categoryId } = useParams();
 
   const context = useOutletContext<{
-    categories: CategoriesData[];
-    mutateCategories: KeyedMutator<CategoriesData[]>;
+    categories: CategoriesType[];
+    mutateCategories: KeyedMutator<CategoriesType[]>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -30,7 +30,7 @@ const CategoriesForm: React.FC = () => {
     handleSubmit,
     register,
     setValue,
-  } = useForm<CategoriesInfo>({
+  } = useForm<ExpenseInfo>({
     defaultValues: context
       ? context?.categories[0]
       : {
@@ -42,14 +42,17 @@ const CategoriesForm: React.FC = () => {
   });
   const { onError, onSave } = useFormActions();
 
-  const _onSubmit = async (form: CategoriesInfo) => {
+  const _onSubmit = async (form: ExpenseInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertCategories(form, Number(categorieId));
+      const response = await upsertCategories(
+        { ...form, type: 1 },
+        Number(categoryId)
+      );
 
       context?.mutateCategories(response);
       setLoadingButton(false);
-      navigate("/cadastros/categories");
+      navigate(-1);
       return onSave();
     } catch (error) {
       setLoadingButton(false);
@@ -59,7 +62,6 @@ const CategoriesForm: React.FC = () => {
 
   return (
     <div>
-      <Title order={2}>Criar Categorias</Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
         <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
           <InputText
@@ -109,4 +111,4 @@ const CategoriesForm: React.FC = () => {
   );
 };
 
-export default CategoriesForm;
+export default ExpenseForm;

@@ -22,7 +22,7 @@ import { useFetcher } from "../../Hooks/useFetcher";
 import useFormActions from "../../Hooks/useFormActions";
 import { upsertIncomeTransactions } from "../../Services/IncomeTransactions";
 import {
-  CategoriesData,
+  CategoriesType,
   IncomeSourcesData,
   incomeTransactionsData,
 } from "../../Services/Types/finStash";
@@ -64,11 +64,9 @@ const IncomeTransactionsForm: React.FC = () => {
     resolver: zodResolver(zodSchema.incomeTransactions),
   });
 
-  console.log(incomeTransactions);
-
   const { onError, onSave } = useFormActions();
 
-  const { data: categories } = useFetcher<CategoriesData>({
+  const { data: categories } = useFetcher<CategoriesType>({
     uri: "categories?order=name.asc",
     select: "id, name",
   });

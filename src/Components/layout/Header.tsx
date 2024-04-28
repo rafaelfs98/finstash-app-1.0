@@ -1,8 +1,8 @@
 import { AppShell, Burger, Flex, Image } from "@mantine/core";
 import React from "react";
 
-import ThemeTogle from "./ThemeToglle";
 import classes from "../../Styles/MantineCss/Header.module.css";
+import ThemeTogle from "./ThemeToglle";
 
 type HeaderProps = {
   toggle: () => void;
@@ -19,8 +19,6 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
         direction="row"
         wrap="nowrap"
       >
-        <Image w="auto" h={80} fit="contain" src="/Finstash_Pesonal.png" />
-        <ThemeTogle mt="md" visibleFrom="sm" />
         <Burger
           mt="md"
           opened={opened}
@@ -28,6 +26,8 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
           hiddenFrom="sm"
           size="sm"
         />
+        <Image w="auto" h={70} fit="contain" src="/Finstash_Pesonal.png" />
+        <ThemeTogle mt={15} />
       </Flex>
     </AppShell.Header>
   );

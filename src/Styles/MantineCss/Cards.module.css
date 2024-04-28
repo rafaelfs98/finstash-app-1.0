@@ -1,6 +1,6 @@
 .section {
   background-color: light-dark(
-    var(--mantine-primary-color-light),
+    var(--mantine-color-gray-0),
     var(--mantine-primary-color-light)
   );
 }
