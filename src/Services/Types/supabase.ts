@@ -9,21 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      categories: {
+      accounts: {
         Row: {
           color: string | null;
           id: number;
           name: string | null;
+          sum_total: boolean | null;
         };
         Insert: {
           color?: string | null;
           id?: number;
           name?: string | null;
+          sum_total?: boolean | null;
         };
         Update: {
           color?: string | null;
           id?: number;
           name?: string | null;
+          sum_total?: boolean | null;
+        };
+        Relationships: [];
+      };
+      categories: {
+        Row: {
+          color: string | null;
+          id: number;
+          name: string | null;
+          type: number | null;
+        };
+        Insert: {
+          color?: string | null;
+          id?: number;
+          name?: string | null;
+          type?: number | null;
+        };
+        Update: {
+          color?: string | null;
+          id?: number;
+          name?: string | null;
+          type?: number | null;
         };
         Relationships: [];
       };
@@ -146,6 +170,38 @@ export type Database = {
             columns: ["sourceId"];
             isOneToOne: false;
             referencedRelation: "income_sources";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      sub_categories: {
+        Row: {
+          category_id: number | null;
+          color: string | null;
+          id: number;
+          name: string | null;
+          type: number | null;
+        };
+        Insert: {
+          category_id?: number | null;
+          color?: string | null;
+          id?: number;
+          name?: string | null;
+          type?: number | null;
+        };
+        Update: {
+          category_id?: number | null;
+          color?: string | null;
+          id?: number;
+          name?: string | null;
+          type?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "sub_categorias_categoria_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
             referencedColumns: ["id"];
           }
         ];

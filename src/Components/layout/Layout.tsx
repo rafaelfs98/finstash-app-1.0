@@ -9,7 +9,7 @@ export default function Layout() {
 
   return (
     <AppShell
-      header={{ height: 80 }}
+      header={{ height: 70 }}
       navbar={{
         width: 300,
         breakpoint: "sm",
@@ -17,7 +17,7 @@ export default function Layout() {
       }}
       padding="md"
     >
-      <Header toggle={toggle} opened={false} />
+      <Header toggle={toggle} opened={opened} />
       <NavigationBar toggle={toggle} />
       <AppShell.Main>
         <Outlet />

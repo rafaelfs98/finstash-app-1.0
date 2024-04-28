@@ -1,11 +1,10 @@
-// CategoryActions.tsx
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import { useNavigate } from "react-router-dom";
-import { Action } from "../../../Components/ListView/ListViewActions";
-import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteCategories } from "../../../Services/Categories";
+import { selectedItemIdAtom } from "../../../atoms/app.atom";
+import { Action } from "../../../Components/ListView/ListViewActions";
 
 const CategoryActions = () => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);

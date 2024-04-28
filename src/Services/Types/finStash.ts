@@ -1,7 +1,8 @@
-export type CategoriesData = {
+export type CategoriesType = {
   id?: number;
   name: string;
   color: string;
+  type: number;
 };
 export type IncomeSourcesData = {
   id?: number;

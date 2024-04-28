@@ -5,7 +5,6 @@ import {
   NavLink,
   ScrollArea,
   Stack,
-  Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 
@@ -22,7 +21,6 @@ import {
 } from "@tabler/icons-react";
 
 import { useNavigate } from "react-router-dom";
-import ThemeTogle from "./ThemeToglle";
 import classes from "../../Styles/MantineCss/Navbar.module.css";
 
 type NavigationBarProps = {
@@ -56,7 +54,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
 
   return (
     <AppShell.Navbar aria-label="menu" className={classes.navbar} withBorder>
-      <AppShell.Section p="xs">
+      <AppShell.Section>
         <Flex
           h="100%"
           px="md"
@@ -64,10 +62,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
           direction="row"
           wrap="nowrap"
         >
-          <Title mt={8} order={3} hiddenFrom="sm">
-            Menu
-          </Title>
-          <ThemeTogle hiddenFrom="sm" mt={8} />
+          {" "}
         </Flex>
       </AppShell.Section>
       <AppShell.Section grow>
@@ -118,7 +113,9 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               title="Cadastros"
               label="Cadastros"
               leftSection={<IconTable size="1.2rem" stroke={2} />}
-              onClick={() => handleLinkMainClick("Cadastros")}
+              onClick={() => {
+                return handleLinkMainClick("Cadastros");
+              }}
               active={activeLinkMain === "Cadastros"}
             >
               <NavLink
@@ -130,7 +127,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
                 onClick={() => {
                   handleLinkChildrenClick("Categorias");
                   toggle();
-                  navigate("cadastros/categories");
+                  navigate("cadastros/categorias/receitas");
                 }}
                 active={activeLinkChildren === "Categorias"}
               />

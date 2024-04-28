@@ -1,8 +1,8 @@
 import { supabase } from "./Supabase/supabaseClient";
-import { CategoriesData } from "./Types/finStash";
+import { CategoriesType } from "./Types/finStash";
 
 export const upsertCategories = async (
-  categories: CategoriesData,
+  categories: CategoriesType,
   categorieId?: number
 ) => {
   const { data, error } = await supabase
@@ -11,6 +11,7 @@ export const upsertCategories = async (
       id: categorieId ? categorieId : undefined,
       name: categories.name,
       color: categories.color,
+      type: categories.type,
     })
     .select();
 
@@ -18,7 +19,7 @@ export const upsertCategories = async (
     throw Error(error?.message);
   }
 
-  return data as CategoriesData[];
+  return data as CategoriesType[];
 };
 
 export const deleteCategories = async (categoriesId: string) => {
