@@ -1,43 +1,58 @@
-// Categories.tsx
 import { Tabs } from "@mantine/core";
 import { IconCategory, IconWallet } from "@tabler/icons-react";
 import React from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+
+interface Tab {
+  label: string;
+  value: string;
+  icon: React.ReactNode;
+  route: string;
+}
+
+const tabs: Tab[] = [
+  {
+    label: "Receitas",
+    value: "receitas",
+    icon: <IconCategory size="1.2rem" stroke={2} />,
+    route: "receitas",
+  },
+  {
+    label: "Despesas",
+    value: "despesas",
+    icon: <IconWallet size="1.2rem" stroke={2} />,
+    route: "despesas",
+  },
+];
 
 const Registers: React.FC = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const segments = pathname.split("/");
+
+  const handleTabChange = (value: string) => {
+    navigate(value);
+  };
 
   return (
-    <>
-      <Tabs defaultValue={`${segments[segments.length - 1]}`}>
-        <Tabs.List grow>
+    <Tabs defaultValue="receitas" onChange={() => handleTabChange}>
+      <Tabs.List grow>
+        {tabs.map((tab) => (
           <Tabs.Tab
-            onClick={() => navigate("receitas")}
-            value="receitas"
-            leftSection={<IconCategory size="1.2rem" stroke={2} />}
+            key={tab.value}
+            onClick={() => handleTabChange(tab.route)}
+            value={tab.value}
+            leftSection={tab.icon}
           >
-            Receitas
+            {tab.label}
           </Tabs.Tab>
-          <Tabs.Tab
-            onClick={() => navigate("despesas")}
-            value="despesas"
-            leftSection={<IconWallet size="1.2rem" stroke={2} />}
-          >
-            Despesas
-          </Tabs.Tab>
-        </Tabs.List>
+        ))}
+      </Tabs.List>
 
-        <Tabs.Panel value="receitas">
+      {tabs.map((tab) => (
+        <Tabs.Panel key={tab.value} value={tab.value}>
           <Outlet />
         </Tabs.Panel>
-
-        <Tabs.Panel value="despesas">
-          <Outlet />
-        </Tabs.Panel>
-      </Tabs>
-    </>
+      ))}
+    </Tabs>
   );
 };
 

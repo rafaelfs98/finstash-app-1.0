@@ -2,10 +2,11 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
 import { MantineProvider } from "@mantine/core";
-import AppRouter from "./AppRouter";
-import { theme } from "./theme";
+import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { SWRConfig } from "swr";
+import AppRouter from "./AppRouter";
+import { theme } from "./theme";
 
 export const App = () => {
   return (
@@ -16,8 +17,10 @@ export const App = () => {
       }}
     >
       <MantineProvider theme={theme} defaultColorScheme="dark">
-        <Notifications position="top-right" />
-        <AppRouter />
+        <ModalsProvider>
+          <Notifications position="top-right" />
+          <AppRouter />
+        </ModalsProvider>
       </MantineProvider>
     </SWRConfig>
   );

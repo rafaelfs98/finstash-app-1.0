@@ -1,12 +1,14 @@
+import { useDisclosure } from "@mantine/hooks";
 import React from "react";
 import ListView from "../../../Components/ListView/ListView";
-import CategoryActions from "./CategoryActions";
+import CategoriesView from "./CategoriesView";
 
 type CategoriesProps = {
   type: number;
 };
 
 const Categories: React.FC<CategoriesProps> = ({ type }) => {
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <>
       <ListView
@@ -15,8 +17,10 @@ const Categories: React.FC<CategoriesProps> = ({ type }) => {
           { key: "color", label: "Cor" },
         ]}
         resource={`/categories?type=eq.${type}&order=id.asc`}
-        actions={CategoryActions()}
+        onClick={open}
       />
+
+      <CategoriesView opened={opened} close={close} />
     </>
   );
 };

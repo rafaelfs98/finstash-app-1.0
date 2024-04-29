@@ -30,6 +30,7 @@ type ListViewProps = {
   resource: string;
   actions?: Action[];
   relationships?: string;
+  onClick?: () => void;
   itemsPerPage?: number;
 } & TableProps;
 
@@ -38,6 +39,7 @@ const ListView: React.FC<ListViewProps> = ({
   relationships,
   resource,
   actions = [],
+  onClick,
   itemsPerPage = 10,
   ...otherprops
 }) => {
@@ -94,7 +96,13 @@ const ListView: React.FC<ListViewProps> = ({
   }, [currentPage, filteredData, itemsPerPage]);
 
   const rows = slicedData.map((item, index) => (
-    <ListViewRow key={index} columns={columns} item={item} actions={actions} />
+    <ListViewRow
+      onClick={onClick}
+      key={index}
+      columns={columns}
+      item={item}
+      actions={actions}
+    />
   ));
 
   return (
