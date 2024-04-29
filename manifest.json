@@ -3,17 +3,17 @@
   "name": "FinStash 1.0",
   "icons": [
     {
-      "src": "/public/Finstash_Pesonal.png",
+      "src": "/Finstash_Pesonal.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "/public/Finstash_Pesonal.png",
+      "src": "/Finstash_Pesonal.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/public/Finstash_Pesonal.png",
+      "src": "/Finstash_Pesonal.png",
       "type": "image/png",
       "sizes": "512x512"
     }
