@@ -15,9 +15,9 @@ import RevenueForm from "./Pages/Registers/Categories/Revenues/RevenueForm";
 import ExpenseSourceForm from "./Pages/Registers/Expense Sources/ExpenseSourceForm";
 import ExpenseSourceOutlet from "./Pages/Registers/Expense Sources/ExpenseSourceOutlet";
 import ExpenseSourceTable from "./Pages/Registers/Expense Sources/ExpenseSourceTable";
-import IncomeSourcesForm from "./Pages/Registers/Income Sources/IncomeSourcesForm";
-import IncomeSourcesOutlet from "./Pages/Registers/Income Sources/IncomeSourcesOutlet";
-import IncomeSourcesTable from "./Pages/Registers/Income Sources/IncomeSourcesTable";
+import AccountsForm from "./Pages/Registers/Income Sources/AccountsForm";
+import AccountsOutlet from "./Pages/Registers/Income Sources/AccountsOutlet";
+import AccountsTable from "./Pages/Registers/Income Sources/AccountsTable";
 
 const AppRouter = () => {
   return (
@@ -53,12 +53,12 @@ const AppRouter = () => {
               </Route>
             </Route>
           </Route>
-          <Route path="cadastros/fonteReceitas" element={<OutletBridge />}>
-            <Route element={<IncomeSourcesTable />} index />
-            <Route element={<IncomeSourcesForm />} path="create" />
-            <Route element={<IncomeSourcesOutlet />} path=":incomeSourcesId">
-              <Route element={<IncomeSourcesForm />} path="update" />
-              <Route element={<IncomeSourcesForm />} path="view" />
+          <Route path="cadastros/contas" element={<OutletBridge />}>
+            <Route element={<AccountsTable />} index />
+            <Route element={<AccountsForm />} path="create" />
+            <Route element={<AccountsOutlet />} path=":accountsId">
+              <Route element={<AccountsForm />} path="update" />
+              <Route element={<AccountsForm />} path="view" />
             </Route>
           </Route>
           <Route path="cadastros/fonteDespesas" element={<OutletBridge />}>

@@ -3,10 +3,10 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Action } from "../../../Components/ListView/ListViewActions";
-import { deleteIncomeSources } from "../../../Services/IncomeSources";
+import { deleteAccounts } from "../../../Services/Accounts";
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 
-const IncomeSourcesActions = () => {
+const AccountsActions = () => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const IncomeSourcesActions = () => {
 
     setIsDeleting(true);
     try {
-      await deleteIncomeSources(selectedItemId as string);
+      await deleteAccounts(selectedItemId as string);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -44,4 +44,4 @@ const IncomeSourcesActions = () => {
   return actions;
 };
 
-export default IncomeSourcesActions;
+export default AccountsActions;

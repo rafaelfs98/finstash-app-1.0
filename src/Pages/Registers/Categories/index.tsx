@@ -1,6 +1,6 @@
 import { Tabs } from "@mantine/core";
 import { IconCategory, IconWallet } from "@tabler/icons-react";
-import React from "react";
+import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 interface Tab {
@@ -27,13 +27,18 @@ const tabs: Tab[] = [
 
 const Registers: React.FC = () => {
   const navigate = useNavigate();
+  const [tabValue, setTabValue] = useState<string>();
 
   const handleTabChange = (value: string) => {
+    setTabValue(value);
     navigate(value);
   };
 
   return (
-    <Tabs defaultValue="receitas" onChange={() => handleTabChange}>
+    <Tabs
+      defaultValue={tabValue ? tabValue : "receitas"}
+      onChange={() => handleTabChange}
+    >
       <Tabs.List grow>
         {tabs.map((tab) => (
           <Tabs.Tab

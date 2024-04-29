@@ -1,4 +1,12 @@
-import { Button, Divider, Group, SimpleGrid, Title, rem } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Group,
+  SimpleGrid,
+  Title,
+  rem,
+} from "@mantine/core";
 import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -8,19 +16,19 @@ import { z } from "zod";
 import InputColor from "../../../Components/Inputs/InputColor";
 import InputText from "../../../Components/Inputs/InputText";
 import useFormActions from "../../../Hooks/useFormActions";
-import { upsertIncomeSources } from "../../../Services/IncomeSources";
-import { IncomeSourcesData } from "../../../Services/Types/finStash";
+import { upsertAccounts } from "../../../Services/Accounts";
+import { AccountsType } from "../../../Services/Types/finStash";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 
-type IncomeSourcesInfo = z.infer<typeof zodSchema.incomeSources>;
+type AccountsInfo = z.infer<typeof zodSchema.accounts>;
 
-const IncomeSourcesForm: React.FC = () => {
+const AccountsForm: React.FC = () => {
   const navigate = useNavigate();
   const { incomeSourcesId } = useParams();
 
   const context = useOutletContext<{
-    incomeSources: IncomeSourcesData[];
-    mutateIncomeSources: KeyedMutator<IncomeSourcesData[]>;
+    accounts: AccountsType[];
+    mutateAccounts: KeyedMutator<AccountsType[]>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -30,26 +38,26 @@ const IncomeSourcesForm: React.FC = () => {
     handleSubmit,
     register,
     setValue,
-  } = useForm<IncomeSourcesInfo>({
-    defaultValues: context?.incomeSources
-      ? context?.incomeSources[0]
+  } = useForm<AccountsInfo>({
+    defaultValues: context?.accounts
+      ? context?.accounts[0]
       : {
           name: "",
           color: "",
         },
 
-    resolver: zodResolver(zodSchema.incomeSources),
+    resolver: zodResolver(zodSchema.accounts),
   });
   const { onError, onSave } = useFormActions();
 
-  const _onSubmit = async (form: IncomeSourcesInfo) => {
+  const _onSubmit = async (form: AccountsInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertIncomeSources(form, Number(incomeSourcesId));
+      const response = await upsertAccounts(form, Number(incomeSourcesId));
 
-      context?.mutateIncomeSources(response);
+      context?.mutateAccounts(response);
       setLoadingButton(false);
-      navigate("/cadastros/fonteReceitas");
+      navigate(-1);
       return onSave();
     } catch (error) {
       setLoadingButton(false);
@@ -61,7 +69,7 @@ const IncomeSourcesForm: React.FC = () => {
     <>
       <Title order={2}>
         {context
-          ? `Editar Fonte de Receita # ${context?.incomeSources[0].id}`
+          ? `Editar Fonte de Receita # ${context?.accounts[0].id}`
           : `Criar Fonte de Receita`}
       </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
@@ -76,10 +84,18 @@ const IncomeSourcesForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.incomeSources[0]?.color}
+            defaultValue={context?.accounts[0]?.color}
             label={"Cor da Fonte de Receita"}
             placeholder={"Defina uma Cor para a Fonte da Receita"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
+          />
+
+          <Checkbox
+            ml="md"
+            mt="xl"
+            defaultChecked={context?.accounts[0].sum_total}
+            label="Soma no Total"
+            onChange={(event) => setValue("sum_total", event.target.checked)}
           />
         </SimpleGrid>
 
@@ -113,4 +129,4 @@ const IncomeSourcesForm: React.FC = () => {
   );
 };
 
-export default IncomeSourcesForm;
+export default AccountsForm;

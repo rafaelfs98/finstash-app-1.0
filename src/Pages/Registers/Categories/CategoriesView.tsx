@@ -2,12 +2,11 @@ import {
   Badge,
   Button,
   Drawer,
+  Fieldset,
   Group,
-  Paper,
   SimpleGrid,
   Stack,
   Text,
-  Title,
   rem,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -75,22 +74,25 @@ const CategorieView: React.FC<CategorieViewProps> = ({ opened, close }) => {
         <Loading />
       ) : (
         <React.Fragment>
-          <SimpleGrid mt="xl" mb="xl" cols={{ base: 1, sm: 2 }}>
+          <SimpleGrid mt="xl" mb="xl" cols={{ base: 1, sm: 3 }}>
             <Stack>
-              <Title order={4}>Nome da Categoria </Title>
-              <Paper mr="xs" withBorder radius="xl">
-                <Text ml="xl" size="xl">
-                  {category[0]?.name}
-                </Text>
-              </Paper>
+              <Fieldset legend="Nome da Categoria:" variant="filled">
+                <Text size="lg">{category[0]?.name}</Text>
+              </Fieldset>
             </Stack>
-
             <Stack>
-              <Title order={4}>Cor da Categoria</Title>
-
-              <Badge size="lg" color={category[0]?.color}>
-                {category[0]?.color}
-              </Badge>
+              <Fieldset legend="Cor" variant="filled">
+                <Badge size="lg" color={category[0]?.color}>
+                  {category[0]?.color}
+                </Badge>
+              </Fieldset>
+            </Stack>
+            <Stack>
+              <Fieldset legend="Tipo:" variant="filled">
+                <Text size="lg">
+                  {category[0]?.type === 0 ? "Receita" : "Despesesa"}
+                </Text>
+              </Fieldset>
             </Stack>
           </SimpleGrid>
           <Group justify="flex-end">

@@ -17,7 +17,6 @@ import {
   IconShoppingCart,
   IconTable,
   IconWallet,
-  IconWalletOff,
 } from "@tabler/icons-react";
 
 import { useNavigate } from "react-router-dom";
@@ -133,27 +132,15 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               />
               <NavLink
                 variant="subtle"
-                title="Fontes de Receitas"
-                label="Fontes de Receitas"
+                title="Contas"
+                label="Contas"
                 leftSection={<IconWallet size="1.2rem" stroke={2} />}
                 onClick={() => {
-                  handleLinkChildrenClick("Fontes Receitas");
+                  handleLinkChildrenClick("Contas");
                   toggle();
-                  navigate("cadastros/fonteReceitas");
+                  navigate("cadastros/contas");
                 }}
-                active={activeLinkChildren === "Fontes Receitas"}
-              />
-              <NavLink
-                variant="subtle"
-                title="Fontes de Despesas"
-                label="Fontes de Despesas"
-                leftSection={<IconWalletOff size="1.2rem" stroke={2} />}
-                onClick={() => {
-                  handleLinkChildrenClick("Fontes Despesas");
-                  toggle();
-                  navigate("cadastros/fonteDespesas");
-                }}
-                active={activeLinkChildren === "Fontes Despesas"}
+                active={activeLinkChildren === "Contas"}
               />
             </NavLink>
           </Stack>

@@ -6,9 +6,10 @@ const zodSchema = {
     color: z.string(),
     name: z.string(),
   }),
-  incomeSources: z.object({
+  accounts: z.object({
     color: z.string(),
     name: z.string(),
+    sum_total: z.boolean(),
   }),
   incomeTransactions: z.object({
     amount: z.number(),

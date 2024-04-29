@@ -4,10 +4,11 @@ export type CategoriesType = {
   color: string;
   type: number;
 };
-export type IncomeSourcesData = {
+export type AccountsType = {
   id?: number;
   name: string;
   color: string;
+  sum_total: boolean;
 };
 export type incomeTransactionsData = {
   amount: number;
