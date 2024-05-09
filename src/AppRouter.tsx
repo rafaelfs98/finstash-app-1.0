@@ -7,17 +7,17 @@ import ExpanseTransactiosTable from "./Pages/Expense Transactions/ExpanseTransac
 import IncomeTransactionsForm from "./Pages/Income Transactions/IncomeTransactionsForm";
 import IncomeTransactionsOutlet from "./Pages/Income Transactions/IncomeTransactionsOutlet";
 import IncomeTransactionsTable from "./Pages/Income Transactions/IncomeTransactionsTable";
-import Registers from "./Pages/Registers/Categories";
-import Categories from "./Pages/Registers/Categories/Categories";
+import AccountsForm from "./Pages/Registers/Accounts/AccountsForm";
+import AccountsOutlet from "./Pages/Registers/Accounts/AccountsOutlet";
+import AccountsTable from "./Pages/Registers/Accounts/AccountsTable";
+import Category from "./Pages/Registers/Categories";
+import CategoriesTable from "./Pages/Registers/Categories/Categories";
+import CategoryForm from "./Pages/Registers/Categories/CategoryForm";
 import CategoryOutlet from "./Pages/Registers/Categories/CategoryOutlet";
-import ExpenseForm from "./Pages/Registers/Categories/Expenses/ExpenseForm";
-import RevenueForm from "./Pages/Registers/Categories/Revenues/RevenueForm";
-import ExpenseSourceForm from "./Pages/Registers/Expense Sources/ExpenseSourceForm";
-import ExpenseSourceOutlet from "./Pages/Registers/Expense Sources/ExpenseSourceOutlet";
-import ExpenseSourceTable from "./Pages/Registers/Expense Sources/ExpenseSourceTable";
-import AccountsForm from "./Pages/Registers/Income Sources/AccountsForm";
-import AccountsOutlet from "./Pages/Registers/Income Sources/AccountsOutlet";
-import AccountsTable from "./Pages/Registers/Income Sources/AccountsTable";
+import SubCategory from "./Pages/Registers/SubCategories";
+import SubCategoriesTable from "./Pages/Registers/SubCategories/SubCategories";
+import SubCategoryForm from "./Pages/Registers/SubCategories/SubCategoryForm";
+import SubCategoryOutlet from "./Pages/Registers/SubCategories/SubCategoryOutlet";
 
 const AppRouter = () => {
   return (
@@ -37,19 +37,35 @@ const AppRouter = () => {
           <Route path="despesas" element={<OutletBridge />}>
             <Route element={<ExpanseTransactiosTable />} index />
           </Route>
-          <Route path="cadastros/categorias" element={<Registers />}>
-            <Route element={<Categories type={0} />} path="receitas" />
-            <Route element={<Categories type={1} />} path="despesas" />
+          <Route path="cadastros/categorias" element={<Category />}>
+            <Route element={<CategoriesTable type={0} />} path="receitas" />
+            <Route element={<CategoriesTable type={1} />} path="despesas" />
             <Route path="receitas" element={<OutletBridge />}>
-              <Route element={<RevenueForm />} path="create" />
+              <Route element={<CategoryForm />} path="create" />
               <Route element={<CategoryOutlet />} path=":categoryId">
-                <Route element={<RevenueForm />} path="update" />
+                <Route element={<CategoryForm />} path="update" />
               </Route>
             </Route>
             <Route path="despesas" element={<OutletBridge />}>
-              <Route element={<ExpenseForm />} path="create" />
+              <Route element={<CategoryForm />} path="create" />
               <Route element={<CategoryOutlet />} path=":categoryId">
-                <Route element={<ExpenseForm />} path="update" />
+                <Route element={<CategoryForm />} path="update" />
+              </Route>
+            </Route>
+          </Route>
+          <Route path="cadastros/subcategorias" element={<SubCategory />}>
+            <Route element={<SubCategoriesTable type={0} />} path="receitas" />
+            <Route element={<SubCategoriesTable type={1} />} path="despesas" />
+            <Route path="receitas" element={<OutletBridge />}>
+              <Route element={<SubCategoryForm />} path="create" />
+              <Route element={<SubCategoryOutlet />} path=":subCategoryId">
+                <Route element={<SubCategoryForm />} path="update" />
+              </Route>
+            </Route>
+            <Route path="despesas" element={<OutletBridge />}>
+              <Route element={<SubCategoryForm />} path="create" />
+              <Route element={<SubCategoryOutlet />} path=":categoryId">
+                <Route element={<SubCategoryForm />} path="update" />
               </Route>
             </Route>
           </Route>
@@ -59,14 +75,6 @@ const AppRouter = () => {
             <Route element={<AccountsOutlet />} path=":accountsId">
               <Route element={<AccountsForm />} path="update" />
               <Route element={<AccountsForm />} path="view" />
-            </Route>
-          </Route>
-          <Route path="cadastros/fonteDespesas" element={<OutletBridge />}>
-            <Route element={<ExpenseSourceTable />} index />
-            <Route element={<ExpenseSourceForm />} path="create" />
-            <Route element={<ExpenseSourceOutlet />} path=":expenseSourceId">
-              <Route element={<ExpenseSourceForm />} path="update" />
-              <Route element={<ExpenseSourceForm />} path="view" />
             </Route>
           </Route>
         </Route>

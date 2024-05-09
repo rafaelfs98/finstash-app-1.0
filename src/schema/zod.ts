@@ -6,6 +6,11 @@ const zodSchema = {
     color: z.string(),
     name: z.string(),
   }),
+  subCategories: z.object({
+    color: z.string(),
+    name: z.string(),
+    categoryId: z.number(),
+  }),
   accounts: z.object({
     color: z.string(),
     name: z.string(),
