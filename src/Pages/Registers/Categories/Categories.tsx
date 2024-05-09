@@ -1,5 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
-import React from "react";
+import React, { useState } from "react";
 import ListView from "../../../Components/ListView/ListView";
 import CategoriesView from "./CategoriesView";
 
@@ -7,8 +7,9 @@ type CategoriesProps = {
   type: number;
 };
 
-const Categories: React.FC<CategoriesProps> = ({ type }) => {
+const CategoriesTable: React.FC<CategoriesProps> = ({ type }) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [isOpen, setIsOpen] = useState<boolean>();
   return (
     <>
       <ListView
@@ -17,12 +18,17 @@ const Categories: React.FC<CategoriesProps> = ({ type }) => {
           { key: "color", label: "Cor" },
         ]}
         resource={`/categories?type=eq.${type}&order=id.asc`}
-        onClick={open}
+        onClick={() => {
+          setIsOpen(true);
+          open();
+        }}
       />
 
-      <CategoriesView opened={opened} close={close} />
+      {isOpen && (
+        <CategoriesView opened={opened} close={close} setIsOpen={setIsOpen} />
+      )}
     </>
   );
 };
 
-export default Categories;
+export default CategoriesTable;

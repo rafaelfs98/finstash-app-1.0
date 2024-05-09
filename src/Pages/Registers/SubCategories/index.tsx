@@ -25,7 +25,7 @@ const tabs: Tab[] = [
   },
 ];
 
-const Category: React.FC = () => {
+const SubCategory: React.FC = () => {
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState<string>();
 
@@ -61,4 +61,4 @@ const Category: React.FC = () => {
   );
 };
 
-export default Category;
+export default SubCategory;

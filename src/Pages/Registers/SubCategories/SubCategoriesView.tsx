@@ -16,22 +16,23 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../Components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
-import { deleteCategories } from "../../../Services/Categories";
-import { CategoriesType } from "../../../Services/Types/finStash";
+import { SubCategoriesType } from "../../../Services/Types/finStash";
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
+import { deleteSubCategories } from "../../../Services/SubCategories";
 
-type CategorieViewProps = {
+type SubCategorieViewProps = {
   opened: boolean;
   close: () => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
 };
 
-const CategorieView: React.FC<CategorieViewProps> = ({
+const SubCategorieView: React.FC<SubCategorieViewProps> = ({
   opened,
   close,
   setIsOpen,
 }) => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
+
   const navigate = useNavigate();
 
   const openDeleteModal = () =>
@@ -53,7 +54,7 @@ const CategorieView: React.FC<CategorieViewProps> = ({
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteCategories(selectedItemId as string);
+      await deleteSubCategories(selectedItemId as string);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -61,8 +62,8 @@ const CategorieView: React.FC<CategorieViewProps> = ({
     }
   };
 
-  const { data, isLoading } = useFetcher<CategoriesType>({
-    uri: `/categories?id=eq.${selectedItemId}`,
+  const { data, isLoading } = useFetcher<SubCategoriesType>({
+    uri: `/sub_categories?id=eq.${selectedItemId}`,
   });
 
   const category = data || [];
@@ -74,7 +75,7 @@ const CategorieView: React.FC<CategorieViewProps> = ({
       closeOnClickOutside
       onClose={() => {
         setIsOpen(false);
-        close;
+        return close;
       }}
       title="Detalhes"
     >
@@ -82,6 +83,22 @@ const CategorieView: React.FC<CategorieViewProps> = ({
         <Loading />
       ) : (
         <React.Fragment>
+          <Group justify="flex-end">
+            <Button
+              color="red"
+              radius="xl"
+              onClick={openDeleteModal}
+              disabled={isDeleting}
+            >
+              <IconTrash style={{ width: rem(20) }} stroke={1.5} />
+            </Button>
+            <Button
+              radius="xl"
+              onClick={() => navigate(`${selectedItemId}/update`)}
+            >
+              <IconPencil style={{ width: rem(20) }} stroke={1.5} />
+            </Button>
+          </Group>
           <SimpleGrid mt="xl" mb="xl" cols={{ base: 1, sm: 3 }}>
             <Stack>
               <Fieldset legend="Nome da Categoria:" variant="filled">
@@ -103,26 +120,10 @@ const CategorieView: React.FC<CategorieViewProps> = ({
               </Fieldset>
             </Stack>
           </SimpleGrid>
-          <Group justify="flex-end">
-            <Button
-              color="red"
-              radius="xl"
-              onClick={openDeleteModal}
-              disabled={isDeleting}
-            >
-              <IconTrash style={{ width: rem(20) }} stroke={1.5} />
-            </Button>
-            <Button
-              radius="xl"
-              onClick={() => navigate(`${selectedItemId}/update`)}
-            >
-              <IconPencil style={{ width: rem(20) }} stroke={1.5} />
-            </Button>
-          </Group>
         </React.Fragment>
       )}
     </Drawer>
   );
 };
 
-export default CategorieView;
+export default SubCategorieView;

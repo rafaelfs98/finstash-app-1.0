@@ -7,7 +7,7 @@ export type FormOptions = {
 };
 
 const onError = (error: any) => {
-  const erroMensage = error.info.error as any;
+  const erroMensage = error?.info?.error as any;
   notifications.show({
     title: "Error!",
     message: erroMensage,

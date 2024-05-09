@@ -1,26 +1,34 @@
-import { Button, Divider, Group, SimpleGrid, Title, rem } from "@mantine/core";
+import { Button, Divider, Group, SimpleGrid, rem } from "@mantine/core";
 import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { KeyedMutator } from "swr";
 import { z } from "zod";
-import InputColor from "../../../Components/Inputs/InputColor";
-import InputText from "../../../Components/Inputs/InputText";
-import useFormActions from "../../../Hooks/useFormActions";
-import { upsertExpenseSource } from "../../../Services/ExpenseSource";
-import { ExpenseSourceData } from "../../../Services/Types/finStash";
 import zodSchema, { zodResolver } from "../../../schema/zod";
+import { CategoriesType } from "../../../Services/Types/finStash";
+import useFormActions from "../../../Hooks/useFormActions";
+import { upsertCategories } from "../../../Services/Categories";
+import InputText from "../../../Components/Inputs/InputText";
+import InputColor from "../../../Components/Inputs/InputColor";
 
-type ExpenseSourceInfo = z.infer<typeof zodSchema.expenseSource>;
+type CategoryInfo = z.infer<typeof zodSchema.categories>;
 
-const ExpenseSourceForm: React.FC = () => {
+const CategoryForm: React.FC = () => {
   const navigate = useNavigate();
-  const { expenseSourceId } = useParams();
+  const { categoryId } = useParams();
+  const { pathname } = useLocation();
+
+  const type = pathname.includes("receitas") ? 0 : 1;
 
   const context = useOutletContext<{
-    expenseSource: ExpenseSourceData[];
-    mutateExpenseSource: KeyedMutator<ExpenseSourceData[]>;
+    categories: CategoriesType[];
+    mutateCategories: KeyedMutator<CategoriesType[]>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -30,26 +38,29 @@ const ExpenseSourceForm: React.FC = () => {
     handleSubmit,
     register,
     setValue,
-  } = useForm<ExpenseSourceInfo>({
+  } = useForm<CategoryInfo>({
     defaultValues: context
-      ? context?.expenseSource[0]
+      ? context?.categories[0]
       : {
           name: "",
           color: "",
         },
 
-    resolver: zodResolver(zodSchema.expenseSource),
+    resolver: zodResolver(zodSchema.categories),
   });
   const { onError, onSave } = useFormActions();
 
-  const _onSubmit = async (form: ExpenseSourceInfo) => {
+  const _onSubmit = async (form: CategoryInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertExpenseSource(form, Number(expenseSourceId));
+      const response = await upsertCategories(
+        { ...form, type },
+        Number(categoryId)
+      );
 
-      context?.mutateExpenseSource(response);
+      context?.mutateCategories(response);
       setLoadingButton(false);
-      navigate("/cadastros/fonteDespesas");
+      navigate(-1);
       return onSave();
     } catch (error) {
       setLoadingButton(false);
@@ -59,11 +70,6 @@ const ExpenseSourceForm: React.FC = () => {
 
   return (
     <div>
-      <Title order={2}>
-        {context
-          ? `Editar Fonte de Despesa # ${context?.expenseSource[0].id}`
-          : `Criar Fonte de Despesa`}
-      </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
         <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
           <InputText
@@ -76,9 +82,9 @@ const ExpenseSourceForm: React.FC = () => {
             required
           />
           <InputColor
-            // defaultValue={context?.expenseSource[0]?.color}
-            label={"Cor da Fonte de Despesa"}
-            placeholder={"Defina uma Cor para a Fonte da Despesa"}
+            defaultValue={context?.categories[0]?.color}
+            label={"Cor da Categoria"}
+            placeholder={"Defina uma Cor para Categoria"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
           />
         </SimpleGrid>
@@ -113,4 +119,4 @@ const ExpenseSourceForm: React.FC = () => {
   );
 };
 
-export default ExpenseSourceForm;
+export default CategoryForm;

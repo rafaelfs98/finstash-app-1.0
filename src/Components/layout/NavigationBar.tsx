@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 
 import {
   IconCategory,
+  IconCategory2,
   IconHome,
   IconPigMoney,
   IconReceipt,
@@ -141,6 +142,18 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
                   navigate("cadastros/contas");
                 }}
                 active={activeLinkChildren === "Contas"}
+              />
+              <NavLink
+                variant="subtle"
+                title="SubCategorias"
+                label="Sub Categorias"
+                leftSection={<IconCategory2 size="1.2rem" stroke={2} />}
+                onClick={() => {
+                  handleLinkChildrenClick("SubCategorias");
+                  toggle();
+                  navigate("cadastros/subcategorias/receitas");
+                }}
+                active={activeLinkChildren === "SubCategorias"}
               />
             </NavLink>
           </Stack>

@@ -4,6 +4,13 @@ export type CategoriesType = {
   color: string;
   type: number;
 };
+export type SubCategoriesType = {
+  id?: number;
+  name: string;
+  color: string;
+  type: number;
+  categoryId?: number;
+};
 export type AccountsType = {
   id?: number;
   name: string;
