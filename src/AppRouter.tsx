@@ -18,6 +18,7 @@ import SubCategory from "./Pages/Registers/SubCategories";
 import SubCategoriesTable from "./Pages/Registers/SubCategories/SubCategories";
 import SubCategoryForm from "./Pages/Registers/SubCategories/SubCategoryForm";
 import SubCategoryOutlet from "./Pages/Registers/SubCategories/SubCategoryOutlet";
+import Transactions from "./Pages/Transactions";
 
 const AppRouter = () => {
   return (
@@ -37,6 +38,7 @@ const AppRouter = () => {
           <Route path="despesas" element={<OutletBridge />}>
             <Route element={<ExpanseTransactiosTable />} index />
           </Route>
+          <Route path="transações" element={<Transactions />}></Route>
           <Route path="cadastros/categorias" element={<Category />}>
             <Route element={<CategoriesTable type={0} />} path="receitas" />
             <Route element={<CategoriesTable type={1} />} path="despesas" />

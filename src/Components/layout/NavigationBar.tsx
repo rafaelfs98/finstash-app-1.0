@@ -12,11 +12,10 @@ import {
   IconCategory,
   IconCategory2,
   IconHome,
-  IconPigMoney,
-  IconReceipt,
   IconSettings,
   IconShoppingCart,
   IconTable,
+  IconTransactionDollar,
   IconWallet,
 } from "@tabler/icons-react";
 
@@ -61,9 +60,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
           justify="space-between"
           direction="row"
           wrap="nowrap"
-        >
-          {" "}
-        </Flex>
+        />
       </AppShell.Section>
       <AppShell.Section grow>
         <ScrollArea>
@@ -81,28 +78,18 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               active={activeLinkMain === "Inicio"}
             />
             <NavLink
-              title="Receitas"
-              label="Receitas"
-              leftSection={<IconPigMoney size="1.2rem" stroke={2} />}
+              title="transações"
+              label="Transações"
+              leftSection={<IconTransactionDollar size="1.2rem" stroke={2} />}
               onClick={() => {
-                handleLinkMainClick("Receitas");
+                handleLinkMainClick("transações");
                 toggle();
-                navigate("receitas");
+                navigate("transações");
               }}
-              active={activeLinkMain === "Receitas"}
+              active={activeLinkMain === "transações"}
             />
             <NavLink
-              title="Despesas"
-              label="Despesas"
-              leftSection={<IconReceipt size="1.2rem" stroke={2} />}
-              onClick={() => {
-                handleLinkMainClick("Despesas");
-                toggle();
-                navigate("despesas");
-              }}
-              active={activeLinkMain === "Despesas"}
-            />
-            <NavLink
+              disabled
               title="Lista de Compras"
               label="Lista de Compras"
               leftSection={<IconShoppingCart size="1.2rem" stroke={2} />}
