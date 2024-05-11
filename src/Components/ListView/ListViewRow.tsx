@@ -1,17 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
 import { Badge, Table } from "@mantine/core";
-import { TableColumn } from "./ListView";
-import ListViewActions, { Action } from "./ListViewActions";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import { useAtom } from "jotai";
+import React from "react";
 import { selectedItemIdAtom } from "../../atoms/app.atom";
+import { TableColumn } from "./ListView";
 
 type ListViewRowProps = {
   columns: TableColumn[];
   item: any;
-  actions: Action[];
   onClick?: () => void;
 };
 
@@ -54,7 +52,6 @@ const renderValue = (key: string, item: any): React.ReactNode => {
 const ListViewRow: React.FC<ListViewRowProps> = ({
   columns,
   item,
-  actions,
   onClick,
 }) => {
   const [, setSelectedItemId] = useAtom(selectedItemIdAtom);
@@ -75,9 +72,6 @@ const ListViewRow: React.FC<ListViewRowProps> = ({
           {renderValue(column.key, item)}
         </Table.Td>
       ))}
-      <Table.Td>
-        <ListViewActions actions={actions} id={item.id} />
-      </Table.Td>
     </Table.Tr>
   );
 };
