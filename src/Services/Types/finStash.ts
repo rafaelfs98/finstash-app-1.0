@@ -10,6 +10,7 @@ export type SubCategoriesType = {
   color: string;
   type: number;
   categoryId?: number;
+  categories?: CategoriesType;
 };
 export type AccountsType = {
   id?: number;

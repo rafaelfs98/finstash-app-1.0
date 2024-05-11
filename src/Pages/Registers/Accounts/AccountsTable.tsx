@@ -1,10 +1,13 @@
 // Categories.tsx
 import { Title } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import ListView from "../../../Components/ListView/ListView";
-import AccountsActions from "./AccountsView";
+import AccountsView from "./AccountsView";
+import { useDisclosure } from "@mantine/hooks";
 
 const AccountsTable: React.FC = () => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const [isOpen, setIsOpen] = useState<boolean>();
   return (
     <>
       <Title order={2}>Contas</Title>
@@ -14,8 +17,15 @@ const AccountsTable: React.FC = () => {
           { key: "color", label: "Cor" },
         ]}
         resource="accounts?order=id.asc"
-        actions={AccountsActions()}
+        onClick={() => {
+          setIsOpen(true);
+          open();
+        }}
       />
+
+      {isOpen && (
+        <AccountsView opened={opened} close={close} setIsOpen={setIsOpen} />
+      )}
     </>
   );
 };

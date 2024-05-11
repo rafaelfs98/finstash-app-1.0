@@ -82,27 +82,6 @@ const CategorieView: React.FC<CategorieViewProps> = ({
         <Loading />
       ) : (
         <React.Fragment>
-          <SimpleGrid mt="xl" mb="xl" cols={{ base: 1, sm: 3 }}>
-            <Stack>
-              <Fieldset legend="Nome da Categoria:" variant="filled">
-                <Text size="lg">{category[0]?.name}</Text>
-              </Fieldset>
-            </Stack>
-            <Stack>
-              <Fieldset legend="Cor" variant="filled">
-                <Badge size="lg" color={category[0]?.color}>
-                  {category[0]?.color}
-                </Badge>
-              </Fieldset>
-            </Stack>
-            <Stack>
-              <Fieldset legend="Tipo:" variant="filled">
-                <Text size="lg">
-                  {category[0]?.type === 0 ? "Receita" : "Despesesa"}
-                </Text>
-              </Fieldset>
-            </Stack>
-          </SimpleGrid>
           <Group justify="flex-end">
             <Button
               color="red"
@@ -119,6 +98,16 @@ const CategorieView: React.FC<CategorieViewProps> = ({
               <IconPencil style={{ width: rem(20) }} stroke={1.5} />
             </Button>
           </Group>
+          <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 3 }}>
+            <Stack>
+              <Fieldset legend="Categoria:" variant="filled">
+                <Group>
+                  <Badge color={category[0]?.color} />
+                  <Text>{category[0]?.name}</Text>
+                </Group>
+              </Fieldset>
+            </Stack>
+          </SimpleGrid>
         </React.Fragment>
       )}
     </Drawer>

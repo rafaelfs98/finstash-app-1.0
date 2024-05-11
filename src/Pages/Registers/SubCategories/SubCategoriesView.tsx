@@ -64,9 +64,18 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
 
   const { data, isLoading } = useFetcher<SubCategoriesType>({
     uri: `/sub_categories?id=eq.${selectedItemId}`,
+    select: `
+    id, 
+    name,
+    color,
+    categories (
+     id,
+     name,
+     color
+      )`,
   });
 
-  const category = data || [];
+  const subCategory = data || [];
 
   return (
     <Drawer
@@ -83,7 +92,7 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
         <Loading />
       ) : (
         <React.Fragment>
-          <Group justify="flex-end">
+          <Group justify="flex-end" mt={2}>
             <Button
               color="red"
               radius="xl"
@@ -99,24 +108,22 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
               <IconPencil style={{ width: rem(20) }} stroke={1.5} />
             </Button>
           </Group>
-          <SimpleGrid mt="xl" mb="xl" cols={{ base: 1, sm: 3 }}>
+
+          <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 3 }}>
             <Stack>
-              <Fieldset legend="Nome da Categoria:" variant="filled">
-                <Text size="lg">{category[0]?.name}</Text>
+              <Fieldset legend="Sub Categoria:" variant="filled">
+                <Group>
+                  <Badge color={subCategory[0]?.color} />
+                  <Text size="lg">{subCategory[0]?.name}</Text>
+                </Group>
               </Fieldset>
             </Stack>
             <Stack>
-              <Fieldset legend="Cor" variant="filled">
-                <Badge size="lg" color={category[0]?.color}>
-                  {category[0]?.color}
-                </Badge>
-              </Fieldset>
-            </Stack>
-            <Stack>
-              <Fieldset legend="Tipo:" variant="filled">
-                <Text size="lg">
-                  {category[0]?.type === 0 ? "Receita" : "Despesesa"}
-                </Text>
+              <Fieldset legend="Categoria:" variant="filled">
+                <Group>
+                  <Badge color={subCategory[0]?.categories?.color} />
+                  <Text size="lg">{subCategory[0]?.categories?.name}</Text>
+                </Group>
               </Fieldset>
             </Stack>
           </SimpleGrid>
