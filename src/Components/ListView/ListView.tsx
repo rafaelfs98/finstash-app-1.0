@@ -2,7 +2,6 @@
 import {
   Button,
   Group,
-  Kbd,
   Pagination,
   ScrollArea,
   Table,
@@ -16,7 +15,6 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetcher } from "../../Hooks/useFetcher";
 import Loading from "../Loader";
-import { Action } from "./ListViewActions";
 import ListViewHeader from "./ListViewHeader";
 import ListViewRow from "./ListViewRow";
 
@@ -28,7 +26,6 @@ export interface TableColumn {
 type ListViewProps = {
   columns: TableColumn[];
   resource: string;
-  actions?: Action[];
   relationships?: string;
   onClick?: () => void;
   itemsPerPage?: number;
@@ -38,7 +35,6 @@ const ListView: React.FC<ListViewProps> = ({
   columns,
   relationships,
   resource,
-  actions = [],
   onClick,
   itemsPerPage = 10,
   ...otherprops
@@ -96,13 +92,7 @@ const ListView: React.FC<ListViewProps> = ({
   }, [currentPage, filteredData, itemsPerPage]);
 
   const rows = slicedData.map((item, index) => (
-    <ListViewRow
-      onClick={onClick}
-      key={index}
-      columns={columns}
-      item={item}
-      actions={actions}
-    />
+    <ListViewRow onClick={onClick} key={index} columns={columns} item={item} />
   ));
 
   return (
@@ -121,17 +111,6 @@ const ListView: React.FC<ListViewProps> = ({
                   style={{ width: rem(16), height: rem(16) }}
                   stroke={1.5}
                 />
-              }
-              rightSection={
-                <>
-                  <Kbd size="xs">
-                    <Text size="xs">alt</Text>
-                  </Kbd>
-                  +
-                  <Kbd mr="xl" size="xs">
-                    <Text size="xs">s</Text>
-                  </Kbd>
-                </>
               }
               value={search}
               onChange={(event) => setSearch(event.currentTarget.value)}
