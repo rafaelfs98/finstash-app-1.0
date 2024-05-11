@@ -3,10 +3,6 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Components/layout/Layout";
 
 import OutletBridge from "./OutletBridge";
-import ExpanseTransactiosTable from "./Pages/Expense Transactions/ExpanseTransactiosTable";
-import IncomeTransactionsForm from "./Pages/Income Transactions/IncomeTransactionsForm";
-import IncomeTransactionsOutlet from "./Pages/Income Transactions/IncomeTransactionsOutlet";
-import IncomeTransactionsTable from "./Pages/Income Transactions/IncomeTransactionsTable";
 import AccountsForm from "./Pages/Registers/Accounts/AccountsForm";
 import AccountsOutlet from "./Pages/Registers/Accounts/AccountsOutlet";
 import AccountsTable from "./Pages/Registers/Accounts/AccountsTable";
@@ -25,19 +21,6 @@ const AppRouter = () => {
     <HashRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="receitas" element={<OutletBridge />}>
-            <Route element={<IncomeTransactionsTable />} index />
-            <Route element={<IncomeTransactionsForm />} path="create" />
-            <Route
-              element={<IncomeTransactionsOutlet />}
-              path=":incomeTransactionsId"
-            >
-              <Route element={<IncomeTransactionsForm />} path="update" />
-            </Route>
-          </Route>
-          <Route path="despesas" element={<OutletBridge />}>
-            <Route element={<ExpanseTransactiosTable />} index />
-          </Route>
           <Route path="transações" element={<Transactions />}></Route>
           <Route path="cadastros/categorias" element={<Category />}>
             <Route element={<CategoriesTable type={0} />} path="receitas" />
