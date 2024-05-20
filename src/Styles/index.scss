@@ -1,2 +1,7 @@
 @import "./scss/Components/footer";
 @import "./scss/Components/loading";
+
+.mantine-DateInput-wrapper input {
+  text-align: center !important;
+  cursor: pointer !important;
+}

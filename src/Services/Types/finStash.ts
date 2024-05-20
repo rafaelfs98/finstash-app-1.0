@@ -18,17 +18,25 @@ export type AccountsType = {
   color: string;
   sum_total: boolean;
 };
-export type incomeTransactionsData = {
-  amount: number;
-  categoryId: number;
+export type RevenuesType = {
+  accontId: number | null;
+  amount: number | null;
+  categoryId: number | null;
   id?: number;
-  name: string;
-  sourceId: number;
-  transactionDate: string;
+  description: string | null;
+  subCategoryId: number | null;
+  transactionDate: string | null;
 };
 
-export type ExpenseSourceData = {
+export type ExpenseData = {
+  accountsId: number | null;
+  amount: number | null;
+  categoryId: number | null;
+  description: string | null;
+  dueDate: string | null;
   id?: number;
-  name: string;
-  color: string;
+  installments: number | null;
+  paid: boolean | null;
+  repeat: boolean | null;
+  subCategoryId: number | null;
 };

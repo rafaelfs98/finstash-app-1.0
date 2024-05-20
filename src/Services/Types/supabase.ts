@@ -51,125 +51,115 @@ export type Database = {
         };
         Relationships: [];
       };
-      expense_sources: {
+      expense: {
         Row: {
-          color: string | null;
-          id: number;
-          name: string | null;
-        };
-        Insert: {
-          color?: string | null;
-          id?: number;
-          name?: string | null;
-        };
-        Update: {
-          color?: string | null;
-          id?: number;
-          name?: string | null;
-        };
-        Relationships: [];
-      };
-      expense_transactions: {
-        Row: {
+          accountsId: number | null;
           amount: number | null;
           categoryId: number | null;
+          description: string | null;
           dueDate: string | null;
           id: number;
-          name: string | null;
-          paymentDate: string | null;
-          sourceId: number | null;
+          installments: number | null;
+          paid: boolean | null;
+          repeat: boolean | null;
+          subCategoryId: number | null;
         };
         Insert: {
+          accountsId?: number | null;
           amount?: number | null;
           categoryId?: number | null;
+          description?: string | null;
           dueDate?: string | null;
           id?: number;
-          name?: string | null;
-          paymentDate?: string | null;
-          sourceId?: number | null;
+          installments?: number | null;
+          paid?: boolean | null;
+          repeat?: boolean | null;
+          subCategoryId?: number | null;
         };
         Update: {
+          accountsId?: number | null;
           amount?: number | null;
           categoryId?: number | null;
+          description?: string | null;
           dueDate?: string | null;
           id?: number;
-          name?: string | null;
-          paymentDate?: string | null;
-          sourceId?: number | null;
+          installments?: number | null;
+          paid?: boolean | null;
+          repeat?: boolean | null;
+          subCategoryId?: number | null;
         };
         Relationships: [
           {
-            foreignKeyName: "expense_transactions_categoryId_fkey";
+            foreignKeyName: "expense_accountsId_fkey";
+            columns: ["accountsId"];
+            isOneToOne: false;
+            referencedRelation: "accounts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "expense_categoryId_fkey";
             columns: ["categoryId"];
             isOneToOne: false;
             referencedRelation: "categories";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "expense_transactions_sourceId_fkey";
-            columns: ["sourceId"];
+            foreignKeyName: "expense_subCategoryId_fkey";
+            columns: ["subCategoryId"];
             isOneToOne: false;
-            referencedRelation: "expense_sources";
+            referencedRelation: "sub_categories";
             referencedColumns: ["id"];
           }
         ];
       };
-      income_sources: {
+      revenues: {
         Row: {
-          color: string | null;
-          id: number;
-          name: string | null;
-        };
-        Insert: {
-          color?: string | null;
-          id?: number;
-          name?: string | null;
-        };
-        Update: {
-          color?: string | null;
-          id?: number;
-          name?: string | null;
-        };
-        Relationships: [];
-      };
-      income_transactions: {
-        Row: {
+          accontId: number | null;
           amount: number | null;
           categoryId: number | null;
           id: number;
-          name: string | null;
-          sourceId: number | null;
+          description: string | null;
+          subCategoryId: number | null;
           transactionDate: string | null;
         };
         Insert: {
+          accontId?: number | null;
           amount?: number | null;
           categoryId?: number | null;
           id?: number;
           name?: string | null;
-          sourceId?: number | null;
+          subCategoryId?: number | null;
           transactionDate?: string | null;
         };
         Update: {
+          accontId?: number | null;
           amount?: number | null;
           categoryId?: number | null;
           id?: number;
           name?: string | null;
-          sourceId?: number | null;
+          subCategoryId?: number | null;
           transactionDate?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: "income_transactions_categoryId_fkey";
+            foreignKeyName: "revenues_accontId_fkey";
+            columns: ["accontId"];
+            isOneToOne: false;
+            referencedRelation: "accounts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "revenues_categoryId_fkey";
             columns: ["categoryId"];
             isOneToOne: false;
             referencedRelation: "categories";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "income_transactions_sourceId_fkey";
-            columns: ["sourceId"];
+            foreignKeyName: "revenues_subCategoryId_fkey";
+            columns: ["subCategoryId"];
             isOneToOne: false;
-            referencedRelation: "income_sources";
+            referencedRelation: "sub_categories";
             referencedColumns: ["id"];
           }
         ];
@@ -211,14 +201,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      enviar_email: {
-        Args: {
-          destinatario: string;
-          assunto: string;
-          corpo: string;
-        };
-        Returns: undefined;
-      };
+      [_ in never]: never;
     };
     Enums: {
       [_ in never]: never;

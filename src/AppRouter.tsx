@@ -15,13 +15,18 @@ import SubCategoriesTable from "./Pages/Registers/SubCategories/SubCategories";
 import SubCategoryForm from "./Pages/Registers/SubCategories/SubCategoryForm";
 import SubCategoryOutlet from "./Pages/Registers/SubCategories/SubCategoryOutlet";
 import Transactions from "./Pages/Transactions";
+import ExpensesTable from "./Pages/Transactions/Expenses/ExpensesTable";
+import RevenuesTable from "./Pages/Transactions/Revenues/RevenuesTable";
 
 const AppRouter = () => {
   return (
     <HashRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="transações" element={<Transactions />}></Route>
+          <Route path="transações" element={<Transactions />}>
+            <Route element={<ExpensesTable />} path="despesas" />
+            <Route element={<RevenuesTable />} path="receitas" />
+          </Route>
           <Route path="cadastros/categorias" element={<Category />}>
             <Route element={<CategoriesTable type={0} />} path="receitas" />
             <Route element={<CategoriesTable type={1} />} path="despesas" />
