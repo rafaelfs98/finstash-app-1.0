@@ -11,15 +11,16 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconCurrencyDollar } from "@tabler/icons-react";
+import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 import Loading from "../../../Components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
-import { formattedAmount } from "../../../util";
-import dayjs from "dayjs";
-import ExpensesDetails from "./ExpensesDetails";
-import { useDisclosure } from "@mantine/hooks";
+import { updateExpensesPaid } from "../../../Services/Expenses";
 import { ExpenseData } from "../../../Services/Types/finStash";
+import { formattedAmount } from "../../../util";
+import ExpensesDetails from "./ExpensesDetails";
 
 type ExpensesCardViewProps = {
   date: Date | null;
@@ -35,8 +36,15 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>();
   const [expenseItem, setExpenseItem] = useState<ExpenseData>();
 
-  const { data, isLoading } = useFetcher<any>({
-    uri: `expense?dueDate=eq.${dayjs(date).format("YYYY-MM-DD")}&order=id.asc`,
+  const year = dayjs(date).format("YYYY");
+  const month = dayjs(date).format("MM");
+
+  const { data, isLoading, mutate } = useFetcher<any>({
+    uri: `expense?dueDate=gte.${year}-${month}-01&dueDate=lt.${dayjs(
+      `${year}-${month}-01`
+    )
+      .add(1, "month")
+      .format("YYYY-MM-DD")}&order=id.asc`,
     select: `
     id,
     amount,
@@ -109,11 +117,6 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
                       radius="md"
                       mb="10"
                       withBorder
-                      onClick={() => {
-                        setExpenseItem(item);
-                        setIsOpen(true);
-                        open();
-                      }}
                     >
                       <CardSection withBorder inheritPadding py="xs" mb={10}>
                         <Group justify="flex-end" mb="xs">
@@ -123,6 +126,13 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
                               variant={item.paid ? "filled" : "default"}
                               radius="md"
                               size={36}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                updateExpensesPaid(
+                                  item.paid ? false : true,
+                                  item.id
+                                ).then(mutate);
+                              }}
                             >
                               <IconCurrencyDollar size="1.5rem" stroke={1.5} />
                             </ActionIcon>
@@ -130,7 +140,17 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
                         </Group>
                       </CardSection>
 
-                      <CardSection withBorder inheritPadding py="xs" mb={10}>
+                      <CardSection
+                        onClick={() => {
+                          setExpenseItem(item);
+                          setIsOpen(true);
+                          open();
+                        }}
+                        withBorder
+                        inheritPadding
+                        py="xs"
+                        mb={10}
+                      >
                         <Group justify="space-between" mb="xs">
                           <Text size="xl">{item.description}</Text>
 

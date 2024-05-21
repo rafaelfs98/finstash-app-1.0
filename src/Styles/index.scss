@@ -1,7 +1,7 @@
 @import "./scss/Components/footer";
 @import "./scss/Components/loading";
 
-.mantine-DateInput-wrapper input {
+.mantine-MonthPickerInput-wrapper button {
   text-align: center !important;
-  cursor: pointer !important;
+  text-transform: uppercase !important;
 }

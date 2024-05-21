@@ -7,7 +7,7 @@ import {
   UnstyledButton,
   rem,
 } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
+import { MonthPickerInput } from "@mantine/dates";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -49,7 +49,7 @@ const ExpensesTable: React.FC = () => {
               <UnstyledButton
                 onClick={() =>
                   setDate((current) =>
-                    dayjs(current).subtract(1, "day").toDate()
+                    dayjs(current).subtract(1, "month").toDate()
                   )
                 }
               >
@@ -59,19 +59,20 @@ const ExpensesTable: React.FC = () => {
                 />
               </UnstyledButton>
               <Stack>
-                <DatePickerInput
+                <MonthPickerInput
                   variant="unstyled"
                   ta="center"
                   label="Vencimento"
                   onChange={setDate}
                   value={date}
-                  valueFormat="DD/MM/YYYY"
+                  valueFormat="MMMM/YYYY"
+                  locale="pt-BR"
                 />
               </Stack>
 
               <UnstyledButton
                 onClick={() =>
-                  setDate((current) => dayjs(current).add(1, "day").toDate())
+                  setDate((current) => dayjs(current).add(1, "month").toDate())
                 }
               >
                 <IconChevronRight

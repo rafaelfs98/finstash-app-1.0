@@ -16,18 +16,18 @@ import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteAccounts } from "../../../Services/Accounts";
-import { ExpenseData } from "../../../Services/Types/finStash";
+import { RevenuesType } from "../../../Services/Types/finStash";
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import { formattedAmount } from "../../../util";
 
 type AccountsViewProps = {
   close: () => void;
-  item: ExpenseData;
+  item: RevenuesType;
   opened: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
 };
 
-const ExpensesDetails: React.FC<AccountsViewProps> = ({
+const RevenuesDetails: React.FC<AccountsViewProps> = ({
   close,
   item,
   opened,
@@ -94,18 +94,10 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
 
         <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 3 }}>
           <Stack>
-            <Fieldset legend="Situação:" variant="filled">
-              <Group>
-                <Badge color={expense?.paid ? "green" : "red"} />
-                <Text size="lg">{expense?.paid ? "Pago" : "Pendente"}</Text>
-              </Group>
-            </Fieldset>
-          </Stack>
-          <Stack>
             <Fieldset legend="Data de Vencimento:" variant="filled">
               <Group>
                 <Text size="lg">
-                  {dayjs(expense?.dueDate).format("DD/MM/YYYY")}
+                  {dayjs(expense?.transactionDate).format("DD/MM/YYYY")}
                 </Text>
               </Group>
             </Fieldset>
@@ -114,7 +106,6 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
             <Fieldset legend="Valor:" variant="filled">
               <Group>
                 <Text size="lg">
-                  {" "}
                   {formattedAmount(Number(expense?.amount))}
                 </Text>
               </Group>
@@ -131,20 +122,6 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
             <Fieldset legend="Descrição:" variant="filled">
               <Group>
                 <Text size="lg">{expense?.description}</Text>
-              </Group>
-            </Fieldset>
-          </Stack>
-          <Stack>
-            <Fieldset legend="Repete:" variant="filled">
-              <Group>
-                <Text size="lg">{expense?.repeat ? "Sim" : "Não"}</Text>
-              </Group>
-            </Fieldset>
-          </Stack>
-          <Stack>
-            <Fieldset legend="Parcelas:" variant="filled">
-              <Group>
-                <Text size="lg">{expense?.repeat ? "Sim" : "Não"}</Text>
               </Group>
             </Fieldset>
           </Stack>
@@ -176,4 +153,4 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
   );
 };
 
-export default ExpensesDetails;
+export default RevenuesDetails;

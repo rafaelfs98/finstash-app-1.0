@@ -9,22 +9,24 @@ import {
   SimpleGrid,
   Text,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 import Loading from "../../../Components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
+import { RevenuesType } from "../../../Services/Types/finStash";
 import { formattedAmount } from "../../../util";
+import RevenuesDetails from "./RevenuesDetails";
 
 type RevenuesCardViewProps = {
-  onClick?: () => void;
   search: string;
 };
 
-const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({
-  onClick,
-  search,
-}) => {
+const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({ search }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [isOpen, setIsOpen] = useState<boolean>();
+  const [revenuesItem, setRevenuesItem] = useState<RevenuesType>();
 
   const { data, isLoading } = useFetcher<any>({
     uri: `revenues?order=id.asc`,
@@ -99,7 +101,11 @@ const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({
                       radius="md"
                       mb="10"
                       withBorder
-                      onClick={onClick}
+                      onClick={() => {
+                        setRevenuesItem(item);
+                        setIsOpen(true);
+                        open();
+                      }}
                     >
                       <CardSection withBorder inheritPadding py="xs" mb={10}>
                         <Group justify="flex-end" mb="xs">
@@ -154,6 +160,14 @@ const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({
             />
           </Group>
         </>
+      )}
+      {isOpen && (
+        <RevenuesDetails
+          opened={opened}
+          close={close}
+          setIsOpen={setIsOpen}
+          item={revenuesItem as RevenuesType}
+        />
       )}
     </>
   );
