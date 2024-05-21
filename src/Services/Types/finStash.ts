@@ -24,6 +24,9 @@ export type RevenuesType = {
   categoryId: number | null;
   id?: number;
   description: string | null;
+  categories?: CategoriesType;
+  sub_categories?: SubCategoriesType;
+  accounts?: AccountsType;
   subCategoryId: number | null;
   transactionDate: string | null;
 };
@@ -39,4 +42,7 @@ export type ExpenseData = {
   paid: boolean | null;
   repeat: boolean | null;
   subCategoryId: number | null;
+  categories?: CategoriesType;
+  sub_categories?: SubCategoriesType;
+  accounts?: AccountsType;
 };

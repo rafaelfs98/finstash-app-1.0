@@ -17,19 +17,23 @@ import Loading from "../../../Components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
 import { formattedAmount } from "../../../util";
 import dayjs from "dayjs";
+import ExpensesDetails from "./ExpensesDetails";
+import { useDisclosure } from "@mantine/hooks";
+import { ExpenseData } from "../../../Services/Types/finStash";
 
 type ExpensesCardViewProps = {
   date: Date | null;
-  onClick?: () => void;
   search: string;
 };
 
 const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
   date,
-  onClick,
   search,
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [isOpen, setIsOpen] = useState<boolean>();
+  const [expenseItem, setExpenseItem] = useState<ExpenseData>();
 
   const { data, isLoading } = useFetcher<any>({
     uri: `expense?dueDate=eq.${dayjs(date).format("YYYY-MM-DD")}&order=id.asc`,
@@ -105,7 +109,11 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
                       radius="md"
                       mb="10"
                       withBorder
-                      onClick={onClick}
+                      onClick={() => {
+                        setExpenseItem(item);
+                        setIsOpen(true);
+                        open();
+                      }}
                     >
                       <CardSection withBorder inheritPadding py="xs" mb={10}>
                         <Group justify="flex-end" mb="xs">
@@ -166,6 +174,14 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
             />
           </Group>
         </>
+      )}
+      {isOpen && (
+        <ExpensesDetails
+          opened={opened}
+          close={close}
+          setIsOpen={setIsOpen}
+          item={expenseItem as ExpenseData}
+        />
       )}
     </>
   );
