@@ -7,7 +7,7 @@ import {
   UnstyledButton,
   rem,
 } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -59,7 +59,7 @@ const ExpensesTable: React.FC = () => {
                 />
               </UnstyledButton>
               <Stack>
-                <DateInput
+                <DatePickerInput
                   variant="unstyled"
                   ta="center"
                   label="Vencimento"

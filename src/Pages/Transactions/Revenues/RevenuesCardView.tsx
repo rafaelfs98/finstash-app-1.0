@@ -104,7 +104,7 @@ const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({
                       <CardSection withBorder inheritPadding py="xs" mb={10}>
                         <Group justify="flex-end" mb="xs">
                           <Text>
-                            {"Data da Receita: " +
+                            {"Data : " +
                               dayjs(item.transactionDate).format("DD/MM/YYYY")}
                           </Text>
                         </Group>
