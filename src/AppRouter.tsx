@@ -17,7 +17,7 @@ import SubCategoryOutlet from "./Pages/Registers/SubCategories/SubCategoryOutlet
 import Transactions from "./Pages/Transactions";
 import ExpensesTable from "./Pages/Transactions/Expenses/ExpensesTable";
 import RevenuesTable from "./Pages/Transactions/Revenues/RevenuesTable";
-import { Home } from "./pages/home";
+import { Home } from "./Pages/home";
 
 const AppRouter = () => {
   return (

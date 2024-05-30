@@ -2,7 +2,7 @@ import { Group, Paper, Text } from "@mantine/core";
 import { IconCoin, IconPigMoney, IconReceipt } from "@tabler/icons-react";
 import React from "react";
 
-import classes from "../../styles/mantineCss/TransactionsStats.module.css";
+import classes from "../../Styles/MantineCss/TransactionsStats.module.css";
 import { ExpenseData, RevenuesType } from "../../Services/Types/finStash";
 import { useFetcher } from "../../Hooks/useFetcher";
 

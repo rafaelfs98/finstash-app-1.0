@@ -14,10 +14,8 @@ import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../../Components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
 import { deleteAccounts } from "../../../Services/Accounts";
-import { AccountsType, ExpenseData } from "../../../Services/Types/finStash";
+import { ExpenseData } from "../../../Services/Types/finStash";
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import dayjs from "dayjs";
 
