@@ -17,12 +17,14 @@ import SubCategoryOutlet from "./Pages/Registers/SubCategories/SubCategoryOutlet
 import Transactions from "./Pages/Transactions";
 import ExpensesTable from "./Pages/Transactions/Expenses/ExpensesTable";
 import RevenuesTable from "./Pages/Transactions/Revenues/RevenuesTable";
+import { Home } from "./pages/home";
 
 const AppRouter = () => {
   return (
     <HashRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
           <Route path="transações" element={<Transactions />}>
             <Route element={<ExpensesTable />} path="despesas" />
             <Route element={<RevenuesTable />} path="receitas" />
