@@ -17,7 +17,7 @@ const CategoriesTable: React.FC<CategoriesProps> = ({ type }) => {
           { key: "name", label: "Categoria" },
           { key: "color", label: "Cor" },
         ]}
-        resource={`/categories?type=eq.${type}&order=id.asc`}
+        resource={`categories?type=eq.${type}&order=id.asc`}
         onClick={() => {
           setIsOpen(true);
           open();

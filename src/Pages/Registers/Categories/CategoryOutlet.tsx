@@ -11,7 +11,7 @@ const CategoryOutlet = () => {
     mutate: mutateCategories,
     isLoading,
   } = useFetcher<CategoriesType>({
-    uri: `/categories?id=eq.${categoryId}`,
+    uri: `categories?id=eq.${categoryId}`,
   });
 
   if (isLoading) {

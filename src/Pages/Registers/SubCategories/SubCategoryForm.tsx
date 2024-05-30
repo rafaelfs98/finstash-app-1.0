@@ -86,7 +86,7 @@ const SubCategoryForm: React.FC = () => {
   };
 
   const { data: categories } = useFetcher<CategoriesType>({
-    uri: `/categories?type=eq.${type}&order=id.asc`,
+    uri: `categories?type=eq.${type}&order=id.asc`,
     select: "id, name",
   });
 

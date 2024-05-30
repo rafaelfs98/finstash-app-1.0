@@ -11,7 +11,7 @@ const AccountsOutlet = () => {
     mutate: mutateAccounts,
     isLoading,
   } = useFetcher<AccountsType>({
-    uri: `/accounts?id=eq.${accountsId}`,
+    uri: `accounts?id=eq.${accountsId}`,
   });
 
   if (isLoading) {

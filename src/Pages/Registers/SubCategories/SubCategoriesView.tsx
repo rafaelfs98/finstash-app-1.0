@@ -63,7 +63,7 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
   };
 
   const { data, isLoading } = useFetcher<SubCategoriesType>({
-    uri: `/sub_categories?id=eq.${selectedItemId}`,
+    uri: `sub_categories?id=eq.${selectedItemId}`,
     select: `
     id, 
     name,

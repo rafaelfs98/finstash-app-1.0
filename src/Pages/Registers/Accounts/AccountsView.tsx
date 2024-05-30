@@ -63,7 +63,7 @@ const AccountsView: React.FC<AccountsViewProps> = ({
   };
 
   const { data, isLoading } = useFetcher<AccountsType>({
-    uri: `/accounts?id=eq.${selectedItemId}`,
+    uri: `accounts?id=eq.${selectedItemId}`,
   });
 
   const accounts = data || [];

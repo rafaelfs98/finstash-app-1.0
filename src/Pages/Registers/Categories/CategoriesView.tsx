@@ -62,7 +62,7 @@ const CategorieView: React.FC<CategorieViewProps> = ({
   };
 
   const { data, isLoading } = useFetcher<CategoriesType>({
-    uri: `/categories?id=eq.${selectedItemId}`,
+    uri: `categories?id=eq.${selectedItemId}`,
   });
 
   const category = data || [];

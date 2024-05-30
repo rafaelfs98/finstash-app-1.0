@@ -19,7 +19,7 @@ const SubCategoriesTable: React.FC<SubCategoriesProps> = ({ type }) => {
           { key: "categories.name", label: "Categoria" },
           { key: "color", label: "Cor" },
         ]}
-        resource={`/sub_categories?type=eq.${type}&order=id.asc`}
+        resource={`sub_categories?type=eq.${type}&order=id.asc`}
         relationships={`
             id, 
             name,

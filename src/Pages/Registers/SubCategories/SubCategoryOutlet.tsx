@@ -11,7 +11,7 @@ const SubCategoryOutlet = () => {
     mutate: mutateSubCategories,
     isLoading,
   } = useFetcher<SubCategoriesType>({
-    uri: `/sub_categories?id=eq.${subCategoryId}`,
+    uri: `sub_categories?id=eq.${subCategoryId}`,
   });
 
   if (isLoading) {
