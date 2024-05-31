@@ -22,6 +22,11 @@ interface BarChartData {
   [key: string]: number | string;
 }
 
+interface SubCategoryBarChartData {
+  categoryName: string;
+  [key: string]: number | string;
+}
+
 const TransactionsStats: React.FC = () => {
   const { data: expense, isLoading: isLoadingExpense } =
     useFetcher<ExpenseData>({
@@ -82,7 +87,7 @@ const TransactionsStats: React.FC = () => {
     return <Text>Erro ao carregar os dados</Text>;
   }
 
-  const transformDataForBarChart = (
+  const transformCategoriesDataForBarChart = (
     items: (RevenuesType | ExpenseData)[],
     dateKey: "transactionDate" | "dueDate",
     groupKey: "categories" | "sub_categories"
@@ -111,22 +116,53 @@ const TransactionsStats: React.FC = () => {
     }));
   };
 
+  const transformSubCategoriesDataForBarChart = (
+    items: (RevenuesType | ExpenseData)[]
+  ): SubCategoryBarChartData[] => {
+    const groupedData = items.reduce<Record<string, Record<string, number>>>(
+      (acc, item) => {
+        const categoryName = item.categories?.name || "Unknown";
+        const subCategory = item.sub_categories;
+        const subCategoryName = subCategory?.name || "Unknown";
+        if (!acc[categoryName]) {
+          acc[categoryName] = {};
+        }
+        if (!acc[categoryName][subCategoryName]) {
+          acc[categoryName][subCategoryName] = 0;
+        }
+        acc[categoryName][subCategoryName] += item.amount || 0;
+        return acc;
+      },
+      {}
+    );
+
+    return Object.entries(groupedData).map(([categoryName, values]) => ({
+      categoryName,
+      ...values,
+    }));
+  };
+
   const totalRevenue =
     revenues.reduce((acc, revenue) => acc + Number(revenue.amount), 0) || 0;
   const totalExpense =
     expense.reduce((acc, exp) => acc + Number(exp.amount), 0) || 0;
   const total = totalRevenue - totalExpense;
 
-  const barChartDataExpenses = transformDataForBarChart(
+  const barChartDataExpenses = transformCategoriesDataForBarChart(
     expense,
     "dueDate",
     "categories"
   );
-  const barChartDataRevenues = transformDataForBarChart(
+  const barChartDataRevenues = transformCategoriesDataForBarChart(
     revenues,
     "transactionDate",
     "categories"
   );
+
+  const barSubChartDataExpenses =
+    transformSubCategoriesDataForBarChart(expense);
+  const barSubChartDataRevenues =
+    transformSubCategoriesDataForBarChart(revenues);
 
   const categoriesColorsExpenses = [
     ...new Map(
@@ -140,17 +176,49 @@ const TransactionsStats: React.FC = () => {
     ),
   ];
 
+  const subCategoriesColorsExpenses = [
+    ...new Map(
+      expense.map((item) => [
+        item.sub_categories?.name,
+        item.sub_categories?.color,
+      ])
+    ),
+  ];
+
+  const subCategoriesColorsRevenues = [
+    ...new Map(
+      revenues.map((item) => [
+        item.sub_categories?.name,
+        item.sub_categories?.color,
+      ])
+    ),
+  ];
+
   const barChartSeriesExpenses = categoriesColorsExpenses
-    .filter(([name]) => name) // Filtrar os nomes indefinidos
+    .filter(([name]) => name)
     .map(([name, color]) => ({
-      name: name as string, // Garantir que name seja string
+      name: name as string,
       color: color || "violet.6",
     }));
 
   const barChartSeriesRevenues = categoriesColorsRevenues
-    .filter(([name]) => name) // Filtrar os nomes indefinidos
+    .filter(([name]) => name)
     .map(([name, color]) => ({
-      name: name as string, // Garantir que name seja string
+      name: name as string,
+      color: color || "violet.6",
+    }));
+
+  const barChartSeriesSubCategoriesExpenses = subCategoriesColorsExpenses
+    .filter(([name]) => name)
+    .map(([name, color]) => ({
+      name: name as string,
+      color: color || "violet.6",
+    }));
+
+  const barChartSeriesSubCategoriesRevenues = subCategoriesColorsRevenues
+    .filter(([name]) => name)
+    .map(([name, color]) => ({
+      name: name as string,
       color: color || "violet.6",
     }));
 
@@ -214,7 +282,7 @@ const TransactionsStats: React.FC = () => {
         <Stack>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Text size="lg" mb="md">
-              Despesas
+              Despesas por Categoria
             </Text>
             <BarChart
               h={300}
@@ -230,7 +298,7 @@ const TransactionsStats: React.FC = () => {
         <Stack>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Text size="lg" mb="md">
-              Receitas
+              Receitas por Categoria
             </Text>
             <BarChart
               h={300}
@@ -238,6 +306,38 @@ const TransactionsStats: React.FC = () => {
               dataKey="month"
               type="stacked"
               series={barChartSeriesRevenues}
+              tickLine="y"
+              withLegend
+            />
+          </Card>
+        </Stack>
+        <Stack>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Text size="lg" mb="md">
+              Despesas por Subcategoria
+            </Text>
+            <BarChart
+              h={300}
+              data={barSubChartDataExpenses}
+              dataKey="categoryName"
+              type="stacked"
+              series={barChartSeriesSubCategoriesExpenses}
+              tickLine="y"
+              withLegend
+            />
+          </Card>
+        </Stack>
+        <Stack>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Text size="lg" mb="md">
+              Receitas por Subcategoria
+            </Text>
+            <BarChart
+              h={300}
+              data={barSubChartDataRevenues}
+              dataKey="categoryName"
+              type="stacked"
+              series={barChartSeriesSubCategoriesRevenues}
               tickLine="y"
               withLegend
             />
