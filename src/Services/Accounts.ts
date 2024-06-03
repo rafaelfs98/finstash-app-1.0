@@ -11,7 +11,7 @@ export const upsertAccounts = async (
       id: accountsId ? accountsId : undefined,
       name: accounts.name,
       color: accounts.color,
-      sum_total: accounts.sum_total,
+      total: accounts.total,
     })
     .select();
 

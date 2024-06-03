@@ -7,7 +7,7 @@ const AccountsOutlet = () => {
   const { accountsId } = useParams<{ accountsId: string }>();
 
   const {
-    data: Accounts,
+    data: accounts,
     mutate: mutateAccounts,
     isLoading,
   } = useFetcher<AccountsType>({
@@ -18,11 +18,11 @@ const AccountsOutlet = () => {
     return <Loading />;
   }
 
-  if (Accounts) {
+  if (accounts) {
     return (
       <Outlet
         context={{
-          Accounts,
+          accounts,
           mutateAccounts,
         }}
       />

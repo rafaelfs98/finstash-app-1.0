@@ -16,7 +16,7 @@ export type AccountsType = {
   id?: number;
   name: string;
   color: string;
-  sum_total: boolean;
+  total: number;
 };
 export type RevenuesType = {
   accontId: number | null;

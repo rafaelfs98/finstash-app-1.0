@@ -112,9 +112,7 @@ const AccountsView: React.FC<AccountsViewProps> = ({
             <Stack>
               <Fieldset legend="Soma no Total:" variant="filled">
                 <Group>
-                  <Text size="lg">
-                    {accounts[0]?.sum_total == true ? "SIM" : "Não"}
-                  </Text>
+                  <Text size="lg">{accounts[0]?.total}</Text>
                 </Group>
               </Fieldset>
             </Stack>

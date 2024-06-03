@@ -14,19 +14,19 @@ export type Database = {
           color: string | null;
           id: number;
           name: string | null;
-          sum_total: boolean | null;
+          total: number | null;
         };
         Insert: {
           color?: string | null;
           id?: number;
           name?: string | null;
-          sum_total?: boolean | null;
+          total?: number | null;
         };
         Update: {
           color?: string | null;
           id?: number;
           name?: string | null;
-          sum_total?: boolean | null;
+          total?: number | null;
         };
         Relationships: [];
       };

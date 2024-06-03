@@ -14,7 +14,7 @@ const zodSchema = {
   accounts: z.object({
     color: z.string(),
     name: z.string(),
-    sum_total: z.boolean(),
+    total: z.number(),
   }),
   incomeTransactions: z.object({
     amount: z.number(),

@@ -1,13 +1,13 @@
 import {
   Button,
-  Checkbox,
   Divider,
   Group,
+  NumberInput,
   SimpleGrid,
   Title,
   rem,
 } from "@mantine/core";
-import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
+import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
@@ -19,19 +19,20 @@ import useFormActions from "../../../Hooks/useFormActions";
 import { upsertAccounts } from "../../../Services/Accounts";
 import { AccountsType } from "../../../Services/Types/finStash";
 import zodSchema, { zodResolver } from "../../../schema/zod";
+import { formattedAmount } from "../../../util";
 
 type AccountsInfo = z.infer<typeof zodSchema.accounts>;
 
 const AccountsForm: React.FC = () => {
   const navigate = useNavigate();
-  const { incomeSourcesId } = useParams();
+  const { accountsId } = useParams();
 
   const context = useOutletContext<{
     accounts: AccountsType[];
     mutateAccounts: KeyedMutator<AccountsType[]>;
   }>();
 
-  const [loadingButton, setLoadingButton] = useState<boolean>();
+  const [loadingButton, setLoadingButton] = useState<boolean>(false);
 
   const {
     formState: { errors },
@@ -39,26 +40,27 @@ const AccountsForm: React.FC = () => {
     register,
     setValue,
   } = useForm<AccountsInfo>({
-    defaultValues: context?.accounts
-      ? context?.accounts[0]
-      : {
-          name: "",
-          color: "",
-        },
-
+    defaultValues:
+      context?.accounts && context.accounts.length > 0
+        ? context.accounts[0]
+        : {
+            name: "",
+            color: "",
+          },
     resolver: zodResolver(zodSchema.accounts),
   });
+
   const { onError, onSave } = useFormActions();
 
   const _onSubmit = async (form: AccountsInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertAccounts(form, Number(incomeSourcesId));
+      const response = await upsertAccounts(form, Number(accountsId));
 
       context?.mutateAccounts(response);
       setLoadingButton(false);
       navigate(-1);
-      return onSave();
+      onSave();
     } catch (error) {
       setLoadingButton(false);
       onError(error);
@@ -68,8 +70,8 @@ const AccountsForm: React.FC = () => {
   return (
     <>
       <Title order={2}>
-        {context
-          ? `Editar Fonte de Receita # ${context?.accounts[0].id}`
+        {context?.accounts && context.accounts.length > 0
+          ? `Editar Fonte de Receita # ${context.accounts[0].id}`
           : `Criar Fonte de Receita`}
       </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
@@ -84,21 +86,38 @@ const AccountsForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.accounts[0]?.color}
+            defaultValue={
+              context?.accounts && context.accounts.length > 0
+                ? context.accounts[0].color
+                : ""
+            }
             label={"Cor da Fonte de Receita"}
             placeholder={"Defina uma Cor para a Fonte da Receita"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
           />
-
-          <Checkbox
-            ml="md"
-            mt="xl"
-            defaultChecked={context?.accounts[0].sum_total}
-            label="Soma no Total"
-            onChange={(event) => setValue("sum_total", event.target.checked)}
+          <NumberInput
+            radius="lg"
+            prefix="R$ "
+            label="Valor Inicial"
+            required
+            name="total"
+            placeholder="Digite o valor"
+            decimalSeparator=","
+            thousandSeparator="."
+            rightSection={
+              <IconCoins
+                style={{ width: rem(20), height: rem(20) }}
+                stroke={1.5}
+              />
+            }
+            onValueChange={({ value }) => setValue("total", Number(value))}
+            value={
+              context?.accounts && context.accounts.length > 0
+                ? formattedAmount(Number(context.accounts[0]?.total))
+                : ""
+            }
           />
         </SimpleGrid>
-
         <Divider mt="xl" />
         <Group justify="flex-start" mt="xl">
           <Button
@@ -110,7 +129,6 @@ const AccountsForm: React.FC = () => {
           >
             {"Cancelar"}
           </Button>
-
           <Button
             loading={loadingButton}
             rightSection={
