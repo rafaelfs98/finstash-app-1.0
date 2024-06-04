@@ -1,13 +1,13 @@
 import { ExpenseData, RevenuesType } from "../../Services/Types/finStash";
 
-interface SubCategoryBarChartData {
+interface TransformChartData {
   categoryName: string;
   [key: string]: number | string;
 }
 
-export const TransformSubCategoriesData = (
+export const TransformChartData = (
   items: (RevenuesType | ExpenseData)[]
-): SubCategoryBarChartData[] => {
+): TransformChartData[] => {
   const groupedData = items.reduce<Record<string, Record<string, number>>>(
     (acc, item) => {
       const categoryName = item.categories?.name || "Unknown";

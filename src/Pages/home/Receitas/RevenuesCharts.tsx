@@ -5,30 +5,18 @@ import React from "react";
 import { BarChart } from "@mantine/charts";
 
 import { RevenuesType } from "../../../Services/Types/finStash";
-import { TransformCategoriesData } from "../../../util/Constants/TransformCategoriesData";
-import { TransformSubCategoriesData } from "../../../util/Constants/TransformSubCategoriesData";
+
 import { formattedAmount } from "../../../util";
+import { TransformChartData } from "../../../util/Constants/TransformChartData";
 
 type RevenuesChartsProps = {
   revenues: RevenuesType[];
 };
 
 const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
-  const barChartDataRevenues = TransformCategoriesData(
-    revenues,
-    "transactionDate",
-    "categories"
-  );
+  const barChartDataRevenues = TransformChartData(revenues);
 
-  const barSubChartDataRevenues = TransformSubCategoriesData(revenues);
-
-  const categoriesColorsRevenues = [
-    ...new Map(
-      revenues.map((item) => [item.categories?.name, item.categories?.color])
-    ),
-  ];
-
-  const subCategoriesColorsRevenues = [
+  const colorsRevenues = [
     ...new Map(
       revenues.map((item) => [
         item.sub_categories?.name,
@@ -37,14 +25,7 @@ const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
     ),
   ];
 
-  const barChartSeriesRevenues = categoriesColorsRevenues
-    .filter(([name]) => name)
-    .map(([name, color]) => ({
-      name: name as string,
-      color: color || "violet.6",
-    }));
-
-  const barChartSeriesSubCategoriesRevenues = subCategoriesColorsRevenues
+  const barChartSeriesRevenues = colorsRevenues
     .filter(([name]) => name)
     .map(([name, color]) => ({
       name: name as string,
@@ -56,32 +37,14 @@ const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
       <Stack>
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Text size="lg" mb="md">
-            Categorias
+            Receitas por categorias
           </Text>
           <BarChart
             h={300}
             data={barChartDataRevenues}
-            dataKey="month"
-            type="stacked"
-            series={barChartSeriesRevenues}
-            tickLine="y"
-            withLegend
-            valueFormatter={(value) => formattedAmount(Number(value))}
-          />
-        </Card>
-      </Stack>
-
-      <Stack>
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Text size="lg" mb="md">
-            Subcategorias
-          </Text>
-          <BarChart
-            h={300}
-            data={barSubChartDataRevenues}
             dataKey="categoryName"
             type="stacked"
-            series={barChartSeriesSubCategoriesRevenues}
+            series={barChartSeriesRevenues}
             tickLine="y"
             valueFormatter={(value) => formattedAmount(Number(value))}
           />
