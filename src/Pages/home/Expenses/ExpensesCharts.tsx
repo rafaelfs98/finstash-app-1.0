@@ -36,15 +36,19 @@ const ExpensesCharts: React.FC<ExpensesChartsProps> = ({ expense }) => {
           <Text size="lg" mb="md">
             Despesas por categorias
           </Text>
-          <BarChart
-            h={300}
-            data={barChartDataExpenses}
-            dataKey="categoryName"
-            type="stacked"
-            series={barChartSeriesExpenses}
-            valueFormatter={(value) => formattedAmount(Number(value))}
-            tickLine="y"
-          />
+          {expense.length ? (
+            <BarChart
+              h={300}
+              data={barChartDataExpenses}
+              dataKey="categoryName"
+              type="stacked"
+              series={barChartSeriesExpenses}
+              valueFormatter={(value) => formattedAmount(Number(value))}
+              tickLine="y"
+            />
+          ) : (
+            "Não Despesas para o Mês informado"
+          )}
         </Card>
       </Stack>
     </React.Fragment>

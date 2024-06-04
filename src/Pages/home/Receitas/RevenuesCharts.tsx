@@ -39,15 +39,19 @@ const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
           <Text size="lg" mb="md">
             Receitas por categorias
           </Text>
-          <BarChart
-            h={300}
-            data={barChartDataRevenues}
-            dataKey="categoryName"
-            type="stacked"
-            series={barChartSeriesRevenues}
-            tickLine="y"
-            valueFormatter={(value) => formattedAmount(Number(value))}
-          />
+          {revenues.length ? (
+            <BarChart
+              h={300}
+              data={barChartDataRevenues}
+              dataKey="categoryName"
+              type="stacked"
+              series={barChartSeriesRevenues}
+              tickLine="y"
+              valueFormatter={(value) => formattedAmount(Number(value))}
+            />
+          ) : (
+            "Não Receitas para o Mês Informado"
+          )}
         </Card>
       </Stack>
     </React.Fragment>
