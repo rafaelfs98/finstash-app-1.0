@@ -1,19 +1,10 @@
-import {
-  AppShell,
-  Divider,
-  Flex,
-  NavLink,
-  ScrollArea,
-  Stack,
-} from "@mantine/core";
+import { AppShell, Flex, NavLink, ScrollArea, Stack } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import {
   IconCategory,
   IconCategory2,
   IconHome,
-  IconSettings,
-  IconShoppingCart,
   IconTable,
   IconTransactionDollar,
   IconWallet,
@@ -89,14 +80,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               active={activeLinkMain === "transações"}
             />
             <NavLink
-              disabled
-              title="Lista de Compras"
-              label="Lista de Compras"
-              leftSection={<IconShoppingCart size="1.2rem" stroke={2} />}
-              onClick={() => handleLinkMainClick("Lista de Compras")}
-              active={activeLinkMain === "Lista de Compras"}
-            />
-            <NavLink
               title="Cadastros"
               label="Cadastros"
               leftSection={<IconTable size="1.2rem" stroke={2} />}
@@ -145,19 +128,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
             </NavLink>
           </Stack>
         </ScrollArea>
-      </AppShell.Section>
-
-      <AppShell.Section>
-        <Stack justify="center" gap={10}>
-          <NavLink
-            title="Configuracoes"
-            leftSection={<IconSettings size="1.2rem" stroke={2} />}
-            label="Configuracoes"
-            onClick={() => handleLinkMainClick("Configuracoes")}
-            active={activeLinkMain === "Configuracoes"}
-          />
-          <Divider />
-        </Stack>
       </AppShell.Section>
     </AppShell.Navbar>
   );
