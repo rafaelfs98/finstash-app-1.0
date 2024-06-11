@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import ExpensesDetails from "./ExpensesDetails";
 import { useDisclosure } from "@mantine/hooks";
 import { ExpenseData } from "../../../Services/Types/finStash";
+import { updateExpensesPaid } from "../../../Services/Expense";
 
 type ExpensesCardViewProps = {
   date: Date | null;
@@ -35,8 +36,15 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>();
   const [expenseItem, setExpenseItem] = useState<ExpenseData>();
 
-  const { data, isLoading } = useFetcher<any>({
-    uri: `expense?dueDate=eq.${dayjs(date).format("YYYY-MM-DD")}&order=id.asc`,
+  const year = dayjs(date).format("YYYY");
+  const month = dayjs(date).format("MM");
+
+  const { data, isLoading, mutate } = useFetcher<any>({
+    uri: `expense?dueDate=gte.${year}-${month}-01&dueDate=lt.${dayjs(
+      `${year}-${month}-01`
+    )
+      .add(1, "month")
+      .format("YYYY-MM-DD")}&order=id.asc`,
     select: `
     id,
     amount,
@@ -61,7 +69,6 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
   });
 
   const items = data || [];
-
   const filteredData = items?.filter((item) =>
     Object.keys(item).some((key) => {
       const value = item[key];
@@ -123,6 +130,13 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
                               variant={item.paid ? "filled" : "default"}
                               radius="md"
                               size={36}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                updateExpensesPaid(
+                                  item.paid ? false : true,
+                                  item.id
+                                ).then(mutate);
+                              }}
                             >
                               <IconCurrencyDollar size="1.5rem" stroke={1.5} />
                             </ActionIcon>
