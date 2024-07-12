@@ -9,18 +9,19 @@ import {
   ScrollArea,
   SimpleGrid,
   Text,
-  Tooltip,
-} from "@mantine/core";
-import { IconCurrencyDollar } from "@tabler/icons-react";
-import React, { useMemo, useState } from "react";
-import Loading from "../../../Components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
-import { formattedAmount } from "../../../util";
-import dayjs from "dayjs";
-import ExpensesDetails from "./ExpensesDetails";
-import { useDisclosure } from "@mantine/hooks";
-import { ExpenseData } from "../../../Services/Types/finStash";
-import { updateExpensesPaid } from "../../../Services/Expense";
+  Tooltip
+} from '@mantine/core';
+import { IconCurrencyDollar } from '@tabler/icons-react';
+import React, { useMemo, useState } from 'react';
+import Loading from '../../../Components/Loader';
+import { useFetcher } from '../../../Hooks/useFetcher';
+import { formattedAmount } from '../../../util';
+import dayjs from 'dayjs';
+import ExpensesDetails from './ExpensesDetails';
+import { useDisclosure } from '@mantine/hooks';
+import { ExpenseData } from '../../../Services/Types/finStash';
+import { updateExpensePaid } from '../../../Services/Expense';
+import { modals } from '@mantine/modals';
 
 type ExpensesCardViewProps = {
   date: Date | null;
@@ -29,22 +30,22 @@ type ExpensesCardViewProps = {
 
 const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
   date,
-  search,
+  search
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [opened, { open, close }] = useDisclosure(false);
   const [isOpen, setIsOpen] = useState<boolean>();
   const [expenseItem, setExpenseItem] = useState<ExpenseData>();
 
-  const year = dayjs(date).format("YYYY");
-  const month = dayjs(date).format("MM");
+  const year = dayjs(date).format('YYYY');
+  const month = dayjs(date).format('MM');
 
   const { data, isLoading, mutate } = useFetcher<any>({
     uri: `expense?dueDate=gte.${year}-${month}-01&dueDate=lt.${dayjs(
       `${year}-${month}-01`
     )
-      .add(1, "month")
-      .format("YYYY-MM-DD")}&order=id.asc`,
+      .add(1, 'month')
+      .format('YYYY-MM-DD')}&order=id.asc`,
     select: `
     id,
     amount,
@@ -65,14 +66,14 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
      id,
      name,
      color
-         )`,
+         )`
   });
 
   const items = data || [];
   const filteredData = items?.filter((item) =>
     Object.keys(item).some((key) => {
       const value = item[key];
-      if (typeof value === "object" && value !== null) {
+      if (typeof value === 'object' && value !== null) {
         return Object.values(value).some(
           (innerValue) =>
             innerValue &&
@@ -124,18 +125,34 @@ const ExpensesCardView: React.FC<ExpensesCardViewProps> = ({
                     >
                       <CardSection withBorder inheritPadding py="xs" mb={10}>
                         <Group justify="flex-end" mb="xs">
-                          <Tooltip label="Pago">
+                          <Tooltip label={item.paid ? 'Pago' : 'Pendente'}>
                             <ActionIcon
                               color="green"
-                              variant={item.paid ? "filled" : "default"}
+                              variant={item.paid ? 'filled' : 'default'}
                               radius="md"
                               size={36}
                               onClick={(event) => {
                                 event.preventDefault();
-                                updateExpensesPaid(
-                                  item.paid ? false : true,
-                                  item.id
-                                ).then(mutate);
+                                event.stopPropagation();
+
+                                const title = item.paid
+                                  ? 'Deseja marcar esta conta como pendente ?'
+                                  : 'Deseja marcar esta conta como paga ?';
+
+                                modals.openConfirmModal({
+                                  withCloseButton: false,
+                                  title: title,
+                                  centered: true,
+                                  labels: {
+                                    confirm: 'Sim',
+                                    cancel: 'Cancelar'
+                                  },
+                                  onConfirm: () =>
+                                    updateExpensePaid(
+                                      item.paid ? false : true,
+                                      item.id
+                                    ).then(mutate)
+                                });
                               }}
                             >
                               <IconCurrencyDollar size="1.5rem" stroke={1.5} />

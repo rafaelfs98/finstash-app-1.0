@@ -7,18 +7,18 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  rem,
-} from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../../Components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
-import { deleteCategories } from "../../../Services/Categories";
-import { CategoriesType } from "../../../Services/Types/finStash";
-import { selectedItemIdAtom } from "../../../atoms/app.atom";
+  rem
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { useAtom } from 'jotai';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../../../Components/Loader';
+import { useFetcher } from '../../../Hooks/useFetcher';
+import { deleteCategories } from '../../../Services/Categories';
+import { CategoriesType } from '../../../Services/Types/finStash';
+import { selectedItemIdAtom } from '../../../atoms/app.atom';
 
 type CategorieViewProps = {
   opened: boolean;
@@ -29,14 +29,14 @@ type CategorieViewProps = {
 const CategorieView: React.FC<CategorieViewProps> = ({
   opened,
   close,
-  setIsOpen,
+  setIsOpen
 }) => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
   const navigate = useNavigate();
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
-      title: "Excluir",
+      title: 'Excluir',
       centered: true,
       children: (
         <Text size="sm">
@@ -44,9 +44,9 @@ const CategorieView: React.FC<CategorieViewProps> = ({
           haverá retorno.
         </Text>
       ),
-      labels: { confirm: "Excluir", cancel: "Cancelar" },
-      confirmProps: { color: "red" },
-      onConfirm: () => handleDelete(),
+      labels: { confirm: 'Excluir', cancel: 'Cancelar' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => handleDelete()
     });
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -62,7 +62,7 @@ const CategorieView: React.FC<CategorieViewProps> = ({
   };
 
   const { data, isLoading } = useFetcher<CategoriesType>({
-    uri: `categories?id=eq.${selectedItemId}`,
+    uri: `categories?id=eq.${selectedItemId}`
   });
 
   const category = data || [];

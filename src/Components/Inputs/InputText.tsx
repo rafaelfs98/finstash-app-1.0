@@ -1,7 +1,7 @@
 // CustomTextInput.tsx
 
-import React from "react";
-import { TextInput, TextInputProps } from "@mantine/core";
+import React from 'react';
+import { TextInput, TextInputProps } from '@mantine/core';
 
 type InputTextProps = {
   error?: string;

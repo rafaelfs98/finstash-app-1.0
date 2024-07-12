@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import useSWR from "swr";
-import { supabase } from "../Services/Supabase/supabaseClient";
+import useSWR from 'swr';
+import { supabase } from '../Services/Supabase/supabaseClient';
 
 interface Query {
   uri: string;
   select?: string;
 }
 
-export function useFetcher<T>({ uri, select = "*" }: Query) {
+export function useFetcher<T>({ uri, select = '*' }: Query) {
   const fetcher = async (url: string) => {
     const { data, error } = await supabase.from(url).select(select);
     if (error) {

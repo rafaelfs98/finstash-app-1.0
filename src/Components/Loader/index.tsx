@@ -1,4 +1,4 @@
-import { Container, Loader } from "@mantine/core";
+import { Container, Loader } from '@mantine/core';
 
 const Loading = () => {
   return (

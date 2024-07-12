@@ -1,10 +1,10 @@
-import { Button, Group, TextInput, rem } from "@mantine/core";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
-import React, { useState } from "react";
-import RevenuesCardView from "./RevenuesCardView";
+import { Button, Group, TextInput, rem } from '@mantine/core';
+import { IconPlus, IconSearch } from '@tabler/icons-react';
+import React, { useState } from 'react';
+import RevenuesCardView from './RevenuesCardView';
 
 const RevenuesTable: React.FC = () => {
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
 
   return (
     <>

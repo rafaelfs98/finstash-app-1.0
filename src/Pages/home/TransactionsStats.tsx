@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Group, Paper, SimpleGrid, Text } from "@mantine/core";
-import { IconCoin, IconPigMoney, IconReceipt } from "@tabler/icons-react";
-import React from "react";
+ 
+import { Card, Group, Paper, SimpleGrid, Text } from '@mantine/core';
+import { IconCoin, IconPigMoney, IconReceipt } from '@tabler/icons-react';
+import React from 'react';
 
-import { ExpenseData, RevenuesType } from "../../Services/Types/finStash";
-import classes from "../../Styles/MantineCss/TransactionsStats.module.css";
+import { ExpenseData, RevenuesType } from '../../Services/Types/finStash';
+import classes from '../../Styles/MantineCss/TransactionsStats.module.css';
 
 type TransactionsStatsProps = {
   expense: ExpenseData[];
@@ -13,7 +13,7 @@ type TransactionsStatsProps = {
 
 const TransactionsStats: React.FC<TransactionsStatsProps> = ({
   expense,
-  revenues,
+  revenues
 }) => {
   const totalRevenue =
     revenues.reduce((acc, revenue) => acc + Number(revenue.amount), 0) || 0;
@@ -70,7 +70,7 @@ const TransactionsStats: React.FC<TransactionsStatsProps> = ({
             </Group>
 
             <Group align="flex-end" gap="xs" mt={25}>
-              <Text c={total > 0 ? "green" : "red"} className={classes.value}>
+              <Text c={total > 0 ? 'green' : 'red'} className={classes.value}>
                 R$ {total.toFixed(2)}
               </Text>
             </Group>

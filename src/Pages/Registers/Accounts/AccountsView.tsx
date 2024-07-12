@@ -7,18 +7,18 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  rem,
-} from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../../Components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
-import { deleteAccounts } from "../../../Services/Accounts";
-import { AccountsType } from "../../../Services/Types/finStash";
-import { selectedItemIdAtom } from "../../../atoms/app.atom";
+  rem
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { useAtom } from 'jotai';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../../../Components/Loader';
+import { useFetcher } from '../../../Hooks/useFetcher';
+import { deleteAccounts } from '../../../Services/Accounts';
+import { AccountsType } from '../../../Services/Types/finStash';
+import { selectedItemIdAtom } from '../../../atoms/app.atom';
 
 type AccountsViewProps = {
   opened: boolean;
@@ -29,7 +29,7 @@ type AccountsViewProps = {
 const AccountsView: React.FC<AccountsViewProps> = ({
   opened,
   close,
-  setIsOpen,
+  setIsOpen
 }) => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
 
@@ -37,7 +37,7 @@ const AccountsView: React.FC<AccountsViewProps> = ({
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
-      title: "Excluir",
+      title: 'Excluir',
       centered: true,
       children: (
         <Text size="sm">
@@ -45,9 +45,9 @@ const AccountsView: React.FC<AccountsViewProps> = ({
           haverá retorno.
         </Text>
       ),
-      labels: { confirm: "Excluir", cancel: "Cancelar" },
-      confirmProps: { color: "red" },
-      onConfirm: () => handleDelete(),
+      labels: { confirm: 'Excluir', cancel: 'Cancelar' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => handleDelete()
     });
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -63,7 +63,7 @@ const AccountsView: React.FC<AccountsViewProps> = ({
   };
 
   const { data, isLoading } = useFetcher<AccountsType>({
-    uri: `accounts?id=eq.${selectedItemId}`,
+    uri: `accounts?id=eq.${selectedItemId}`
   });
 
   const accounts = data || [];

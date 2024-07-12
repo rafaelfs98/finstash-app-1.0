@@ -8,15 +8,15 @@ import {
   TableProps,
   Text,
   TextInput,
-  rem,
-} from "@mantine/core";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
-import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useFetcher } from "../../Hooks/useFetcher";
-import Loading from "../Loader";
-import ListViewHeader from "./ListViewHeader";
-import ListViewRow from "./ListViewRow";
+  rem
+} from '@mantine/core';
+import { IconPlus, IconSearch } from '@tabler/icons-react';
+import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useFetcher } from '../../Hooks/useFetcher';
+import Loading from '../Loader';
+import ListViewHeader from './ListViewHeader';
+import ListViewRow from './ListViewRow';
 
 export interface TableColumn {
   key: string;
@@ -41,33 +41,33 @@ const ListView: React.FC<ListViewProps> = ({
 }) => {
   const navigate = useNavigate();
   const [sortColumn, setSortColumn] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [search, setSearch] = useState<string>("");
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [search, setSearch] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data, isLoading } = useFetcher<any>({
     uri: resource,
-    select: relationships,
+    select: relationships
   });
 
   const dataItems = data || [];
 
   const handleSort = (columnKey: string) => {
     if (columnKey === sortColumn) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
       setSortColumn(columnKey);
-      setSortOrder("asc");
+      setSortOrder('asc');
     }
   };
 
   const sortedData = dataItems.slice().sort((a, b) => {
     if (sortColumn) {
       if (a[sortColumn] < b[sortColumn]) {
-        return sortOrder === "asc" ? -1 : 1;
+        return sortOrder === 'asc' ? -1 : 1;
       }
       if (a[sortColumn] > b[sortColumn]) {
-        return sortOrder === "asc" ? 1 : -1;
+        return sortOrder === 'asc' ? 1 : -1;
       }
     }
     return 0;
@@ -118,14 +118,14 @@ const ListView: React.FC<ListViewProps> = ({
             <Button
               mb="md"
               size="compact-lg"
-              onClick={() => navigate("create")}
+              onClick={() => navigate('create')}
             >
               <IconPlus size="1rem" />
             </Button>
           </Group>
 
           <ScrollArea>
-            <Table highlightOnHover mb={50} mx={"auto"} {...otherprops}>
+            <Table highlightOnHover mb={50} mx={'auto'} {...otherprops}>
               <Table.Thead>
                 <ListViewHeader
                   columns={columns}

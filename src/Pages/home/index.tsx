@@ -4,30 +4,30 @@ import {
   Checkbox,
   SimpleGrid,
   Skeleton,
-  Stack,
-} from "@mantine/core";
-import { MonthPickerInput } from "@mantine/dates";
-import React, { useState } from "react";
+  Stack
+} from '@mantine/core';
+import { MonthPickerInput } from '@mantine/dates';
+import React, { useState } from 'react';
 
-import { useFetcher } from "../../Hooks/useFetcher";
+import { useFetcher } from '../../Hooks/useFetcher';
 import {
   AccountsType,
   ExpenseData,
-  RevenuesType,
-} from "../../Services/Types/finStash";
+  RevenuesType
+} from '../../Services/Types/finStash';
 
-import useFinanceData from "../../Hooks/useFinanceData";
-import AccountsChart from "./AccountsChart/AccountsChart";
-import ExpensesCharts from "./Expenses/ExpensesCharts";
-import RevenuesCharts from "./Receitas/RevenuesCharts";
-import TransactionsStats from "./TransactionsStats";
+import useFinanceData from '../../Hooks/useFinanceData';
+import AccountsChart from './AccountsChart/AccountsChart';
+import ExpensesCharts from './Expenses/ExpensesCharts';
+import RevenuesCharts from './Receitas/RevenuesCharts';
+import TransactionsStats from './TransactionsStats';
 
 export function Home() {
   const currentMonth = new Date();
   const [value, setValue] = useState<Date | null>(currentMonth);
   const [valueRange, setValueRange] = useState<[Date | null, Date | null]>([
     null,
-    null,
+    null
   ]);
   const [totalChecked, setTotalChecked] = useState<boolean>(false);
   const [monthChecked, setMonthChecked] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export function Home() {
 
   const { data: accounts, isLoading: isLoadingAccounts } =
     useFetcher<AccountsType>({
-      uri: `accounts`,
+      uri: 'accounts'
     });
 
   const { filteredExpense, filteredRevenues, isLoading } = useFinanceData(

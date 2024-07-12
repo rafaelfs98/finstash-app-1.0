@@ -1,7 +1,7 @@
-import { Tabs } from "@mantine/core";
-import { IconPigMoney, IconReceipt } from "@tabler/icons-react";
-import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Tabs } from '@mantine/core';
+import { IconPigMoney, IconReceipt } from '@tabler/icons-react';
+import React, { useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 interface Tab {
   label: string;
@@ -12,22 +12,26 @@ interface Tab {
 
 const tabs: Tab[] = [
   {
-    label: "Receitas",
-    value: "receitas",
+    label: 'Receitas',
+    value: 'receitas',
     icon: <IconPigMoney size="1.2rem" stroke={2} />,
-    route: "receitas",
+    route: 'receitas'
   },
   {
-    label: "Despesas",
-    value: "despesas",
+    label: 'Despesas',
+    value: 'despesas',
     icon: <IconReceipt size="1.2rem" stroke={2} />,
-    route: "despesas",
-  },
+    route: 'despesas'
+  }
 ];
 
 const Transactions: React.FC = () => {
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState<string>();
+
+  const location = useLocation();
+
+  const currentTab = location.pathname.split('/').pop();
 
   const handleTabChange = (value: string) => {
     setTabValue(value);
@@ -36,7 +40,7 @@ const Transactions: React.FC = () => {
 
   return (
     <Tabs
-      defaultValue={tabValue ? tabValue : "receitas"}
+      defaultValue={tabValue ? tabValue : currentTab}
       onChange={() => handleTabChange}
     >
       <Tabs.List grow>

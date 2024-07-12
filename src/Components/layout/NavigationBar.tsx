@@ -1,5 +1,5 @@
-import { AppShell, Flex, NavLink, ScrollArea, Stack } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { AppShell, Flex, NavLink, ScrollArea, Stack } from '@mantine/core';
+import { useEffect, useState } from 'react';
 
 import {
   IconCategory,
@@ -7,11 +7,11 @@ import {
   IconHome,
   IconTable,
   IconTransactionDollar,
-  IconWallet,
-} from "@tabler/icons-react";
+  IconWallet
+} from '@tabler/icons-react';
 
-import { useNavigate } from "react-router-dom";
-import classes from "../../Styles/MantineCss/Navbar.module.css";
+import { useNavigate } from 'react-router-dom';
+import classes from '../../Styles/MantineCss/Navbar.module.css';
 
 type NavigationBarProps = {
   toggle: () => void;
@@ -20,10 +20,10 @@ type NavigationBarProps = {
 const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
   const navigate = useNavigate();
   const [activeLinkMain, setActiveLinkMain] = useState<string>(
-    sessionStorage.getItem("activeLinkMain") || "Inicio"
+    sessionStorage.getItem('activeLinkMain') || 'Inicio'
   );
   const [activeLinkChildren, setActiveLinkChildren] = useState<string>(
-    sessionStorage.getItem("activeLinkChildren") || ""
+    sessionStorage.getItem('activeLinkChildren') || ''
   );
 
   const handleLinkMainClick = (title: string) => {
@@ -35,11 +35,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
   };
 
   useEffect(() => {
-    if (activeLinkMain !== "Cadastros") {
-      setActiveLinkChildren("");
+    if (activeLinkMain !== 'Cadastros') {
+      setActiveLinkChildren('');
     }
-    sessionStorage.setItem("activeLinkMain", activeLinkMain);
-    sessionStorage.setItem("activeLinkChildren", activeLinkChildren);
+    sessionStorage.setItem('activeLinkMain', activeLinkMain);
+    sessionStorage.setItem('activeLinkChildren', activeLinkChildren);
   }, [activeLinkMain, activeLinkChildren]);
 
   return (
@@ -62,31 +62,31 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               label="Inicio"
               leftSection={<IconHome size="1.2rem" stroke={2} />}
               onClick={() => {
-                navigate("/");
+                navigate('/');
                 toggle();
-                handleLinkMainClick("Inicio");
+                handleLinkMainClick('Inicio');
               }}
-              active={activeLinkMain === "Inicio"}
+              active={activeLinkMain === 'Inicio'}
             />
             <NavLink
               title="transações"
               label="Transações"
               leftSection={<IconTransactionDollar size="1.2rem" stroke={2} />}
               onClick={() => {
-                handleLinkMainClick("transações");
+                handleLinkMainClick('transações');
                 toggle();
-                navigate("transações/receitas");
+                navigate('transações/receitas');
               }}
-              active={activeLinkMain === "transações"}
+              active={activeLinkMain === 'transações'}
             />
             <NavLink
               title="Cadastros"
               label="Cadastros"
               leftSection={<IconTable size="1.2rem" stroke={2} />}
               onClick={() => {
-                return handleLinkMainClick("Cadastros");
+                return handleLinkMainClick('Cadastros');
               }}
-              active={activeLinkMain === "Cadastros"}
+              active={activeLinkMain === 'Cadastros'}
             >
               <NavLink
                 mt="sm"
@@ -95,11 +95,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
                 label="Categorias"
                 leftSection={<IconCategory size="1.2rem" stroke={2} />}
                 onClick={() => {
-                  handleLinkChildrenClick("Categorias");
+                  handleLinkChildrenClick('Categorias');
                   toggle();
-                  navigate("cadastros/categorias/receitas");
+                  navigate('cadastros/categorias/receitas');
                 }}
-                active={activeLinkChildren === "Categorias"}
+                active={activeLinkChildren === 'Categorias'}
               />
               <NavLink
                 variant="subtle"
@@ -107,11 +107,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
                 label="Contas"
                 leftSection={<IconWallet size="1.2rem" stroke={2} />}
                 onClick={() => {
-                  handleLinkChildrenClick("Contas");
+                  handleLinkChildrenClick('Contas');
                   toggle();
-                  navigate("cadastros/contas");
+                  navigate('cadastros/contas');
                 }}
-                active={activeLinkChildren === "Contas"}
+                active={activeLinkChildren === 'Contas'}
               />
               <NavLink
                 variant="subtle"
@@ -119,11 +119,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
                 label="Sub Categorias"
                 leftSection={<IconCategory2 size="1.2rem" stroke={2} />}
                 onClick={() => {
-                  handleLinkChildrenClick("SubCategorias");
+                  handleLinkChildrenClick('SubCategorias');
                   toggle();
-                  navigate("cadastros/subcategorias/receitas");
+                  navigate('cadastros/subcategorias/receitas');
                 }}
-                active={activeLinkChildren === "SubCategorias"}
+                active={activeLinkChildren === 'SubCategorias'}
               />
             </NavLink>
           </Stack>
