@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Stack, Text } from "@mantine/core";
-import React from "react";
+ 
+import { Card, Stack, Text } from '@mantine/core';
+import React from 'react';
 
-import { BarChart } from "@mantine/charts";
+import { BarChart } from '@mantine/charts';
 
-import { RevenuesType } from "../../../Services/Types/finStash";
+import { RevenuesType } from '../../../Services/Types/finStash';
 
-import { formattedAmount } from "../../../util";
-import { TransformChartData } from "../../../util/Constants/TransformChartData";
+import { formattedAmount } from '../../../util';
+import { TransformChartData } from '../../../util/Constants/TransformChartData';
 
 type RevenuesChartsProps = {
   revenues: RevenuesType[];
@@ -20,16 +20,16 @@ const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
     ...new Map(
       revenues.map((item) => [
         item.sub_categories?.name,
-        item.sub_categories?.color,
+        item.sub_categories?.color
       ])
-    ),
+    )
   ];
 
   const barChartSeriesRevenues = colorsRevenues
     .filter(([name]) => name)
     .map(([name, color]) => ({
       name: name as string,
-      color: color || "violet.6",
+      color: color || 'violet.6'
     }));
 
   return (
@@ -50,7 +50,7 @@ const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
               valueFormatter={(value) => formattedAmount(Number(value))}
             />
           ) : (
-            "Não Receitas para o Mês Informado"
+            'Não Receitas para o Mês Informado'
           )}
         </Card>
       </Stack>

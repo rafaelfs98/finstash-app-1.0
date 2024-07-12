@@ -7,18 +7,18 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  rem,
-} from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../../Components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
-import { SubCategoriesType } from "../../../Services/Types/finStash";
-import { selectedItemIdAtom } from "../../../atoms/app.atom";
-import { deleteSubCategories } from "../../../Services/SubCategories";
+  rem
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { useAtom } from 'jotai';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../../../Components/Loader';
+import { useFetcher } from '../../../Hooks/useFetcher';
+import { SubCategoriesType } from '../../../Services/Types/finStash';
+import { selectedItemIdAtom } from '../../../atoms/app.atom';
+import { deleteSubCategories } from '../../../Services/SubCategories';
 
 type SubCategorieViewProps = {
   opened: boolean;
@@ -29,7 +29,7 @@ type SubCategorieViewProps = {
 const SubCategorieView: React.FC<SubCategorieViewProps> = ({
   opened,
   close,
-  setIsOpen,
+  setIsOpen
 }) => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
 
@@ -37,7 +37,7 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
-      title: "Excluir",
+      title: 'Excluir',
       centered: true,
       children: (
         <Text size="sm">
@@ -45,9 +45,9 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
           haverá retorno.
         </Text>
       ),
-      labels: { confirm: "Excluir", cancel: "Cancelar" },
-      confirmProps: { color: "red" },
-      onConfirm: () => handleDelete(),
+      labels: { confirm: 'Excluir', cancel: 'Cancelar' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => handleDelete()
     });
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -72,7 +72,7 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
      id,
      name,
      color
-      )`,
+      )`
   });
 
   const subCategory = data || [];

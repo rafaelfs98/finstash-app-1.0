@@ -1,11 +1,11 @@
-import { Box, Card, Grid, Group, SimpleGrid, Text } from "@mantine/core";
-import React from "react";
+import { Box, Card, Grid, Group, SimpleGrid, Text } from '@mantine/core';
+import React from 'react';
 
-import { PieChart, PieChartCell } from "@mantine/charts";
-import { IconWallet } from "@tabler/icons-react";
-import { AccountsType } from "../../../Services/Types/finStash";
-import classes from "../../../Styles/MantineCss/AccountsChart.module.css";
-import { formattedAmount } from "../../../util";
+import { PieChart, PieChartCell } from '@mantine/charts';
+import { IconWallet } from '@tabler/icons-react';
+import { AccountsType } from '../../../Services/Types/finStash';
+import classes from '../../../Styles/MantineCss/AccountsChart.module.css';
+import { formattedAmount } from '../../../util';
 
 type AccountsChartsProps = {
   accounts: AccountsType[];
@@ -15,7 +15,7 @@ const AccountsChart: React.FC<AccountsChartsProps> = ({ accounts }) => {
   const pieChartData: PieChartCell[] = accounts.map((account) => ({
     name: account.name,
     value: account.total ?? 0,
-    color: account.color,
+    color: account.color
   }));
 
   const totalAccounts = accounts.reduce(
@@ -29,7 +29,7 @@ const AccountsChart: React.FC<AccountsChartsProps> = ({ accounts }) => {
     label: account.name,
     count: account.total,
     part: (account.total / totalAccounts) * 100,
-    color: account.color,
+    color: account.color
   }));
 
   return (

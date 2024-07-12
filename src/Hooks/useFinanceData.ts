@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
-import { ExpenseData, RevenuesType } from "../Services/Types/finStash";
-import { useFetcher } from "./useFetcher";
+import dayjs from 'dayjs';
+import { ExpenseData, RevenuesType } from '../Services/Types/finStash';
+import { useFetcher } from './useFetcher';
 
 interface FilteredData {
   filteredExpense: ExpenseData[] | undefined;
@@ -17,7 +17,7 @@ const useFinanceData = (
 ): FilteredData => {
   const { data: expense, isLoading: isLoadingExpense } =
     useFetcher<ExpenseData>({
-      uri: `expense`,
+      uri: 'expense',
       select: `
       id,
       amount,
@@ -38,12 +38,12 @@ const useFinanceData = (
        id,
        name,
        color
-      )`,
+      )`
     });
 
   const { data: revenues, isLoading: isLoadingRevenues } =
     useFetcher<RevenuesType>({
-      uri: `revenues?order=id.asc`,
+      uri: 'revenues?order=id.asc',
       select: `
       id,
       amount,
@@ -63,7 +63,7 @@ const useFinanceData = (
        id,
        name,
        color
-      )`,
+      )`
     });
 
   const filterData = () => {
@@ -71,20 +71,20 @@ const useFinanceData = (
       return { filteredExpense: expense, filteredRevenues: revenues };
     }
     if (monthChecked && value) {
-      const formattedMonth = dayjs(value).format("YYYY-MM");
+      const formattedMonth = dayjs(value).format('YYYY-MM');
       const filteredExpense = expense?.filter(
-        (item) => dayjs(item.dueDate).format("YYYY-MM") === formattedMonth
+        (item) => dayjs(item.dueDate).format('YYYY-MM') === formattedMonth
       );
       const filteredRevenues = revenues?.filter(
         (item) =>
-          dayjs(item.transactionDate).format("YYYY-MM") === formattedMonth
+          dayjs(item.transactionDate).format('YYYY-MM') === formattedMonth
       );
       return { filteredExpense, filteredRevenues };
     }
     if (rangeChecked && valueRange) {
       const [start, end] = valueRange;
-      const startDate = start ? dayjs(start).startOf("month") : null;
-      const endDate = end ? dayjs(end).endOf("month") : null;
+      const startDate = start ? dayjs(start).startOf('month') : null;
+      const endDate = end ? dayjs(end).endOf('month') : null;
       const filteredExpense = expense?.filter((item) => {
         const itemDate = dayjs(item.dueDate);
         return (

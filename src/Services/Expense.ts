@@ -1,13 +1,13 @@
-import { supabase } from "./Supabase/supabaseClient";
-import { ExpenseData } from "./Types/finStash";
+import { supabase } from './Supabase/supabaseClient';
+import { ExpenseData } from './Types/finStash';
 
-export const updateExpensesPaid = async (paid: boolean, expenseId: number) => {
+export const updateExpensePaid = async (paid: boolean, expenseId: number) => {
   const { data, error } = await supabase
-    .from("expense")
+    .from('expense')
     .update({
-      paid: paid,
+      paid: paid
     })
-    .eq("id", expenseId)
+    .eq('id', expenseId)
     .select();
 
   if (error) {
@@ -15,4 +15,8 @@ export const updateExpensesPaid = async (paid: boolean, expenseId: number) => {
   }
 
   return data as ExpenseData[];
+};
+
+export const deleteExpense = async (expenseId: string) => {
+  await supabase.from('expense').delete().eq('id', expenseId);
 };

@@ -1,7 +1,7 @@
-import { Outlet, useParams } from "react-router-dom";
-import Loading from "../../../Components/Loader";
-import { SubCategoriesType } from "../../../Services/Types/finStash";
-import { useFetcher } from "../../../Hooks/useFetcher";
+import { Outlet, useParams } from 'react-router-dom';
+import Loading from '../../../Components/Loader';
+import { SubCategoriesType } from '../../../Services/Types/finStash';
+import { useFetcher } from '../../../Hooks/useFetcher';
 
 const SubCategoryOutlet = () => {
   const { subCategoryId } = useParams<{ subCategoryId: string }>();
@@ -9,9 +9,9 @@ const SubCategoryOutlet = () => {
   const {
     data,
     mutate: mutateSubCategories,
-    isLoading,
+    isLoading
   } = useFetcher<SubCategoriesType>({
-    uri: `sub_categories?id=eq.${subCategoryId}`,
+    uri: `sub_categories?id=eq.${subCategoryId}`
   });
 
   if (isLoading) {
@@ -24,7 +24,7 @@ const SubCategoryOutlet = () => {
       <Outlet
         context={{
           subCategories,
-          mutateSubCategories,
+          mutateSubCategories
         }}
       />
     );

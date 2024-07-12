@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // CustomTextInput.tsx
 
-import React from "react";
-import { Select, SelectProps } from "@mantine/core";
+import React from 'react';
+import { Select, SelectProps } from '@mantine/core';
 
 type InputSelectProps = {
   error?: string;
@@ -11,7 +11,7 @@ type InputSelectProps = {
   placeholder?: string;
   setType: (value: string) => void;
   required?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   register?: any;
 } & SelectProps;
 

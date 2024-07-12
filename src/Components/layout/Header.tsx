@@ -1,8 +1,8 @@
-import { AppShell, Burger, Flex, Image } from "@mantine/core";
-import React from "react";
+import { AppShell, Burger, Flex, Image } from '@mantine/core';
+import React from 'react';
 
-import classes from "../../Styles/MantineCss/Header.module.css";
-import ThemeTogle from "./ThemeToglle";
+import classes from '../../Styles/MantineCss/Header.module.css';
+import ThemeTogle from './ThemeToglle';
 
 type HeaderProps = {
   toggle: () => void;

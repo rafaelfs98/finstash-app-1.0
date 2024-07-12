@@ -1,23 +1,23 @@
-import cx from "clsx";
+import cx from 'clsx';
 import {
   ActionIcon,
   ActionIconProps,
   useComputedColorScheme,
-  useMantineColorScheme,
-} from "@mantine/core";
+  useMantineColorScheme
+} from '@mantine/core';
 
-import { IconMoon, IconSun } from "@tabler/icons-react";
-import classes from "../../Styles/MantineCss/ActionToggle.module.css";
+import { IconMoon, IconSun } from '@tabler/icons-react';
+import classes from '../../Styles/MantineCss/ActionToggle.module.css';
 
 const ThemeTogle: React.FC<ActionIconProps> = ({ ...otherProps }) => {
   const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme("light", {
-    getInitialValueInEffect: true,
+  const computedColorScheme = useComputedColorScheme('light', {
+    getInitialValueInEffect: true
   });
   return (
     <ActionIcon
       onClick={() =>
-        setColorScheme(computedColorScheme === "light" ? "dark" : "light")
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')
       }
       aria-label="Toggle color scheme"
       {...otherProps}

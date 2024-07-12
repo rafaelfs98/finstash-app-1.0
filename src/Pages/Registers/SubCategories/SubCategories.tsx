@@ -1,7 +1,7 @@
-import { useDisclosure } from "@mantine/hooks";
-import React, { useState } from "react";
-import ListView from "../../../Components/ListView/ListView";
-import SubCategoriesView from "./SubCategoriesView";
+import { useDisclosure } from '@mantine/hooks';
+import React, { useState } from 'react';
+import ListView from '../../../Components/ListView/ListView';
+import SubCategoriesView from './SubCategoriesView';
 
 type SubCategoriesProps = {
   type: number;
@@ -15,9 +15,9 @@ const SubCategoriesTable: React.FC<SubCategoriesProps> = ({ type }) => {
     <>
       <ListView
         columns={[
-          { key: "name", label: "Sub Categoria" },
-          { key: "categories.name", label: "Categoria" },
-          { key: "color", label: "Cor" },
+          { key: 'name', label: 'Sub Categoria' },
+          { key: 'categories.name', label: 'Categoria' },
+          { key: 'color', label: 'Cor' }
         ]}
         resource={`sub_categories?type=eq.${type}&order=id.asc`}
         relationships={`

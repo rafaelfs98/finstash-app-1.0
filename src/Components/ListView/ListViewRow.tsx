@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Badge, Table } from "@mantine/core";
-import dayjs from "dayjs";
-import "dayjs/locale/pt-br";
-import { useAtom } from "jotai";
-import React from "react";
-import { selectedItemIdAtom } from "../../atoms/app.atom";
-import { TableColumn } from "./ListView";
+import { Badge, Table } from '@mantine/core';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+import { useAtom } from 'jotai';
+import React from 'react';
+import { selectedItemIdAtom } from '../../atoms/app.atom';
+import { TableColumn } from './ListView';
 
 type ListViewRowProps = {
   columns: TableColumn[];
@@ -13,10 +13,10 @@ type ListViewRowProps = {
   onClick?: () => void;
 };
 
-dayjs.locale("pt-br");
+dayjs.locale('pt-br');
 
 const renderValue = (key: string, item: any): React.ReactNode => {
-  const keys = key.split(".");
+  const keys = key.split('.');
   let value: any = item;
 
   for (const k of keys) {
@@ -26,23 +26,23 @@ const renderValue = (key: string, item: any): React.ReactNode => {
     }
   }
 
-  if (typeof value === "object" && value !== null) {
+  if (typeof value === 'object' && value !== null) {
     return Object.keys(value).map((nestedKey) => (
       <div key={nestedKey}>
         {nestedKey}: {value[nestedKey]}
       </div>
     ));
-  } else if (key === "color") {
-    return value ? <Badge color={value} size="sm" /> : "N/A";
-  } else if (key === "amount") {
-    const formattedAmount = new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
+  } else if (key === 'color') {
+    return value ? <Badge color={value} size="sm" /> : 'N/A';
+  } else if (key === 'amount') {
+    const formattedAmount = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
     }).format(value || 0);
 
     return formattedAmount;
-  } else if (key.includes("Date")) {
-    const formattedDate = dayjs(value).format("DD/MM/YYYY");
+  } else if (key.includes('Date')) {
+    const formattedDate = dayjs(value).format('DD/MM/YYYY');
     return formattedDate;
   }
 
@@ -52,7 +52,7 @@ const renderValue = (key: string, item: any): React.ReactNode => {
 const ListViewRow: React.FC<ListViewRowProps> = ({
   columns,
   item,
-  onClick,
+  onClick
 }) => {
   const [, setSelectedItemId] = useAtom(selectedItemIdAtom);
 

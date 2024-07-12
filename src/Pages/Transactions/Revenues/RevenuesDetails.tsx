@@ -7,18 +7,18 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  rem,
-} from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import dayjs from "dayjs";
-import { useAtom } from "jotai";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { deleteAccounts } from "../../../Services/Accounts";
-import { RevenuesType } from "../../../Services/Types/finStash";
-import { selectedItemIdAtom } from "../../../atoms/app.atom";
-import { formattedAmount } from "../../../util";
+  rem
+} from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
+import dayjs from 'dayjs';
+import { useAtom } from 'jotai';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { deleteAccounts } from '../../../Services/Accounts';
+import { RevenuesType } from '../../../Services/Types/finStash';
+import { selectedItemIdAtom } from '../../../atoms/app.atom';
+import { formattedAmount } from '../../../util';
 
 type AccountsViewProps = {
   close: () => void;
@@ -31,7 +31,7 @@ const RevenuesDetails: React.FC<AccountsViewProps> = ({
   close,
   item,
   opened,
-  setIsOpen,
+  setIsOpen
 }) => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
 
@@ -39,7 +39,7 @@ const RevenuesDetails: React.FC<AccountsViewProps> = ({
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
-      title: "Excluir",
+      title: 'Excluir',
       centered: true,
       children: (
         <Text size="sm">
@@ -47,9 +47,9 @@ const RevenuesDetails: React.FC<AccountsViewProps> = ({
           haverá retorno.
         </Text>
       ),
-      labels: { confirm: "Excluir", cancel: "Cancelar" },
-      confirmProps: { color: "red" },
-      onConfirm: () => handleDelete(),
+      labels: { confirm: 'Excluir', cancel: 'Cancelar' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => handleDelete()
     });
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -97,7 +97,7 @@ const RevenuesDetails: React.FC<AccountsViewProps> = ({
             <Fieldset legend="Data de Vencimento:" variant="filled">
               <Group>
                 <Text size="lg">
-                  {dayjs(expense?.transactionDate).format("DD/MM/YYYY")}
+                  {dayjs(expense?.transactionDate).format('DD/MM/YYYY')}
                 </Text>
               </Group>
             </Fieldset>
@@ -140,7 +140,7 @@ const RevenuesDetails: React.FC<AccountsViewProps> = ({
                 <Text size="lg">{expense?.categories?.name}</Text>
 
                 <Text size="lg">
-                  {expense?.sub_categories?.name ? " / " : ""}
+                  {expense?.sub_categories?.name ? ' / ' : ''}
                 </Text>
                 <Badge color={expense?.sub_categories?.color} />
                 <Text size="lg">{expense?.sub_categories?.name}</Text>

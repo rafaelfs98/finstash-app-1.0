@@ -7,16 +7,16 @@ import {
   Pagination,
   ScrollArea,
   SimpleGrid,
-  Text,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import dayjs from "dayjs";
-import React, { useMemo, useState } from "react";
-import Loading from "../../../Components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
-import { RevenuesType } from "../../../Services/Types/finStash";
-import { formattedAmount } from "../../../util";
-import RevenuesDetails from "./RevenuesDetails";
+  Text
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import dayjs from 'dayjs';
+import React, { useMemo, useState } from 'react';
+import Loading from '../../../Components/Loader';
+import { useFetcher } from '../../../Hooks/useFetcher';
+import { RevenuesType } from '../../../Services/Types/finStash';
+import { formattedAmount } from '../../../util';
+import RevenuesDetails from './RevenuesDetails';
 
 type RevenuesCardViewProps = {
   search: string;
@@ -29,7 +29,7 @@ const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({ search }) => {
   const [revenuesItem, setRevenuesItem] = useState<RevenuesType>();
 
   const { data, isLoading } = useFetcher<any>({
-    uri: `revenues?order=id.asc`,
+    uri: 'revenues?order=id.asc',
     select: `
     id,
     amount,
@@ -49,7 +49,7 @@ const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({ search }) => {
      id,
      name,
      color
-         )`,
+         )`
   });
 
   const items = data || [];
@@ -57,7 +57,7 @@ const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({ search }) => {
   const filteredData = items?.filter((item) =>
     Object.keys(item).some((key) => {
       const value = item[key];
-      if (typeof value === "object" && value !== null) {
+      if (typeof value === 'object' && value !== null) {
         return Object.values(value).some(
           (innerValue) =>
             innerValue &&
@@ -110,8 +110,8 @@ const RevenuesCardView: React.FC<RevenuesCardViewProps> = ({ search }) => {
                       <CardSection withBorder inheritPadding py="xs" mb={10}>
                         <Group justify="flex-end" mb="xs">
                           <Text>
-                            {"Data : " +
-                              dayjs(item.transactionDate).format("DD/MM/YYYY")}
+                            {'Data : ' +
+                              dayjs(item.transactionDate).format('DD/MM/YYYY')}
                           </Text>
                         </Group>
                       </CardSection>

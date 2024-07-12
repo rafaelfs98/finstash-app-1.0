@@ -1,7 +1,7 @@
 // CustomTextInput.tsx
 
-import { ColorInput, ColorInputProps } from "@mantine/core";
-import React from "react";
+import { ColorInput, ColorInputProps } from '@mantine/core';
+import React from 'react';
 
 type InputTextProps = {
   label: string;
