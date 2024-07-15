@@ -1,10 +1,9 @@
- 
-import { Card, Group, Paper, SimpleGrid, Text } from '@mantine/core';
-import { IconCoin, IconPigMoney, IconReceipt } from '@tabler/icons-react';
-import React from 'react';
+import { Card, Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import { IconCoin, IconPigMoney, IconReceipt } from "@tabler/icons-react";
+import React from "react";
 
-import { ExpenseData, RevenuesType } from '../../Services/Types/finStash';
-import classes from '../../Styles/MantineCss/TransactionsStats.module.css';
+import { ExpenseData, RevenuesType } from "../../Services/Types/finStash";
+import classes from "../../Styles/MantineCss/TransactionsStats.module.css";
 
 type TransactionsStatsProps = {
   expense: ExpenseData[];
@@ -13,7 +12,7 @@ type TransactionsStatsProps = {
 
 const TransactionsStats: React.FC<TransactionsStatsProps> = ({
   expense,
-  revenues
+  revenues,
 }) => {
   const totalRevenue =
     revenues.reduce((acc, revenue) => acc + Number(revenue.amount), 0) || 0;
@@ -24,7 +23,7 @@ const TransactionsStats: React.FC<TransactionsStatsProps> = ({
   return (
     <SimpleGrid>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <SimpleGrid cols={{ base: 1, xs: 2, md: 3 }}>
+        <SimpleGrid cols={{ base: 1, md: 3, xs: 2 }}>
           <Paper withBorder p="md" radius="md">
             <Group justify="space-between">
               <Text size="xs" c="dimmed" className={classes.title}>
@@ -70,7 +69,7 @@ const TransactionsStats: React.FC<TransactionsStatsProps> = ({
             </Group>
 
             <Group align="flex-end" gap="xs" mt={25}>
-              <Text c={total > 0 ? 'green' : 'red'} className={classes.value}>
+              <Text c={total > 0 ? "green" : "red"} className={classes.value}>
                 R$ {total.toFixed(2)}
               </Text>
             </Group>

@@ -1,11 +1,11 @@
-import { Box, Card, Grid, Group, SimpleGrid, Text } from '@mantine/core';
-import React from 'react';
+import { PieChart, PieChartCell } from "@mantine/charts";
+import { Box, Card, Grid, Group, SimpleGrid, Text } from "@mantine/core";
+import { IconWallet } from "@tabler/icons-react";
+import React from "react";
 
-import { PieChart, PieChartCell } from '@mantine/charts';
-import { IconWallet } from '@tabler/icons-react';
-import { AccountsType } from '../../../Services/Types/finStash';
-import classes from '../../../Styles/MantineCss/AccountsChart.module.css';
-import { formattedAmount } from '../../../util';
+import { AccountsType } from "../../../Services/Types/finStash";
+import classes from "../../../Styles/MantineCss/AccountsChart.module.css";
+import { formattedAmount } from "../../../util";
 
 type AccountsChartsProps = {
   accounts: AccountsType[];
@@ -13,9 +13,9 @@ type AccountsChartsProps = {
 
 const AccountsChart: React.FC<AccountsChartsProps> = ({ accounts }) => {
   const pieChartData: PieChartCell[] = accounts.map((account) => ({
+    color: account.color,
     name: account.name,
     value: account.total ?? 0,
-    color: account.color
   }));
 
   const totalAccounts = accounts.reduce(
@@ -26,10 +26,10 @@ const AccountsChart: React.FC<AccountsChartsProps> = ({ accounts }) => {
   const sortedAccounts = accounts.sort((a, b) => b.total - a.total);
 
   const data = sortedAccounts.map((account) => ({
-    label: account.name,
+    color: account.color,
     count: account.total,
+    label: account.name,
     part: (account.total / totalAccounts) * 100,
-    color: account.color
   }));
 
   return (
@@ -43,7 +43,7 @@ const AccountsChart: React.FC<AccountsChartsProps> = ({ accounts }) => {
         <IconWallet size="1.4rem" stroke={1.5} />
       </Group>
 
-      <SimpleGrid cols={{ base: 1, sm: 1, lg: 2 }} mt="xl">
+      <SimpleGrid cols={{ base: 1, lg: 2, sm: 1 }} mt="xl">
         <Group>
           <PieChart
             data={pieChartData}

@@ -1,10 +1,11 @@
-import { Button, Group, TextInput, rem } from '@mantine/core';
-import { IconPlus, IconSearch } from '@tabler/icons-react';
-import React, { useState } from 'react';
-import RevenuesCardView from './RevenuesCardView';
+import { Button, Group, TextInput, rem } from "@mantine/core";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
+import React, { useState } from "react";
+
+import RevenuesCardView from "./RevenuesCardView";
 
 const RevenuesTable: React.FC = () => {
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   return (
     <>
@@ -15,7 +16,7 @@ const RevenuesTable: React.FC = () => {
           accessKey="s"
           leftSection={
             <IconSearch
-              style={{ width: rem(16), height: rem(16) }}
+              style={{ height: rem(16), width: rem(16) }}
               stroke={1.5}
             />
           }

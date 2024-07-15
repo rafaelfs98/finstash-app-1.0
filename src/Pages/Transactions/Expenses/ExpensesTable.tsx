@@ -5,22 +5,23 @@ import {
   Tabs,
   TextInput,
   UnstyledButton,
-  rem
-} from '@mantine/core';
-import { MonthPickerInput } from '@mantine/dates';
+  rem,
+} from "@mantine/core";
+import { MonthPickerInput } from "@mantine/dates";
 import {
   IconChevronLeft,
   IconChevronRight,
   IconPlus,
-  IconSearch
-} from '@tabler/icons-react';
-import dayjs from 'dayjs';
-import React, { useState } from 'react';
-import ExpensesCardView from './ExpensesCardView';
+  IconSearch,
+} from "@tabler/icons-react";
+import dayjs from "dayjs";
+import React, { useState } from "react";
+
+import ExpensesCardView from "./ExpensesCardView";
 
 const ExpensesTable: React.FC = () => {
   const [date, setDate] = useState<Date | null>(new Date());
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   return (
     <>
@@ -31,7 +32,7 @@ const ExpensesTable: React.FC = () => {
           accessKey="s"
           leftSection={
             <IconSearch
-              style={{ width: rem(16), height: rem(16) }}
+              style={{ height: rem(16), width: rem(16) }}
               stroke={1.5}
             />
           }
@@ -49,12 +50,12 @@ const ExpensesTable: React.FC = () => {
               <UnstyledButton
                 onClick={() =>
                   setDate((current) =>
-                    dayjs(current).subtract(1, 'month').toDate()
+                    dayjs(current).subtract(1, "month").toDate()
                   )
                 }
               >
                 <IconChevronLeft
-                  style={{ width: rem(16), height: rem(16) }}
+                  style={{ height: rem(16), width: rem(16) }}
                   stroke={1.5}
                 />
               </UnstyledButton>
@@ -72,11 +73,11 @@ const ExpensesTable: React.FC = () => {
 
               <UnstyledButton
                 onClick={() =>
-                  setDate((current) => dayjs(current).add(1, 'day').toDate())
+                  setDate((current) => dayjs(current).add(1, "day").toDate())
                 }
               >
                 <IconChevronRight
-                  style={{ width: rem(16), height: rem(16) }}
+                  style={{ height: rem(16), width: rem(16) }}
                   stroke={1.5}
                 />
               </UnstyledButton>

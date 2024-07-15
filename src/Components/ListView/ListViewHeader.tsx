@@ -1,15 +1,16 @@
-import { Center, Group, Table, Text, UnstyledButton, rem } from '@mantine/core';
-import { TableColumn } from './ListView';
+import { Center, Group, Table, Text, UnstyledButton, rem } from "@mantine/core";
 import {
   IconChevronDown,
   IconChevronUp,
-  IconSelector
-} from '@tabler/icons-react';
+  IconSelector,
+} from "@tabler/icons-react";
+
+import { TableColumn } from "./ListView";
 
 type ListViewHeaderProps = {
   columns: TableColumn[];
   sortColumn: string | null;
-  sortOrder: 'asc' | 'desc';
+  sortOrder: "asc" | "desc";
   handleSort: (columnKey: string) => void;
 };
 
@@ -17,7 +18,7 @@ const ListViewHeader: React.FC<ListViewHeaderProps> = ({
   columns,
   sortColumn,
   sortOrder,
-  handleSort
+  handleSort,
 }) => {
   return (
     <Table.Tr>
@@ -25,7 +26,7 @@ const ListViewHeader: React.FC<ListViewHeaderProps> = ({
         <Table.Th
           key={column.key}
           onClick={() => handleSort(column.key)}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: "pointer" }}
         >
           <UnstyledButton onClick={() => handleSort(column.key)}>
             <Group justify="space-between">
@@ -34,20 +35,20 @@ const ListViewHeader: React.FC<ListViewHeaderProps> = ({
               </Text>
               <Center>
                 {sortColumn === column.key ? (
-                  sortOrder === 'asc' ? (
+                  sortOrder === "asc" ? (
                     <IconChevronUp
-                      style={{ width: rem(16), height: rem(16) }}
+                      style={{ height: rem(16), width: rem(16) }}
                       stroke={1.5}
                     />
                   ) : (
                     <IconChevronDown
-                      style={{ width: rem(16), height: rem(16) }}
+                      style={{ height: rem(16), width: rem(16) }}
                       stroke={1.5}
                     />
                   )
                 ) : (
                   <IconSelector
-                    style={{ width: rem(16), height: rem(16) }}
+                    style={{ height: rem(16), width: rem(16) }}
                     stroke={1.5}
                   />
                 )}

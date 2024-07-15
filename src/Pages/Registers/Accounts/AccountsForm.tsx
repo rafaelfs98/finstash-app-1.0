@@ -5,21 +5,22 @@ import {
   NumberInput,
   SimpleGrid,
   Title,
-  rem
-} from '@mantine/core';
-import { IconCoins, IconDeviceFloppy, IconX } from '@tabler/icons-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import { KeyedMutator } from 'swr';
-import { z } from 'zod';
-import InputColor from '../../../Components/Inputs/InputColor';
-import InputText from '../../../Components/Inputs/InputText';
-import useFormActions from '../../../Hooks/useFormActions';
-import { upsertAccounts } from '../../../Services/Accounts';
-import { AccountsType } from '../../../Services/Types/finStash';
-import zodSchema, { zodResolver } from '../../../schema/zod';
-import { formattedAmount } from '../../../util';
+  rem,
+} from "@mantine/core";
+import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { KeyedMutator } from "swr";
+import { z } from "zod";
+
+import InputColor from "../../../Components/Inputs/InputColor";
+import InputText from "../../../Components/Inputs/InputText";
+import useFormActions from "../../../Hooks/useFormActions";
+import zodSchema, { zodResolver } from "../../../schema/zod";
+import { upsertAccounts } from "../../../Services/Accounts";
+import { AccountsType } from "../../../Services/Types/finStash";
+import { formattedAmount } from "../../../util";
 
 type AccountsInfo = z.infer<typeof zodSchema.accounts>;
 
@@ -38,16 +39,16 @@ const AccountsForm: React.FC = () => {
     formState: { errors },
     handleSubmit,
     register,
-    setValue
+    setValue,
   } = useForm<AccountsInfo>({
     defaultValues:
       context?.accounts && context.accounts.length > 0
         ? context.accounts[0]
         : {
-            name: '',
-            color: ''
+            color: "",
+            name: "",
           },
-    resolver: zodResolver(zodSchema.accounts)
+    resolver: zodResolver(zodSchema.accounts),
   });
 
   const { onError, onSave } = useFormActions();
@@ -72,16 +73,16 @@ const AccountsForm: React.FC = () => {
       <Title order={2}>
         {context?.accounts && context.accounts.length > 0
           ? `Editar Fonte de Receita # ${context.accounts[0].id}`
-          : 'Criar Fonte de Receita'}
+          : "Criar Fonte de Receita"}
       </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
         <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
           <InputText
             error={errors.name?.message as string}
-            label={'Name'}
-            name={'name'}
-            placeholder={'digite o name'}
-            type={'text'}
+            label={"Name"}
+            name={"name"}
+            placeholder={"digite o name"}
+            type={"text"}
             register={register}
             required
           />
@@ -89,11 +90,11 @@ const AccountsForm: React.FC = () => {
             defaultValue={
               context?.accounts && context.accounts.length > 0
                 ? context.accounts[0].color
-                : ''
+                : ""
             }
-            label={'Cor da Fonte de Receita'}
-            placeholder={'Defina uma Cor para a Fonte da Receita'}
-            onChangeEnd={(colorHash) => setValue('color', colorHash)}
+            label={"Cor da Fonte de Receita"}
+            placeholder={"Defina uma Cor para a Fonte da Receita"}
+            onChangeEnd={(colorHash) => setValue("color", colorHash)}
           />
           <NumberInput
             radius="lg"
@@ -106,15 +107,15 @@ const AccountsForm: React.FC = () => {
             thousandSeparator="."
             rightSection={
               <IconCoins
-                style={{ width: rem(20), height: rem(20) }}
+                style={{ height: rem(20), width: rem(20) }}
                 stroke={1.5}
               />
             }
-            onValueChange={({ value }) => setValue('total', Number(value))}
+            onValueChange={({ value }) => setValue("total", Number(value))}
             value={
               context?.accounts && context.accounts.length > 0
                 ? formattedAmount(Number(context.accounts[0]?.total))
-                : ''
+                : ""
             }
           />
         </SimpleGrid>
@@ -123,23 +124,23 @@ const AccountsForm: React.FC = () => {
           <Button
             onClick={() => navigate(-1)}
             leftSection={
-              <IconX style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+              <IconX style={{ height: rem(12), width: rem(12) }} stroke={1.5} />
             }
             variant="light"
           >
-            {'Cancelar'}
+            {"Cancelar"}
           </Button>
           <Button
             loading={loadingButton}
             rightSection={
               <IconDeviceFloppy
-                style={{ width: rem(12), height: rem(12) }}
+                style={{ height: rem(12), width: rem(12) }}
                 stroke={1.5}
               />
             }
-            type={'submit'}
+            type={"submit"}
           >
-            {'Submit'}
+            {"Submit"}
           </Button>
         </Group>
       </form>

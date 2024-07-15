@@ -1,18 +1,18 @@
-import { supabase } from './Supabase/supabaseClient';
-import { SubCategoriesType } from './Types/finStash';
+import { supabase } from "./Supabase/supabaseClient";
+import { SubCategoriesType } from "./Types/finStash";
 
 export const upsertSubCategories = async (
   categories: SubCategoriesType,
   subCategoriesId?: number
 ) => {
   const { data, error } = await supabase
-    .from('sub_categories')
+    .from("sub_categories")
     .upsert({
+      category_id: categories.categoryId,
+      color: categories.color,
       id: subCategoriesId ? subCategoriesId : undefined,
       name: categories.name,
-      color: categories.color,
       type: categories.type,
-      category_id: categories.categoryId
     })
     .select();
 
@@ -24,5 +24,5 @@ export const upsertSubCategories = async (
 };
 
 export const deleteSubCategories = async (subCategoriesId: string) => {
-  await supabase.from('sub_categories').delete().eq('id', subCategoriesId);
+  await supabase.from("sub_categories").delete().eq("id", subCategoriesId);
 };

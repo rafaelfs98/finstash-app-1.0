@@ -6,29 +6,30 @@ import {
   OptionsFilter,
   Select,
   SimpleGrid,
-  rem
-} from '@mantine/core';
-import { IconDeviceFloppy, IconX } from '@tabler/icons-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+  rem,
+} from "@mantine/core";
+import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   useLocation,
   useNavigate,
   useOutletContext,
-  useParams
-} from 'react-router-dom';
-import { KeyedMutator } from 'swr';
-import { z } from 'zod';
-import zodSchema, { zodResolver } from '../../../schema/zod';
+  useParams,
+} from "react-router-dom";
+import { KeyedMutator } from "swr";
+import { z } from "zod";
+
+import InputColor from "../../../Components/Inputs/InputColor";
+import InputText from "../../../Components/Inputs/InputText";
+import { useFetcher } from "../../../Hooks/useFetcher";
+import useFormActions from "../../../Hooks/useFormActions";
+import zodSchema, { zodResolver } from "../../../schema/zod";
+import { upsertSubCategories } from "../../../Services/SubCategories";
 import {
   CategoriesType,
-  SubCategoriesType
-} from '../../../Services/Types/finStash';
-import useFormActions from '../../../Hooks/useFormActions';
-import { upsertSubCategories } from '../../../Services/SubCategories';
-import InputText from '../../../Components/Inputs/InputText';
-import InputColor from '../../../Components/Inputs/InputColor';
-import { useFetcher } from '../../../Hooks/useFetcher';
+  SubCategoriesType,
+} from "../../../Services/Types/finStash";
 
 type SubCategoryInfo = z.infer<typeof zodSchema.subCategories>;
 
@@ -42,7 +43,7 @@ const SubCategoryForm: React.FC = () => {
   const { subCategoryId } = useParams();
   const { pathname } = useLocation();
 
-  const type = pathname.includes('receitas') ? 0 : 1;
+  const type = pathname.includes("receitas") ? 0 : 1;
 
   const { subCategories, mutateSubCategories } =
     useOutletContext<OutletContext>() || {};
@@ -53,16 +54,16 @@ const SubCategoryForm: React.FC = () => {
     formState: { errors },
     handleSubmit,
     register,
-    setValue
+    setValue,
   } = useForm<SubCategoryInfo>({
     defaultValues: subCategories
       ? subCategories
       : {
-          name: '',
-          color: ''
+          color: "",
+          name: "",
         },
 
-    resolver: zodResolver(zodSchema.subCategories)
+    resolver: zodResolver(zodSchema.subCategories),
   });
   const { onError, onSave } = useFormActions();
 
@@ -86,12 +87,12 @@ const SubCategoryForm: React.FC = () => {
   };
 
   const { data: categories } = useFetcher<CategoriesType>({
+    select: "id, name",
     uri: `categories?type=eq.${type}&order=id.asc`,
-    select: 'id, name'
   });
 
   const optionsFilter: OptionsFilter = ({ options, search }) => {
-    const splittedSearch = search.toLowerCase().trim().split(' ');
+    const splittedSearch = search.toLowerCase().trim().split(" ");
     return (options as ComboboxItem[]).filter((option) =>
       splittedSearch.every((searchWord) =>
         option.label.toLowerCase().includes(searchWord)
@@ -105,18 +106,18 @@ const SubCategoryForm: React.FC = () => {
         <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
           <InputText
             error={errors.name?.message as string}
-            label={'Name'}
-            name={'name'}
-            placeholder={'digite o name'}
-            type={'text'}
+            label={"Name"}
+            name={"name"}
+            placeholder={"digite o name"}
+            type={"text"}
             register={register}
             required
           />
           <InputColor
             defaultValue={subCategories?.color}
-            label={'Cor da Categoria'}
-            placeholder={'Defina uma Cor para Categoria'}
-            onChangeEnd={(colorHash) => setValue('color', colorHash)}
+            label={"Cor da Categoria"}
+            placeholder={"Defina uma Cor para Categoria"}
+            onChangeEnd={(colorHash) => setValue("color", colorHash)}
           />
           <Select
             value={subCategories && String(subCategories.categoryId)}
@@ -127,12 +128,12 @@ const SubCategoryForm: React.FC = () => {
             data={
               categories?.map((item) => ({
                 label: String(item.name),
-                value: String(item.id)
+                value: String(item.id),
               })) || []
             }
             filter={optionsFilter}
             searchable
-            onChange={(value) => setValue('categoryId', Number(value))}
+            onChange={(value) => setValue("categoryId", Number(value))}
           />
         </SimpleGrid>
 
@@ -141,24 +142,24 @@ const SubCategoryForm: React.FC = () => {
           <Button
             onClick={() => navigate(-1)}
             leftSection={
-              <IconX style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+              <IconX style={{ height: rem(12), width: rem(12) }} stroke={1.5} />
             }
             variant="light"
           >
-            {'Cancelar'}
+            {"Cancelar"}
           </Button>
 
           <Button
             loading={loadingButton}
             rightSection={
               <IconDeviceFloppy
-                style={{ width: rem(12), height: rem(12) }}
+                style={{ height: rem(12), width: rem(12) }}
                 stroke={1.5}
               />
             }
-            type={'submit'}
+            type={"submit"}
           >
-            {'Submit'}
+            {"Submit"}
           </Button>
         </Group>
       </form>

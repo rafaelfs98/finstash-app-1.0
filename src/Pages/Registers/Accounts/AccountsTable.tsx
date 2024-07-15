@@ -1,9 +1,10 @@
 // Categories.tsx
 import { Title } from '@mantine/core';
-import React, { useState } from 'react';
-import ListView from '../../../Components/ListView/ListView';
-import AccountsView from './AccountsView';
 import { useDisclosure } from '@mantine/hooks';
+import React, { useState } from 'react';
+
+import AccountsView from './AccountsView';
+import ListView from '../../../Components/ListView/ListView';
 
 const AccountsTable: React.FC = () => {
   const [opened, { open, close }] = useDisclosure(false);

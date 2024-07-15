@@ -7,18 +7,19 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  rem
-} from '@mantine/core';
-import { modals } from '@mantine/modals';
-import { IconPencil, IconTrash } from '@tabler/icons-react';
-import dayjs from 'dayjs';
-import { useAtom } from 'jotai';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { deleteExpense } from '../../../Services/Expense';
-import { ExpenseData } from '../../../Services/Types/finStash';
-import { selectedItemIdAtom } from '../../../atoms/app.atom';
-import { formattedAmount } from '../../../util';
+  rem,
+} from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
+import dayjs from "dayjs";
+import { useAtom } from "jotai";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { selectedItemIdAtom } from "../../../atoms/app.atom";
+import { deleteExpense } from "../../../Services/Expense";
+import { ExpenseData } from "../../../Services/Types/finStash";
+import { formattedAmount } from "../../../util";
 
 type AccountsViewProps = {
   close: () => void;
@@ -31,7 +32,7 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
   close,
   item,
   opened,
-  setIsOpen
+  setIsOpen,
 }) => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
 
@@ -39,7 +40,6 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
-      title: 'Excluir',
       centered: true,
       children: (
         <Text size="sm">
@@ -47,9 +47,10 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
           haverá retorno.
         </Text>
       ),
-      labels: { confirm: 'Excluir', cancel: 'Cancelar' },
-      confirmProps: { color: 'red' },
-      onConfirm: () => handleDelete()
+      confirmProps: { color: "red" },
+      labels: { cancel: "Cancelar", confirm: "Excluir" },
+      onConfirm: () => handleDelete(),
+      title: "Excluir",
     });
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -96,8 +97,8 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
           <Stack>
             <Fieldset legend="Situação:" variant="filled">
               <Group>
-                <Badge color={expense?.paid ? 'green' : 'red'} />
-                <Text size="lg">{expense?.paid ? 'Pago' : 'Pendente'}</Text>
+                <Badge color={expense?.paid ? "green" : "red"} />
+                <Text size="lg">{expense?.paid ? "Pago" : "Pendente"}</Text>
               </Group>
             </Fieldset>
           </Stack>
@@ -105,7 +106,7 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
             <Fieldset legend="Data de Vencimento:" variant="filled">
               <Group>
                 <Text size="lg">
-                  {dayjs(expense?.dueDate).format('DD/MM/YYYY')}
+                  {dayjs(expense?.dueDate).format("DD/MM/YYYY")}
                 </Text>
               </Group>
             </Fieldset>
@@ -136,7 +137,7 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
           <Stack>
             <Fieldset legend="Repete:" variant="filled">
               <Group>
-                <Text size="lg">{expense?.repeat ? 'Sim' : 'Não'}</Text>
+                <Text size="lg">{expense?.repeat ? "Sim" : "Não"}</Text>
               </Group>
             </Fieldset>
           </Stack>
@@ -145,7 +146,7 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
             <Stack>
               <Fieldset legend="Parcelas:" variant="filled">
                 <Group>
-                  <Text size="lg">{expense?.installments + 'x'}</Text>
+                  <Text size="lg">{expense?.installments + "x"}</Text>
                 </Group>
               </Fieldset>
             </Stack>
@@ -166,7 +167,7 @@ const ExpensesDetails: React.FC<AccountsViewProps> = ({
                 <Text size="lg">{expense?.categories?.name}</Text>
 
                 <Badge color={expense?.sub_categories?.color} />
-                <Text size="lg">{' / ' + expense?.sub_categories?.name}</Text>
+                <Text size="lg">{" / " + expense?.sub_categories?.name}</Text>
               </Group>
             </Fieldset>
           </Stack>
