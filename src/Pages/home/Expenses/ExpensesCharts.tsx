@@ -1,10 +1,10 @@
-import { Card, Stack, Text } from '@mantine/core';
-import React from 'react';
+import { BarChart } from "@mantine/charts";
+import { Card, Stack, Text } from "@mantine/core";
+import React from "react";
 
-import { BarChart } from '@mantine/charts';
-import { ExpenseData } from '../../../Services/Types/finStash';
-import { formattedAmount } from '../../../util';
-import { TransformChartData } from '../../../util/Constants/TransformChartData';
+import { ExpenseData } from "../../../Services/Types/finStash";
+import { formattedAmount } from "../../../util";
+import { TransformChartData } from "../../../util/Constants/TransformChartData";
 
 type ExpensesChartsProps = {
   expense: ExpenseData[];
@@ -17,16 +17,16 @@ const ExpensesCharts: React.FC<ExpensesChartsProps> = ({ expense }) => {
     ...new Map(
       expense.map((item) => [
         item.sub_categories?.name,
-        item.sub_categories?.color
+        item.sub_categories?.color,
       ])
-    )
+    ),
   ];
 
   const barChartSeriesExpenses = colorsExpenses
     .filter(([name]) => name)
     .map(([name, color]) => ({
+      color: color || "violet.6",
       name: name as string,
-      color: color || 'violet.6'
     }));
 
   return (
@@ -47,7 +47,7 @@ const ExpensesCharts: React.FC<ExpensesChartsProps> = ({ expense }) => {
               tickLine="y"
             />
           ) : (
-            'Não Despesas para o Mês informado'
+            "Não Despesas para o Mês informado"
           )}
         </Card>
       </Stack>

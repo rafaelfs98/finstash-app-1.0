@@ -1,8 +1,9 @@
-import { useDisclosure } from '@mantine/hooks';
-import { AppShell } from '@mantine/core';
-import Header from './Header';
-import NavigationBar from './NavigationBar';
-import { Outlet } from 'react-router-dom';
+import { AppShell } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Outlet } from "react-router-dom";
+
+import Header from "./Header";
+import NavigationBar from "./NavigationBar";
 
 export default function Layout() {
   const [opened, { toggle }] = useDisclosure();
@@ -11,9 +12,9 @@ export default function Layout() {
     <AppShell
       header={{ height: 70 }}
       navbar={{
+        breakpoint: "sm",
+        collapsed: { mobile: !opened },
         width: 300,
-        breakpoint: 'sm',
-        collapsed: { mobile: !opened }
       }}
       padding="md"
     >

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { notifications } from '@mantine/notifications';
+import { notifications } from "@mantine/notifications";
 
 export type FormOptions = {
   onError: (error?: any) => void;
@@ -9,17 +9,17 @@ export type FormOptions = {
 const onError = (error: any) => {
   const erroMensage = error?.info?.error as any;
   notifications.show({
-    title: 'Error!',
+    color: "red",
     message: erroMensage,
-    color: 'red'
+    title: "Error!",
   });
 };
 
 const onSucess = () => {
   notifications.show({
-    title: 'Sucesso!',
-    message: 'Ei deu tudo certo pode continuar',
-    color: 'green'
+    color: "green",
+    message: "Ei deu tudo certo pode continuar",
+    title: "Sucesso!",
   });
 };
 
@@ -30,7 +30,7 @@ const useFormActions = (): FormOptions => {
 
   return {
     onError,
-    onSave
+    onSave,
   };
 };
 

@@ -1,6 +1,4 @@
 import { AppShell, Flex, NavLink, ScrollArea, Stack } from '@mantine/core';
-import { useEffect, useState } from 'react';
-
 import {
   IconCategory,
   IconCategory2,
@@ -9,8 +7,9 @@ import {
   IconTransactionDollar,
   IconWallet
 } from '@tabler/icons-react';
-
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import classes from '../../Styles/MantineCss/Navbar.module.css';
 
 type NavigationBarProps = {

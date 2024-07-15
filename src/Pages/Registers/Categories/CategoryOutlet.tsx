@@ -1,7 +1,8 @@
 import { Outlet, useParams } from 'react-router-dom';
+
 import Loading from '../../../Components/Loader';
-import { CategoriesType } from '../../../Services/Types/finStash';
 import { useFetcher } from '../../../Hooks/useFetcher';
+import { CategoriesType } from '../../../Services/Types/finStash';
 
 const CategoryOutlet = () => {
   const { categoryId } = useParams<{ categoryId: string }>();

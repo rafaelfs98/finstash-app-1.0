@@ -8,11 +8,26 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh"],
+  plugins: ["react-refresh", 'import'],
   rules: {
-    quotes: ["error", "single"],
     semi: ["error", "always"],
-    "comma-dangle": ["error", "never"],
+     'sort-imports': ['off'], // Desativando a regra sort-imports padrão
+    'import/order': ['error', {
+      'groups': [
+        ['builtin', 'external'],
+        'internal',
+        ['parent', 'sibling', 'index'],
+      ],
+      'newlines-between': 'always',
+      'alphabetize': { order: 'asc', caseInsensitive: true },
+    }],
+    'sort-keys': ['error', 'asc', { 'caseSensitive': true, 'natural': false, 'minKeys': 2 }],
+    'no-console': 'off',
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    "sort-keys": ["error", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
     "no-console": "off",
     "react-refresh/only-export-components": [
       "warn",

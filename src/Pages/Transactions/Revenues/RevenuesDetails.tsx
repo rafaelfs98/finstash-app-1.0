@@ -15,9 +15,10 @@ import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteAccounts } from '../../../Services/Accounts';
-import { RevenuesType } from '../../../Services/Types/finStash';
+
 import { selectedItemIdAtom } from '../../../atoms/app.atom';
+import { deleteRevenues } from '../../../Services/Revenues';
+import { RevenuesType } from '../../../Services/Types/finStash';
 import { formattedAmount } from '../../../util';
 
 type AccountsViewProps = {
@@ -39,7 +40,6 @@ const RevenuesDetails: React.FC<AccountsViewProps> = ({
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
-      title: 'Excluir',
       centered: true,
       children: (
         <Text size="sm">
@@ -47,16 +47,17 @@ const RevenuesDetails: React.FC<AccountsViewProps> = ({
           haverá retorno.
         </Text>
       ),
-      labels: { confirm: 'Excluir', cancel: 'Cancelar' },
       confirmProps: { color: 'red' },
-      onConfirm: () => handleDelete()
+      labels: { cancel:'Cancelar', confirm:'Excluir' },
+      onConfirm: () => handleDelete(),
+      title: 'Excluir',
     });
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteAccounts(selectedItemId as string);
+      await deleteRevenues(selectedItemId as string);
       window.location.reload();
     } catch (error) {
       console.error(error);

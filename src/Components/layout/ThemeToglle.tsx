@@ -1,12 +1,12 @@
-import cx from 'clsx';
 import {
   ActionIcon,
   ActionIconProps,
   useComputedColorScheme,
   useMantineColorScheme
 } from '@mantine/core';
-
 import { IconMoon, IconSun } from '@tabler/icons-react';
+import cx from 'clsx';
+
 import classes from '../../Styles/MantineCss/ActionToggle.module.css';
 
 const ThemeTogle: React.FC<ActionIconProps> = ({ ...otherProps }) => {

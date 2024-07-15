@@ -1,21 +1,22 @@
-import { Button, Divider, Group, SimpleGrid, rem } from '@mantine/core';
-import { IconDeviceFloppy, IconX } from '@tabler/icons-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Button, Divider, Group, SimpleGrid, rem } from "@mantine/core";
+import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   useLocation,
   useNavigate,
   useOutletContext,
-  useParams
-} from 'react-router-dom';
-import { KeyedMutator } from 'swr';
-import { z } from 'zod';
-import zodSchema, { zodResolver } from '../../../schema/zod';
-import { CategoriesType } from '../../../Services/Types/finStash';
-import useFormActions from '../../../Hooks/useFormActions';
-import { upsertCategories } from '../../../Services/Categories';
-import InputText from '../../../Components/Inputs/InputText';
-import InputColor from '../../../Components/Inputs/InputColor';
+  useParams,
+} from "react-router-dom";
+import { KeyedMutator } from "swr";
+import { z } from "zod";
+
+import InputColor from "../../../Components/Inputs/InputColor";
+import InputText from "../../../Components/Inputs/InputText";
+import useFormActions from "../../../Hooks/useFormActions";
+import zodSchema, { zodResolver } from "../../../schema/zod";
+import { upsertCategories } from "../../../Services/Categories";
+import { CategoriesType } from "../../../Services/Types/finStash";
 
 type CategoryInfo = z.infer<typeof zodSchema.categories>;
 
@@ -24,7 +25,7 @@ const CategoryForm: React.FC = () => {
   const { categoryId } = useParams();
   const { pathname } = useLocation();
 
-  const type = pathname.includes('receitas') ? 0 : 1;
+  const type = pathname.includes("receitas") ? 0 : 1;
 
   const context = useOutletContext<{
     categories: CategoriesType[];
@@ -37,16 +38,16 @@ const CategoryForm: React.FC = () => {
     formState: { errors },
     handleSubmit,
     register,
-    setValue
+    setValue,
   } = useForm<CategoryInfo>({
     defaultValues: context
       ? context?.categories[0]
       : {
-          name: '',
-          color: ''
+          color: "",
+          name: "",
         },
 
-    resolver: zodResolver(zodSchema.categories)
+    resolver: zodResolver(zodSchema.categories),
   });
   const { onError, onSave } = useFormActions();
 
@@ -74,18 +75,18 @@ const CategoryForm: React.FC = () => {
         <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
           <InputText
             error={errors.name?.message as string}
-            label={'Name'}
-            name={'name'}
-            placeholder={'digite o name'}
-            type={'text'}
+            label={"Name"}
+            name={"name"}
+            placeholder={"digite o name"}
+            type={"text"}
             register={register}
             required
           />
           <InputColor
             defaultValue={context?.categories[0]?.color}
-            label={'Cor da Categoria'}
-            placeholder={'Defina uma Cor para Categoria'}
-            onChangeEnd={(colorHash) => setValue('color', colorHash)}
+            label={"Cor da Categoria"}
+            placeholder={"Defina uma Cor para Categoria"}
+            onChangeEnd={(colorHash) => setValue("color", colorHash)}
           />
         </SimpleGrid>
 
@@ -94,24 +95,24 @@ const CategoryForm: React.FC = () => {
           <Button
             onClick={() => navigate(-1)}
             leftSection={
-              <IconX style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+              <IconX style={{ height: rem(12), width: rem(12) }} stroke={1.5} />
             }
             variant="light"
           >
-            {'Cancelar'}
+            {"Cancelar"}
           </Button>
 
           <Button
             loading={loadingButton}
             rightSection={
               <IconDeviceFloppy
-                style={{ width: rem(12), height: rem(12) }}
+                style={{ height: rem(12), width: rem(12) }}
                 stroke={1.5}
               />
             }
-            type={'submit'}
+            type={"submit"}
           >
-            {'Submit'}
+            {"Submit"}
           </Button>
         </Group>
       </form>

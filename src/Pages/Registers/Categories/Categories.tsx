@@ -1,7 +1,8 @@
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
-import ListView from '../../../Components/ListView/ListView';
+
 import CategoriesView from './CategoriesView';
+import ListView from '../../../Components/ListView/ListView';
 
 type CategoriesProps = {
   type: number;

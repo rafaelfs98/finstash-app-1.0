@@ -1,23 +1,22 @@
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from "react-router-dom";
 
-import Layout from './Components/layout/Layout';
-
-import OutletBridge from './OutletBridge';
-import AccountsForm from './Pages/Registers/Accounts/AccountsForm';
-import AccountsOutlet from './Pages/Registers/Accounts/AccountsOutlet';
-import AccountsTable from './Pages/Registers/Accounts/AccountsTable';
-import Category from './Pages/Registers/Categories';
-import CategoriesTable from './Pages/Registers/Categories/Categories';
-import CategoryForm from './Pages/Registers/Categories/CategoryForm';
-import CategoryOutlet from './Pages/Registers/Categories/CategoryOutlet';
-import SubCategory from './Pages/Registers/SubCategories';
-import SubCategoriesTable from './Pages/Registers/SubCategories/SubCategories';
-import SubCategoryForm from './Pages/Registers/SubCategories/SubCategoryForm';
-import SubCategoryOutlet from './Pages/Registers/SubCategories/SubCategoryOutlet';
-import Transactions from './Pages/Transactions';
-import ExpensesTable from './Pages/Transactions/Expenses/ExpensesTable';
-import RevenuesTable from './Pages/Transactions/Revenues/RevenuesTable';
-import { Home } from './Pages/home';
+import Layout from "./Components/layout/Layout";
+import OutletBridge from "./OutletBridge";
+import { Home } from "./Pages/home";
+import AccountsForm from "./Pages/Registers/Accounts/AccountsForm";
+import AccountsOutlet from "./Pages/Registers/Accounts/AccountsOutlet";
+import AccountsTable from "./Pages/Registers/Accounts/AccountsTable";
+import Category from "./Pages/Registers/Categories";
+import CategoriesTable from "./Pages/Registers/Categories/Categories";
+import CategoryForm from "./Pages/Registers/Categories/CategoryForm";
+import CategoryOutlet from "./Pages/Registers/Categories/CategoryOutlet";
+import SubCategory from "./Pages/Registers/SubCategories";
+import SubCategoriesTable from "./Pages/Registers/SubCategories/SubCategories";
+import SubCategoryForm from "./Pages/Registers/SubCategories/SubCategoryForm";
+import SubCategoryOutlet from "./Pages/Registers/SubCategories/SubCategoryOutlet";
+import Transactions from "./Pages/Transactions";
+import ExpensesTable from "./Pages/Transactions/Expenses/ExpensesTable";
+import RevenuesTable from "./Pages/Transactions/Revenues/RevenuesTable";
 
 const AppRouter = () => {
   return (

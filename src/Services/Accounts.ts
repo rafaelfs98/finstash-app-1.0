@@ -1,17 +1,17 @@
-import { supabase } from './Supabase/supabaseClient';
-import { AccountsType } from './Types/finStash';
+import { supabase } from "./Supabase/supabaseClient";
+import { AccountsType } from "./Types/finStash";
 
 export const upsertAccounts = async (
   accounts: AccountsType,
   accountsId?: number
 ) => {
   const { data, error } = await supabase
-    .from('accounts')
+    .from("accounts")
     .upsert({
+      color: accounts.color,
       id: accountsId ? accountsId : undefined,
       name: accounts.name,
-      color: accounts.color,
-      total: accounts.total
+      total: accounts.total,
     })
     .select();
 
@@ -23,5 +23,5 @@ export const upsertAccounts = async (
 };
 
 export const deleteAccounts = async (accountsId: string) => {
-  await supabase.from('accounts').delete().eq('id', accountsId);
+  await supabase.from("accounts").delete().eq("id", accountsId);
 };
