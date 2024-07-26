@@ -1,8 +1,8 @@
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams } from "react-router-dom";
 
-import Loading from '../../../Components/Loader';
-import { useFetcher } from '../../../Hooks/useFetcher';
-import { CategoriesType } from '../../../Services/Types/finStash';
+import Loading from "../../../components/Loader";
+import { useFetcher } from "../../../Hooks/useFetcher";
+import { CategoriesType } from "../../../Services/Types/finStash";
 
 const CategoryOutlet = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -10,9 +10,9 @@ const CategoryOutlet = () => {
   const {
     data: categories,
     mutate: mutateCategories,
-    isLoading
+    isLoading,
   } = useFetcher<CategoriesType>({
-    uri: `categories?id=eq.${categoryId}`
+    uri: `categories?id=eq.${categoryId}`,
   });
 
   if (isLoading) {
@@ -24,7 +24,7 @@ const CategoryOutlet = () => {
       <Outlet
         context={{
           categories,
-          mutateCategories
+          mutateCategories,
         }}
       />
     );

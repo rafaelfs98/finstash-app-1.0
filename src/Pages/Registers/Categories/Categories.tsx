@@ -1,8 +1,8 @@
-import { useDisclosure } from '@mantine/hooks';
-import React, { useState } from 'react';
+import { useDisclosure } from "@mantine/hooks";
+import React, { useState } from "react";
 
-import CategoriesView from './CategoriesView';
-import ListView from '../../../Components/ListView/ListView';
+import CategoriesView from "./CategoriesView";
+import ListView from "../../../components/ListView/ListView";
 
 type CategoriesProps = {
   type: number;
@@ -15,8 +15,8 @@ const CategoriesTable: React.FC<CategoriesProps> = ({ type }) => {
     <>
       <ListView
         columns={[
-          { key: 'name', label: 'Categoria' },
-          { key: 'color', label: 'Cor' }
+          { key: "name", label: "Categoria" },
+          { key: "color", label: "Cor" },
         ]}
         resource={`categories?type=eq.${type}&order=id.asc`}
         onClick={() => {

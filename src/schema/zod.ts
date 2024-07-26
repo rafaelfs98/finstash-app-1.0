@@ -11,16 +11,18 @@ const zodSchema = {
     color: z.string(),
     name: z.string(),
   }),
-  expenseSource: z.object({
-    color: z.string(),
-    name: z.string(),
-  }),
-  incomeTransactions: z.object({
-    amount: z.number(),
-    categoryId: z.number(),
-    name: z.string(),
-    sourceId: z.number(),
-    transactionDate: z.string(),
+  expense: z.object({
+    accountsId: z.number().optional(),
+    amount: z.number().nullable(),
+    categoryId: z.number().nullable(),
+    description: z.string().nullable(),
+    dueDate: z.string().nullable(),
+    id: z.number().optional(),
+    installments: z.number().nullable(),
+    paid: z.boolean().optional(),
+    paymentDate: z.string(),
+    repeat: z.boolean().nullable(),
+    subCategoryId: z.number().optional(),
   }),
   subCategories: z.object({
     categoryId: z.number(),

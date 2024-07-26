@@ -1,8 +1,11 @@
-import { useDisclosure } from '@mantine/hooks';
-import React, { useState } from 'react';
+import { useDisclosure } from "@mantine/hooks";
+import { useAtom } from "jotai";
+import React, { useState } from "react";
 
-import SubCategoriesView from './SubCategoriesView';
-import ListView from '../../../Components/ListView/ListView';
+import SubCategoriesView from "./SubCategoriesView";
+import SubCategoryForm from "./SubCategoryForm";
+import { modalOpened } from "../../../atoms/app.atom";
+import ListView from "../../../components/ListView/ListView";
 
 type SubCategoriesProps = {
   type: number;
@@ -11,14 +14,16 @@ type SubCategoriesProps = {
 const SubCategoriesTable: React.FC<SubCategoriesProps> = ({ type }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [isOpen, setIsOpen] = useState<boolean>();
+  const [opned, setOpened] = useAtom(modalOpened);
 
   return (
     <>
       <ListView
+        onClickCreate={() => setOpened(true)}
         columns={[
-          { key: 'name', label: 'Sub Categoria' },
-          { key: 'categories.name', label: 'Categoria' },
-          { key: 'color', label: 'Cor' }
+          { key: "name", label: "Sub Categoria" },
+          { key: "categories.name", label: "Categoria" },
+          { key: "color", label: "Cor" },
         ]}
         resource={`sub_categories?type=eq.${type}&order=id.asc`}
         relationships={`
@@ -41,6 +46,8 @@ const SubCategoriesTable: React.FC<SubCategoriesProps> = ({ type }) => {
           setIsOpen={setIsOpen}
         />
       )}
+
+      {opned && <SubCategoryForm />}
     </>
   );
 };

@@ -9,19 +9,17 @@ import {
   rem,
 } from "@mantine/core";
 import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  useLocation,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from "react-router-dom";
+import { useLocation, useOutletContext, useParams } from "react-router-dom";
 import { KeyedMutator } from "swr";
 import { z } from "zod";
 
-import InputColor from "../../../Components/Inputs/InputColor";
-import InputText from "../../../Components/Inputs/InputText";
+import { modalOpened } from "../../../atoms/app.atom";
+import InputColor from "../../../components/Inputs/InputColor";
+import InputText from "../../../components/Inputs/InputText";
+import MantineModal from "../../../components/Modal/Modal";
 import { useFetcher } from "../../../Hooks/useFetcher";
 import useFormActions from "../../../Hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
@@ -39,9 +37,9 @@ type OutletContext = {
 };
 
 const SubCategoryForm: React.FC = () => {
-  const navigate = useNavigate();
   const { subCategoryId } = useParams();
   const { pathname } = useLocation();
+  const [, setOpened] = useAtom(modalOpened);
 
   const type = pathname.includes("receitas") ? 0 : 1;
 
@@ -77,7 +75,7 @@ const SubCategoryForm: React.FC = () => {
 
       mutateSubCategories && mutateSubCategories(response);
       setLoadingButton(false);
-      navigate(-1);
+      setOpened(false);
 
       return onSave();
     } catch (error) {
@@ -103,65 +101,70 @@ const SubCategoryForm: React.FC = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(_onSubmit)}>
-        <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
-          <InputText
-            error={errors.name?.message as string}
-            label={"Name"}
-            name={"name"}
-            placeholder={"digite o name"}
-            type={"text"}
-            register={register}
-            required
-          />
-          <InputColor
-            defaultValue={subCategories?.color}
-            label={"Cor da Categoria"}
-            placeholder={"Defina uma Cor para Categoria"}
-            onChangeEnd={(colorHash) => setValue("color", colorHash)}
-          />
-          <Select
-            value={subCategories && String(subCategories.categoryId)}
-            radius="lg"
-            nothingFoundMessage
-            label="Categoria"
-            placeholder="Selecione uma Categoria"
-            data={
-              categories?.map((item) => ({
-                label: String(item.name),
-                value: String(item.id),
-              })) || []
-            }
-            filter={optionsFilter}
-            searchable
-            onChange={(value) => setValue("categoryId", Number(value))}
-          />
-        </SimpleGrid>
+        <MantineModal title="Criar Nova SubCategoria">
+          <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
+            <InputText
+              error={errors.name?.message as string}
+              label={"Name"}
+              name={"name"}
+              placeholder={"digite o name"}
+              type={"text"}
+              register={register}
+              required
+            />
+            <InputColor
+              defaultValue={subCategories?.color}
+              label={"Cor da Categoria"}
+              placeholder={"Defina uma Cor para Categoria"}
+              onChangeEnd={(colorHash) => setValue("color", colorHash)}
+            />
+            <Select
+              value={subCategories && String(subCategories.categoryId)}
+              radius="lg"
+              nothingFoundMessage
+              label="Categoria"
+              placeholder="Selecione uma Categoria"
+              data={
+                categories?.map((item) => ({
+                  label: String(item.name),
+                  value: String(item.id),
+                })) || []
+              }
+              filter={optionsFilter}
+              searchable
+              onChange={(value) => setValue("categoryId", Number(value))}
+            />
+          </SimpleGrid>
 
-        <Divider mt="xl" />
-        <Group justify="flex-start" mt="xl">
-          <Button
-            onClick={() => navigate(-1)}
-            leftSection={
-              <IconX style={{ height: rem(12), width: rem(12) }} stroke={1.5} />
-            }
-            variant="light"
-          >
-            {"Cancelar"}
-          </Button>
+          <Divider mt="xl" />
+          <Group justify="flex-start" mt="xl">
+            <Button
+              onClick={() => setOpened(false)}
+              leftSection={
+                <IconX
+                  style={{ height: rem(12), width: rem(12) }}
+                  stroke={1.5}
+                />
+              }
+              variant="light"
+            >
+              {"Cancelar"}
+            </Button>
 
-          <Button
-            loading={loadingButton}
-            rightSection={
-              <IconDeviceFloppy
-                style={{ height: rem(12), width: rem(12) }}
-                stroke={1.5}
-              />
-            }
-            type={"submit"}
-          >
-            {"Submit"}
-          </Button>
-        </Group>
+            <Button
+              loading={loadingButton}
+              rightSection={
+                <IconDeviceFloppy
+                  style={{ height: rem(12), width: rem(12) }}
+                  stroke={1.5}
+                />
+              }
+              type={"submit"}
+            >
+              {"Submit"}
+            </Button>
+          </Group>
+        </MantineModal>
       </form>
     </div>
   );

@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
-import Loading from "../../../Components/Loader";
+import Loading from "../../../components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
 import { deleteSubCategories } from "../../../Services/SubCategories";
 import { SubCategoriesType } from "../../../Services/Types/finStash";

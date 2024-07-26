@@ -1,6 +1,6 @@
 import { Outlet, useParams } from "react-router-dom";
 
-import Loading from "../../../Components/Loader";
+import Loading from "../../../components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
 import { SubCategoriesType } from "../../../Services/Types/finStash";
 

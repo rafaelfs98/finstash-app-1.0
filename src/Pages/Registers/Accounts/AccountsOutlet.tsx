@@ -1,8 +1,8 @@
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams } from "react-router-dom";
 
-import Loading from '../../../Components/Loader';
-import { useFetcher } from '../../../Hooks/useFetcher';
-import { AccountsType } from '../../../Services/Types/finStash';
+import Loading from "../../../components/Loader";
+import { useFetcher } from "../../../Hooks/useFetcher";
+import { AccountsType } from "../../../Services/Types/finStash";
 
 const AccountsOutlet = () => {
   const { accountsId } = useParams<{ accountsId: string }>();
@@ -10,9 +10,9 @@ const AccountsOutlet = () => {
   const {
     data: accounts,
     mutate: mutateAccounts,
-    isLoading
+    isLoading,
   } = useFetcher<AccountsType>({
-    uri: `accounts?id=eq.${accountsId}`
+    uri: `accounts?id=eq.${accountsId}`,
   });
 
   if (isLoading) {
@@ -24,7 +24,7 @@ const AccountsOutlet = () => {
       <Outlet
         context={{
           accounts,
-          mutateAccounts
+          mutateAccounts,
         }}
       />
     );

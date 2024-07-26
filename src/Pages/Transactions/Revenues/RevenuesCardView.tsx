@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 
 import RevenuesDetails from "./RevenuesDetails";
-import Loading from "../../../Components/Loader";
+import Loading from "../../../components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
 import { RevenuesType } from "../../../Services/Types/finStash";
 import { formattedAmount } from "../../../util";

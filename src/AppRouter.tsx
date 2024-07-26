@@ -1,6 +1,6 @@
 import { HashRouter, Route, Routes } from "react-router-dom";
 
-import Layout from "./Components/layout/Layout";
+import Layout from "./components/layout/Layout";
 import OutletBridge from "./OutletBridge";
 import { Home } from "./Pages/home";
 import AccountsForm from "./Pages/Registers/Accounts/AccountsForm";
@@ -27,6 +27,12 @@ const AppRouter = () => {
           <Route path="transações" element={<Transactions />}>
             <Route element={<ExpensesTable />} path="despesas" />
             <Route element={<RevenuesTable />} path="receitas" />
+            {/* <Route path="despesas" element={<OutletBridge />}>
+              <Route element={<TransactionsExpenseForm />} path="create" />
+              <Route element={<CategoryOutlet />} path=":categoryId">
+                <Route element={<CategoryForm />} path="update" />
+              </Route>
+            </Route> */}
           </Route>
           <Route path="cadastros/categorias" element={<Category />}>
             <Route element={<CategoriesTable type={0} />} path="receitas" />
@@ -47,12 +53,6 @@ const AppRouter = () => {
           <Route path="cadastros/subcategorias" element={<SubCategory />}>
             <Route element={<SubCategoriesTable type={0} />} path="receitas" />
             <Route element={<SubCategoriesTable type={1} />} path="despesas" />
-            <Route path="receitas" element={<OutletBridge />}>
-              <Route element={<SubCategoryForm />} path="create" />
-              <Route element={<SubCategoryOutlet />} path=":subCategoryId">
-                <Route element={<SubCategoryForm />} path="update" />
-              </Route>
-            </Route>
             <Route path="despesas" element={<OutletBridge />}>
               <Route element={<SubCategoryForm />} path="create" />
               <Route element={<SubCategoryOutlet />} path=":categoryId">

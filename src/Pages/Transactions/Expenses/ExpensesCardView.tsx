@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 
 import ExpensesDetails from "./ExpensesDetails";
-import Loading from "../../../Components/Loader";
+import Loading from "../../../components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
 import { updateExpensePaid } from "../../../Services/Expense";
 import { ExpenseData } from "../../../Services/Types/finStash";

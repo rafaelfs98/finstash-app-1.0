@@ -14,8 +14,8 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { KeyedMutator } from "swr";
 import { z } from "zod";
 
-import InputColor from "../../../Components/Inputs/InputColor";
-import InputText from "../../../Components/Inputs/InputText";
+import InputColor from "../../../components/Inputs/InputColor";
+import InputText from "../../../components/Inputs/InputText";
 import useFormActions from "../../../Hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 import { upsertAccounts } from "../../../Services/Accounts";

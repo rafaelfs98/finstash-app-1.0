@@ -12,7 +12,6 @@ import {
 } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import ListViewHeader from "./ListViewHeader";
 import ListViewRow from "./ListViewRow";
@@ -29,6 +28,7 @@ type ListViewProps = {
   resource: string;
   relationships?: string;
   onClick?: () => void;
+  onClickCreate?: () => void;
   itemsPerPage?: number;
 } & TableProps;
 
@@ -37,10 +37,10 @@ const ListView: React.FC<ListViewProps> = ({
   relationships,
   resource,
   onClick,
+  onClickCreate,
   itemsPerPage = 10,
   ...otherprops
 }) => {
-  const navigate = useNavigate();
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [search, setSearch] = useState<string>("");
@@ -116,11 +116,7 @@ const ListView: React.FC<ListViewProps> = ({
               value={search}
               onChange={(event) => setSearch(event.currentTarget.value)}
             />
-            <Button
-              mb="md"
-              size="compact-lg"
-              onClick={() => navigate("create")}
-            >
+            <Button mb="md" size="compact-lg" onClick={onClickCreate}>
               <IconPlus size="1rem" />
             </Button>
           </Group>

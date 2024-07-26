@@ -1,10 +1,10 @@
 // Categories.tsx
-import { Title } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import React, { useState } from 'react';
+import { Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import React, { useState } from "react";
 
-import AccountsView from './AccountsView';
-import ListView from '../../../Components/ListView/ListView';
+import AccountsView from "./AccountsView";
+import ListView from "../../../components/ListView/ListView";
 
 const AccountsTable: React.FC = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -14,8 +14,8 @@ const AccountsTable: React.FC = () => {
       <Title order={2}>Contas</Title>
       <ListView
         columns={[
-          { key: 'name', label: 'Conta' },
-          { key: 'color', label: 'Cor' }
+          { key: "name", label: "Conta" },
+          { key: "color", label: "Cor" },
         ]}
         resource="accounts?order=id.asc"
         onClick={() => {

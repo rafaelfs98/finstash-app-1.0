@@ -45,4 +45,5 @@ export type ExpenseData = {
   categories?: CategoriesType;
   sub_categories?: SubCategoriesType;
   accounts?: AccountsType;
+  paymentDate?: string;
 };
