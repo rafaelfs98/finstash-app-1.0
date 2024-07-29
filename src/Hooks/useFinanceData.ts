@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 import { useFetcher } from "./useFetcher";
-import { ExpenseData, RevenuesType } from "../Services/Types/finStash";
+import { ExpenseData, RevenuesType } from "../services/Types/finStash";
 
 interface FilteredData {
   filteredExpense: ExpenseData[] | undefined;

@@ -4,14 +4,16 @@ import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import { useAtom } from "jotai";
 import React from "react";
+import { KeyedMutator } from "swr";
 
 import { TableColumn } from "./ListView";
 import { selectedItemIdAtom } from "../../atoms/app.atom";
 
-type ListViewRowProps = {
+type ListViewRowProps<T = any> = {
   columns: TableColumn[];
   item: any;
   onClick?: () => void;
+  mutate: KeyedMutator<T>;
 };
 
 dayjs.locale("pt-br");
@@ -50,10 +52,13 @@ const renderValue = (key: string, item: any): React.ReactNode => {
   return value;
 };
 
+console.log("renderValue:", renderValue);
+
 const ListViewRow: React.FC<ListViewRowProps> = ({
   columns,
   item,
   onClick,
+  mutate,
 }) => {
   const [, setSelectedItemId] = useAtom(selectedItemIdAtom);
 
@@ -62,7 +67,7 @@ const ListViewRow: React.FC<ListViewRowProps> = ({
   };
   return (
     <Table.Tr>
-      {columns.map((column) => (
+      {columns.map((column, rowIndex) => (
         <Table.Td
           onClick={() => {
             handleActionClick(item.id);
@@ -70,7 +75,9 @@ const ListViewRow: React.FC<ListViewRowProps> = ({
           }}
           key={column.key}
         >
-          {renderValue(column.key, item)}
+          {column.render
+            ? column.render(item[column.key], { ...item, rowIndex }, mutate)
+            : item[column.key]}
         </Table.Td>
       ))}
     </Table.Tr>

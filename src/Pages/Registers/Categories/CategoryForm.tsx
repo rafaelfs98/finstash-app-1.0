@@ -15,8 +15,9 @@ import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
 import useFormActions from "../../../Hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
-import { upsertCategories } from "../../../Services/Categories";
-import { CategoriesType } from "../../../Services/Types/finStash";
+// import { upsertCategories } from "../../../services/Categories";
+import { catagoriesImpl } from "../../../services/Categories";
+import { CategoriesType } from "../../../services/Types/finStash";
 
 type CategoryInfo = z.infer<typeof zodSchema.categories>;
 
@@ -29,7 +30,7 @@ const CategoryForm: React.FC = () => {
 
   const context = useOutletContext<{
     categories: CategoriesType[];
-    mutateCategories: KeyedMutator<CategoriesType[]>;
+    mutateCategories: KeyedMutator<CategoriesType>;
   }>();
 
   const [loadingButton, setLoadingButton] = useState<boolean>();
@@ -54,10 +55,10 @@ const CategoryForm: React.FC = () => {
   const _onSubmit = async (form: CategoryInfo) => {
     try {
       setLoadingButton(true);
-      const response = await upsertCategories(
-        { ...form, type },
-        Number(categoryId)
-      );
+      const response = await catagoriesImpl.update(Number(categoryId), {
+        ...form,
+        type,
+      });
 
       context?.mutateCategories(response);
       setLoadingButton(false);

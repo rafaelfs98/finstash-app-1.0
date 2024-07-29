@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import useSWR from "swr";
 
-import { supabase } from "../Services/Supabase/supabaseClient";
+import { supabase } from "../services/Supabase/supabaseClient";
 
 interface Query {
   uri: string;

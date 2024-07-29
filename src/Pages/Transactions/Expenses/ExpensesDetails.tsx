@@ -17,8 +17,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
-import { deleteExpense } from "../../../Services/Expense";
-import { ExpenseData } from "../../../Services/Types/finStash";
+import { deleteExpense } from "../../../services/Expense";
+import { ExpenseData } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util";
 
 type AccountsViewProps = {

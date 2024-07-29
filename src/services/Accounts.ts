@@ -7,12 +7,13 @@ export const upsertAccounts = async (
 ) => {
   const { data, error } = await supabase
     .from("accounts")
-    .upsert({
+    .update({
       color: accounts.color,
-      id: accountsId ? accountsId : undefined,
+      // id: accountsId ? accountsId : undefined,
       name: accounts.name,
       total: accounts.total,
     })
+    .eq("id", Number(accountsId))
     .select();
 
   if (error) {

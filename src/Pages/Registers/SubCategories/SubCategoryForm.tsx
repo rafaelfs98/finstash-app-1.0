@@ -23,11 +23,11 @@ import MantineModal from "../../../components/Modal/Modal";
 import { useFetcher } from "../../../Hooks/useFetcher";
 import useFormActions from "../../../Hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
-import { upsertSubCategories } from "../../../Services/SubCategories";
+import { upsertSubCategories } from "../../../services/SubCategories";
 import {
   CategoriesType,
   SubCategoriesType,
-} from "../../../Services/Types/finStash";
+} from "../../../services/Types/finStash";
 
 type SubCategoryInfo = z.infer<typeof zodSchema.subCategories>;
 

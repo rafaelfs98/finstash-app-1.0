@@ -19,7 +19,7 @@ import {
   AccountsType,
   ExpenseData,
   RevenuesType,
-} from "../../Services/Types/finStash";
+} from "../../services/Types/finStash";
 
 export function Home() {
   const currentMonth = new Date();

@@ -3,7 +3,7 @@ import { Box, Card, Grid, Group, SimpleGrid, Text } from "@mantine/core";
 import { IconWallet } from "@tabler/icons-react";
 import React from "react";
 
-import { AccountsType } from "../../../Services/Types/finStash";
+import { AccountsType } from "../../../services/Types/finStash";
 import classes from "../../../Styles/MantineCss/AccountsChart.module.css";
 import { formattedAmount } from "../../../util";
 

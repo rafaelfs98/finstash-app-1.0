@@ -2,7 +2,7 @@ import { BarChart } from "@mantine/charts";
 import { Card, Stack, Text } from "@mantine/core";
 import React from "react";
 
-import { ExpenseData } from "../../../Services/Types/finStash";
+import { ExpenseData } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util";
 import { TransformChartData } from "../../../util/Constants/TransformChartData";
 

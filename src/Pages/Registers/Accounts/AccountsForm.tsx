@@ -18,8 +18,8 @@ import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
 import useFormActions from "../../../Hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
-import { upsertAccounts } from "../../../Services/Accounts";
-import { AccountsType } from "../../../Services/Types/finStash";
+import { upsertAccounts } from "../../../services/Accounts";
+import { AccountsType } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util";
 
 type AccountsInfo = z.infer<typeof zodSchema.accounts>;

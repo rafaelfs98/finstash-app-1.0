@@ -10,8 +10,8 @@ import InputColor from "../../../../components/Inputs/InputColor";
 import InputText from "../../../../components/Inputs/InputText";
 import useFormActions from "../../../../Hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../../schema/zod";
-import { upsertCategories } from "../../../../Services/Categories";
-import { CategoriesType } from "../../../../Services/Types/finStash";
+import { upsertCategories } from "../../../../services/Categories";
+import { CategoriesType } from "../../../../services/Types/finStash";
 
 type CategoriesInfo = z.infer<typeof zodSchema.categories>;
 

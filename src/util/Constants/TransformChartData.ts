@@ -1,4 +1,4 @@
-import { ExpenseData, RevenuesType } from '../../Services/Types/finStash';
+import { ExpenseData, RevenuesType } from "../../services/Types/finStash";
 
 interface TransformChartData {
   categoryName: string;
@@ -10,9 +10,9 @@ export const TransformChartData = (
 ): TransformChartData[] => {
   const groupedData = items.reduce<Record<string, Record<string, number>>>(
     (acc, item) => {
-      const categoryName = item.categories?.name || 'Unknown';
+      const categoryName = item.categories?.name || "Unknown";
       const subCategory = item.sub_categories;
-      const subCategoryName = subCategory?.name || 'Unknown';
+      const subCategoryName = subCategory?.name || "Unknown";
       if (!acc[categoryName]) {
         acc[categoryName] = {};
       }
@@ -27,6 +27,6 @@ export const TransformChartData = (
 
   return Object.entries(groupedData).map(([categoryName, values]) => ({
     categoryName,
-    ...values
+    ...values,
   }));
 };

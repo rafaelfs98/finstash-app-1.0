@@ -12,33 +12,43 @@ import {
 } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import React, { useMemo, useState } from "react";
+import { KeyedMutator } from "swr";
 
 import ListViewHeader from "./ListViewHeader";
 import ListViewRow from "./ListViewRow";
-import { useFetcher } from "../../Hooks/useFetcher";
+import { APIParametersOptions } from "../../core/Rest";
+import { useFetch } from "../../Hooks/useFetch";
 import Loading from "../Loader";
 
-export interface TableColumn {
+export interface TableColumn<T = any> {
   key: string;
   label: string;
+  render?: (
+    itemValue: any,
+    item: T,
+    mutate: KeyedMutator<T>
+  ) => string | React.ReactNode;
 }
 
-type ListViewProps = {
+type ListViewProps<T = any> = {
   columns: TableColumn[];
   resource: string;
+  params?: APIParametersOptions;
   relationships?: string;
   onClick?: () => void;
   onClickCreate?: () => void;
+  transformData?: (data: T) => T;
   itemsPerPage?: number;
 } & TableProps;
 
 const ListView: React.FC<ListViewProps> = ({
   columns,
-  relationships,
-  resource,
+  itemsPerPage = 10,
   onClick,
   onClickCreate,
-  itemsPerPage = 10,
+  params,
+  resource,
+  transformData,
   ...otherprops
 }) => {
   const [sortColumn, setSortColumn] = useState<string | null>(null);
@@ -46,12 +56,14 @@ const ListView: React.FC<ListViewProps> = ({
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { data, isLoading } = useFetcher<any>({
-    select: relationships,
-    uri: resource,
+  const { data, loading, mutate } = useFetch(resource, {
+    params,
+    transformData,
   });
 
   const dataItems = data || [];
+
+  console.log("data:", data);
 
   const handleSort = (columnKey: string) => {
     if (columnKey === sortColumn) {
@@ -62,22 +74,25 @@ const ListView: React.FC<ListViewProps> = ({
     }
   };
 
-  const sortedData = dataItems.slice().sort((a, b) => {
-    if (sortColumn) {
-      if (a[sortColumn] < b[sortColumn]) {
-        return sortOrder === "asc" ? -1 : 1;
+  const sortedData = dataItems
+    .slice()
+    .sort((a: { [x: string]: number }, b: { [x: string]: number }) => {
+      if (sortColumn) {
+        if (a[sortColumn] < b[sortColumn]) {
+          return sortOrder === "asc" ? -1 : 1;
+        }
+        if (a[sortColumn] > b[sortColumn]) {
+          return sortOrder === "asc" ? 1 : -1;
+        }
       }
-      if (a[sortColumn] > b[sortColumn]) {
-        return sortOrder === "asc" ? 1 : -1;
-      }
-    }
-    return 0;
-  });
+      return 0;
+    });
 
-  const filteredData = sortedData.filter((item) =>
-    Object.values(item).some((value) =>
-      value?.toString().toLowerCase().includes(search.toLowerCase())
-    )
+  const filteredData = sortedData.filter(
+    (item: { [s: string]: unknown } | ArrayLike<unknown>) =>
+      Object.values(item).some((value) =>
+        value?.toString().toLowerCase().includes(search.toLowerCase())
+      )
   );
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -92,13 +107,21 @@ const ListView: React.FC<ListViewProps> = ({
     return filteredData.slice(startIndex, endIndex);
   }, [currentPage, filteredData, itemsPerPage]);
 
-  const rows = slicedData.map((item, index) => (
-    <ListViewRow onClick={onClick} key={index} columns={columns} item={item} />
-  ));
+  const rows = slicedData.map(
+    (item: any, index: React.Key | null | undefined) => (
+      <ListViewRow
+        mutate={mutate}
+        onClick={onClick}
+        key={index}
+        columns={columns}
+        item={item}
+      />
+    )
+  );
 
   return (
     <div>
-      {isLoading ? (
+      {loading ? (
         <Loading />
       ) : (
         <>

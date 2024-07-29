@@ -20,8 +20,8 @@ import React, { useMemo, useState } from "react";
 import ExpensesDetails from "./ExpensesDetails";
 import Loading from "../../../components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
-import { updateExpensePaid } from "../../../Services/Expense";
-import { ExpenseData } from "../../../Services/Types/finStash";
+import { updateExpensePaid } from "../../../services/Expense";
+import { ExpenseData } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util";
 
 type ExpensesCardViewProps = {

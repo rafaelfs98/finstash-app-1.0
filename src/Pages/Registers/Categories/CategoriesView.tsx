@@ -18,8 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import Loading from "../../../components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
-import { deleteCategories } from "../../../Services/Categories";
-import { CategoriesType } from "../../../Services/Types/finStash";
+import { deleteCategories } from "../../../services/Categories";
+import { CategoriesType } from "../../../services/Types/finStash";
 
 type CategorieViewProps = {
   opened: boolean;

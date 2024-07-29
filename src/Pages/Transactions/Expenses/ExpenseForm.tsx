@@ -19,7 +19,7 @@ import {
   AccountsType,
   CategoriesType,
   SubCategoriesType,
-} from "../../../Services/Types/finStash";
+} from "../../../services/Types/finStash";
 
 type ExpenseFormProps = {
   opened: boolean;

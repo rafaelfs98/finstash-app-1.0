@@ -2,7 +2,7 @@ import { Outlet, useParams } from "react-router-dom";
 
 import Loading from "../../../components/Loader";
 import { useFetcher } from "../../../Hooks/useFetcher";
-import { SubCategoriesType } from "../../../Services/Types/finStash";
+import { SubCategoriesType } from "../../../services/Types/finStash";
 
 const SubCategoryOutlet = () => {
   const { subCategoryId } = useParams<{ subCategoryId: string }>();

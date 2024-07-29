@@ -9,12 +9,14 @@ import { Notifications } from "@mantine/notifications";
 import { SWRConfig } from "swr";
 
 import AppRouter from "./AppRouter";
+import fetcher from "./services/fetcher";
 import { theme } from "./theme";
 
 export const App = () => {
   return (
     <SWRConfig
       value={{
+        fetcher,
         provider: () => new Map(),
         revalidateOnFocus: false,
       }}
