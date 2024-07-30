@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
+import { useFetcher } from "../../../hooks/useFetcher";
 import { deleteAccounts } from "../../../services/Accounts";
 import { AccountsType } from "../../../services/Types/finStash";
 

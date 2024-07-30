@@ -14,7 +14,7 @@ import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 import InputText from "../../../components/Inputs/InputText";
-import { useFetcher } from "../../../Hooks/useFetcher";
+import { useFetcher } from "../../../hooks/useFetcher";
 import {
   AccountsType,
   CategoriesType,

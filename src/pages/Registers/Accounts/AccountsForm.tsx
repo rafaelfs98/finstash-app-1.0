@@ -16,7 +16,7 @@ import { z } from "zod";
 
 import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
-import useFormActions from "../../../Hooks/useFormActions";
+import useFormActions from "../../../hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 import { upsertAccounts } from "../../../services/Accounts";
 import { AccountsType } from "../../../services/Types/finStash";
@@ -76,7 +76,7 @@ const AccountsForm: React.FC = () => {
           : "Criar Fonte de Receita"}
       </Title>
       <form onSubmit={handleSubmit(_onSubmit)}>
-        <SimpleGrid mt="xl" cols={{ base: 1, sm: 3 }}>
+        <SimpleGrid mt="xl">
           <InputText
             error={errors.name?.message as string}
             label={"Name"}

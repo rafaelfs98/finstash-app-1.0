@@ -14,7 +14,6 @@ const CategoriesTable: React.FC<CategoriesProps> = ({ type }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [isOpen, setIsOpen] = useState<boolean>();
 
-  console.log(catagoriesImpl.resource);
   return (
     <>
       <ListView

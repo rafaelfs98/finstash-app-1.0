@@ -20,8 +20,8 @@ import { modalOpened } from "../../../atoms/app.atom";
 import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
 import MantineModal from "../../../components/Modal/Modal";
-import { useFetcher } from "../../../Hooks/useFetcher";
-import useFormActions from "../../../Hooks/useFormActions";
+import { useFetcher } from "../../../hooks/useFetcher";
+import useFormActions from "../../../hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 import { upsertSubCategories } from "../../../services/SubCategories";
 import {

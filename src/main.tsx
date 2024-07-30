@@ -1,8 +1,8 @@
-import React from 'react';
-import { Root, createRoot } from 'react-dom/client';
+import React from "react";
+import { Root, createRoot } from "react-dom/client";
 
-import { App } from './App';
-import './Styles/index.scss';
+import { App } from "./App";
+import "./styles/index.scss";
 
 class finstash extends HTMLElement {
   private root: Root | undefined;
@@ -20,7 +20,7 @@ class finstash extends HTMLElement {
   }
 }
 
-const ELEMENT_ID = 'fin-stash';
+const ELEMENT_ID = "fin-stash";
 
 if (!customElements.get(ELEMENT_ID)) {
   customElements.define(ELEMENT_ID, finstash);

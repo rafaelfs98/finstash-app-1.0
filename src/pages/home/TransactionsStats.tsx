@@ -3,7 +3,7 @@ import { IconCoin, IconPigMoney, IconReceipt } from "@tabler/icons-react";
 import React from "react";
 
 import { ExpenseData, RevenuesType } from "../../services/Types/finStash";
-import classes from "../../Styles/MantineCss/TransactionsStats.module.css";
+import classes from "../../styles/MantineCss/TransactionsStats.module.css";
 
 type TransactionsStatsProps = {
   expense: ExpenseData[];

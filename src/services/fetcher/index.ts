@@ -5,6 +5,7 @@ const fetcher = async <T = any>(
   resource: RequestInfo,
   options?: RequestInit
 ): Promise<T | undefined> => {
+
   const response = await fetch(
     `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/${resource}`,
     {

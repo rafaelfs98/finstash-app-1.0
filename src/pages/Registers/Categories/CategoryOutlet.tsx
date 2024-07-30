@@ -1,7 +1,8 @@
 import { Outlet, useParams } from "react-router-dom";
 
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
+import { useFetch } from "../../../hooks/useFetch";
+import { catagoriesImpl } from "../../../services/Categories";
 import { CategoriesType } from "../../../services/Types/finStash";
 
 const CategoryOutlet = () => {
@@ -9,13 +10,15 @@ const CategoryOutlet = () => {
 
   const {
     data: categories,
+    loading,
     mutate: mutateCategories,
-    isLoading,
-  } = useFetcher<CategoriesType>({
-    uri: `categories?id=eq.${categoryId}`,
+  } = useFetch<CategoriesType[]>(catagoriesImpl.resource, {
+    params: { customParams: { id: `eq.${categoryId}` } },
+    transformData: (response: CategoriesType[]) =>
+      catagoriesImpl.transformData(response),
   });
 
-  if (isLoading) {
+  if (loading) {
     return <Loading />;
   }
 
