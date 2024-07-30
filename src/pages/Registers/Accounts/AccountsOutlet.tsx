@@ -1,7 +1,7 @@
 import { Outlet, useParams } from "react-router-dom";
 
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
+import { useFetcher } from "../../../hooks/useFetcher";
 import { AccountsType } from "../../../services/Types/finStash";
 
 const AccountsOutlet = () => {

@@ -4,7 +4,7 @@ import { IconWallet } from "@tabler/icons-react";
 import React from "react";
 
 import { AccountsType } from "../../../services/Types/finStash";
-import classes from "../../../Styles/MantineCss/AccountsChart.module.css";
+import classes from "../../../styles/MantineCss/AccountsChart.module.css";
 import { formattedAmount } from "../../../util";
 
 type AccountsChartsProps = {

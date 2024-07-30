@@ -1,37 +1,42 @@
 import { Button, Divider, Group, SimpleGrid, rem } from "@mantine/core";
 import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { KeyedMutator } from "swr";
 import { z } from "zod";
 
-import InputColor from "../../../../components/Inputs/InputColor";
-import InputText from "../../../../components/Inputs/InputText";
-import useFormActions from "../../../../Hooks/useFormActions";
-import zodSchema, { zodResolver } from "../../../../schema/zod";
-import { upsertCategories } from "../../../../services/Categories";
-import { CategoriesType } from "../../../../services/Types/finStash";
+import InputColor from "../../../components/Inputs/InputColor";
+import InputText from "../../../components/Inputs/InputText";
+import useFormActions from "../../../hooks/useFormActions";
+import zodSchema, { zodResolver } from "../../../schema/zod";
+import { catagoriesImpl } from "../../../services/Categories";
+import { CategoriesType } from "../../../services/Types/finStash";
 
-type ExpenseInfo = z.infer<typeof zodSchema.categories>;
+type CategoryInfo = z.infer<typeof zodSchema.categories>;
 
-const ExpenseForm: React.FC = () => {
+const CategoryForm: React.FC = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
+  const { pathname } = useLocation();
+
+  const type = pathname.includes("receitas") ? 0 : 1;
 
   const context = useOutletContext<{
     categories: CategoriesType[];
-    mutateCategories: KeyedMutator<CategoriesType[]>;
+    mutateCategories: KeyedMutator<CategoriesType>;
   }>();
-
-  const [loadingButton, setLoadingButton] = useState<boolean>();
 
   const {
     formState: { errors },
     handleSubmit,
     register,
     setValue,
-  } = useForm<ExpenseInfo>({
+  } = useForm<CategoryInfo>({
     defaultValues: context
       ? context?.categories[0]
       : {
@@ -41,25 +46,24 @@ const ExpenseForm: React.FC = () => {
 
     resolver: zodResolver(zodSchema.categories),
   });
-  const { onError, onSave } = useFormActions();
+  const { onError, onSave, onSubmit, submitting } = useFormActions();
 
-  const _onSubmit = async (form: ExpenseInfo) => {
-    try {
-      setLoadingButton(true);
-      const response = await upsertCategories(
-        { ...form, type: 1 },
-        Number(categoryId)
-      );
-
-      context?.mutateCategories(response);
-      setLoadingButton(false);
-      navigate(-1);
-      return onSave();
-    } catch (error) {
-      setLoadingButton(false);
-      onError(error);
-    }
-  };
+  const _onSubmit = (form: CategoryInfo) =>
+    onSubmit(
+      {
+        ...form,
+        id: categoryId,
+        type,
+      },
+      {
+        create: (...params) => catagoriesImpl.create(...params),
+        update: (...params) => catagoriesImpl.update(...params),
+      }
+    )
+      .then(context?.mutateCategories)
+      .then(onSave)
+      .then(() => navigate(-1))
+      .catch(onError);
 
   return (
     <div>
@@ -95,7 +99,7 @@ const ExpenseForm: React.FC = () => {
           </Button>
 
           <Button
-            loading={loadingButton}
+            loading={submitting}
             rightSection={
               <IconDeviceFloppy
                 style={{ height: rem(12), width: rem(12) }}
@@ -112,4 +116,4 @@ const ExpenseForm: React.FC = () => {
   );
 };
 
-export default ExpenseForm;
+export default CategoryForm;

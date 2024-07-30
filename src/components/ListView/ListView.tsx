@@ -17,7 +17,7 @@ import { KeyedMutator } from "swr";
 import ListViewHeader from "./ListViewHeader";
 import ListViewRow from "./ListViewRow";
 import { APIParametersOptions } from "../../core/Rest";
-import { useFetch } from "../../Hooks/useFetch";
+import { useFetch } from "../../hooks/useFetch";
 import Loading from "../Loader";
 
 export interface TableColumn<T = any> {
@@ -62,8 +62,6 @@ const ListView: React.FC<ListViewProps> = ({
   });
 
   const dataItems = data || [];
-
-  console.log("data:", data);
 
   const handleSort = (columnKey: string) => {
     if (columnKey === sortColumn) {

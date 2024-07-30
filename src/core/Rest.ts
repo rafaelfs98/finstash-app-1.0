@@ -43,7 +43,7 @@ class Rest<ObjectModel = any> {
     }
 
     if (transformData) {
-      console.log("transformData:", transformData);
+      
       this.transformData = transformData;
     }
   }
@@ -81,7 +81,7 @@ class Rest<ObjectModel = any> {
   }
 
   public async create(data: any): Promise<ObjectModel> {
-    const response = await fetcher.post(`/${this.uri}`, data);
+    const response = await fetcher.post(`${this.uri}`, data);
 
     if (response && response.name) {
       this.cache.set(`${this.uri}/${response.name}`, response);
@@ -91,11 +91,11 @@ class Rest<ObjectModel = any> {
   }
 
   public async remove(id: number | string): Promise<void> {
-    await fetcher.delete(`${this.uri}/${id}`);
+    await fetcher.delete(`${this.uri}?id=eq.${id}`);
   }
 
   public async update(id: number, data: Partial<any>): Promise<ObjectModel> {
-    return fetcher.patch(`${this.resource}?id=eq.${id}`, data);
+    return fetcher.patch(`${this.uri}?id=eq.${id}`, data);
   }
 
   public async removeBatch(ids: number[]): Promise<void> {

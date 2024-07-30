@@ -48,10 +48,10 @@ export function useFetch<Data = any>(
   );
 
   const memoizedData = useMemo(() => {
-    console.log(transformData);
+    
 
     if (data && transformData) {
-      console.log("test");
+     
       return transformData(data || ({} as Data));
     }
 

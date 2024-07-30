@@ -15,7 +15,7 @@ import React, { useMemo, useState } from "react";
 
 import RevenuesDetails from "./RevenuesDetails";
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
+import { useFetcher } from "../../../hooks/useFetcher";
 import { RevenuesType } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util";
 

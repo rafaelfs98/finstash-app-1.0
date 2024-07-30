@@ -13,8 +13,8 @@ import AccountsChart from "./AccountsChart/AccountsChart";
 import ExpensesCharts from "./Expenses/ExpensesCharts";
 import RevenuesCharts from "./Receitas/RevenuesCharts";
 import TransactionsStats from "./TransactionsStats";
-import { useFetcher } from "../../Hooks/useFetcher";
-import useFinanceData from "../../Hooks/useFinanceData";
+import { useFetcher } from "../../hooks/useFetcher";
+import useFinanceData from "../../hooks/useFinanceData";
 import {
   AccountsType,
   ExpenseData,

@@ -17,8 +17,8 @@ import { useNavigate } from "react-router-dom";
 
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../Hooks/useFetcher";
-import { deleteCategories } from "../../../services/Categories";
+import { useFetch } from "../../../hooks/useFetch";
+import { catagoriesImpl } from "../../../services/Categories";
 import { CategoriesType } from "../../../services/Types/finStash";
 
 type CategorieViewProps = {
@@ -54,7 +54,7 @@ const CategorieView: React.FC<CategorieViewProps> = ({
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteCategories(selectedItemId as string);
+      await catagoriesImpl.remove(selectedItemId as string);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -62,9 +62,14 @@ const CategorieView: React.FC<CategorieViewProps> = ({
     }
   };
 
-  const { data, isLoading } = useFetcher<CategoriesType>({
-    uri: `categories?id=eq.${selectedItemId}`,
-  });
+  const { data, loading } = useFetch<CategoriesType[]>(
+    catagoriesImpl.resource,
+    {
+      params: { customParams: { id: `eq.${selectedItemId}` } },
+      transformData: (response: CategoriesType[]) =>
+        catagoriesImpl.transformData(response),
+    }
+  );
 
   const category = data || [];
 
@@ -79,7 +84,7 @@ const CategorieView: React.FC<CategorieViewProps> = ({
       }}
       title="Detalhes"
     >
-      {isLoading ? (
+      {loading ? (
         <Loading />
       ) : (
         <React.Fragment>
