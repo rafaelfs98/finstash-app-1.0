@@ -10,7 +10,7 @@ import Category from "./pages/Registers/Categories";
 import CategoriesTable from "./pages/Registers/Categories/Categories";
 import CategoryForm from "./pages/Registers/Categories/CategoryForm";
 import CategoryOutlet from "./pages/Registers/Categories/CategoryOutlet";
-import SubCategoriesTable from "./pages/Registers/SubCategories/SubCategories";
+import SubCategoriesTable from "./pages/Registers/SubCategories/SubCategoriesTable";
 import SubCategoryForm from "./pages/Registers/SubCategories/SubCategoryForm";
 import SubCategoryOutlet from "./pages/Registers/SubCategories/SubCategoryOutlet";
 import Transactions from "./pages/Transactions";
