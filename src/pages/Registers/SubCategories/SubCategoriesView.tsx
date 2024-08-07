@@ -1,7 +1,6 @@
 import {
   Badge,
   Button,
-  Drawer,
   Fieldset,
   Group,
   SimpleGrid,
@@ -17,21 +16,12 @@ import { useNavigate } from "react-router-dom";
 
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import Loading from "../../../components/Loader";
+import MantineModal from "../../../components/Modal/Modal";
 import { useFetcher } from "../../../hooks/useFetcher";
 import { deleteSubCategories } from "../../../services/SubCategories";
 import { SubCategoriesType } from "../../../services/Types/finStash";
 
-type SubCategorieViewProps = {
-  opened: boolean;
-  close: () => void;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
-};
-
-const SubCategorieView: React.FC<SubCategorieViewProps> = ({
-  opened,
-  close,
-  setIsOpen,
-}) => {
+const SubCategorieView = () => {
   const [selectedItemId] = useAtom(selectedItemIdAtom);
 
   const navigate = useNavigate();
@@ -79,16 +69,7 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
   const subCategory = data || [];
 
   return (
-    <Drawer
-      opened={opened}
-      position="bottom"
-      closeOnClickOutside
-      onClose={() => {
-        setIsOpen(false);
-        return close;
-      }}
-      title="Detalhes"
-    >
+    <MantineModal withCloseButton={false} title="Detalhes">
       {isLoading ? (
         <Loading />
       ) : (
@@ -110,7 +91,7 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
             </Button>
           </Group>
 
-          <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 3 }}>
+          <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 1 }}>
             <Stack>
               <Fieldset legend="Sub Categoria:" variant="filled">
                 <Group>
@@ -130,7 +111,7 @@ const SubCategorieView: React.FC<SubCategorieViewProps> = ({
           </SimpleGrid>
         </React.Fragment>
       )}
-    </Drawer>
+    </MantineModal>
   );
 };
 

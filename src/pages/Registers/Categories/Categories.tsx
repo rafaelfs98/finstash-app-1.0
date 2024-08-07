@@ -1,6 +1,7 @@
 import { Badge } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import CategoriesView from "./CategoriesView";
 import ListView from "../../../components/ListView/ListView";
@@ -13,10 +14,12 @@ type CategoriesProps = {
 const CategoriesTable: React.FC<CategoriesProps> = ({ type }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [isOpen, setIsOpen] = useState<boolean>();
+  const navigate = useNavigate();
 
   return (
     <>
       <ListView
+        managementToolbarProps={{ addButton: () => navigate("create") }}
         columns={[
           {
             key: "name",
@@ -29,7 +32,7 @@ const CategoriesTable: React.FC<CategoriesProps> = ({ type }) => {
           },
         ]}
         resource={catagoriesImpl.resource}
-        onClick={() => {
+        onClickRow={() => {
           setIsOpen(true);
           open();
         }}

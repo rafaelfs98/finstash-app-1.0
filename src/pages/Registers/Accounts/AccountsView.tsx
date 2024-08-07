@@ -17,9 +17,10 @@ import { useNavigate } from "react-router-dom";
 
 import { selectedItemIdAtom } from "../../../atoms/app.atom";
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../hooks/useFetcher";
-import { deleteAccounts } from "../../../services/Accounts";
+import { useFetch } from "../../../hooks/useFetch";
+import { accountsImpl, deleteAccounts } from "../../../services/Accounts";
 import { AccountsType } from "../../../services/Types/finStash";
+import { formattedAmount } from "../../../util/index";
 
 type AccountsViewProps = {
   opened: boolean;
@@ -63,8 +64,10 @@ const AccountsView: React.FC<AccountsViewProps> = ({
     }
   };
 
-  const { data, isLoading } = useFetcher<AccountsType>({
-    uri: `accounts?id=eq.${selectedItemId}`,
+  const { data, loading } = useFetch<AccountsType[]>(accountsImpl.resource, {
+    params: { customParams: { id: `eq.${selectedItemId}` } },
+    transformData: (response: AccountsType[]) =>
+      accountsImpl.transformData(response),
   });
 
   const accounts = data || [];
@@ -80,7 +83,7 @@ const AccountsView: React.FC<AccountsViewProps> = ({
       }}
       title="Detalhes"
     >
-      {isLoading ? (
+      {loading ? (
         <Loading />
       ) : (
         <React.Fragment>
@@ -113,7 +116,7 @@ const AccountsView: React.FC<AccountsViewProps> = ({
             <Stack>
               <Fieldset legend="Soma no Total:" variant="filled">
                 <Group>
-                  <Text size="lg">{accounts[0]?.total}</Text>
+                  <Text size="lg">{formattedAmount(accounts[0]?.total)}</Text>
                 </Group>
               </Fieldset>
             </Stack>

@@ -11,7 +11,7 @@ import {
   rem,
 } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
-import React, { useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { KeyedMutator } from "swr";
 
 import ListViewHeader from "./ListViewHeader";
@@ -35,8 +35,11 @@ type ListViewProps<T = any> = {
   resource: string;
   params?: APIParametersOptions;
   relationships?: string;
-  onClick?: () => void;
-  onClickCreate?: () => void;
+  onClickRow?: () => void;
+  managementToolbarProps?: {
+    addButton?: () => void;
+    buttons?: ReactNode;
+  };
   transformData?: (data: T) => T;
   itemsPerPage?: number;
 } & TableProps;
@@ -44,10 +47,10 @@ type ListViewProps<T = any> = {
 const ListView: React.FC<ListViewProps> = ({
   columns,
   itemsPerPage = 10,
-  onClick,
-  onClickCreate,
+  onClickRow,
   params,
   resource,
+  managementToolbarProps,
   transformData,
   ...otherprops
 }) => {
@@ -109,7 +112,7 @@ const ListView: React.FC<ListViewProps> = ({
     (item: any, index: React.Key | null | undefined) => (
       <ListViewRow
         mutate={mutate}
-        onClick={onClick}
+        onClick={onClickRow}
         key={index}
         columns={columns}
         item={item}
@@ -137,9 +140,18 @@ const ListView: React.FC<ListViewProps> = ({
               value={search}
               onChange={(event) => setSearch(event.currentTarget.value)}
             />
-            <Button mb="md" size="compact-lg" onClick={onClickCreate}>
-              <IconPlus size="1rem" />
-            </Button>
+
+            {managementToolbarProps?.buttons}
+
+            {managementToolbarProps?.addButton && (
+              <Button
+                mb="md"
+                size="compact-lg"
+                onClick={managementToolbarProps?.addButton}
+              >
+                <IconPlus size="1rem" />
+              </Button>
+            )}
           </Group>
 
           <ScrollArea>

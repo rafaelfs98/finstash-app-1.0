@@ -8,7 +8,6 @@ import {
   rem,
 } from "@mantine/core";
 import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { KeyedMutator } from "swr";
@@ -18,7 +17,7 @@ import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
 import useFormActions from "../../../hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
-import { upsertAccounts } from "../../../services/Accounts";
+import { accountsImpl } from "../../../services/Accounts";
 import { AccountsType } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util";
 
@@ -30,10 +29,8 @@ const AccountsForm: React.FC = () => {
 
   const context = useOutletContext<{
     accounts: AccountsType[];
-    mutateAccounts: KeyedMutator<AccountsType[]>;
+    mutateAccounts: KeyedMutator<AccountsType>;
   }>();
-
-  const [loadingButton, setLoadingButton] = useState<boolean>(false);
 
   const {
     formState: { errors },
@@ -41,37 +38,37 @@ const AccountsForm: React.FC = () => {
     register,
     setValue,
   } = useForm<AccountsInfo>({
-    defaultValues:
-      context?.accounts && context.accounts.length > 0
-        ? context.accounts[0]
-        : {
-            color: "",
-            name: "",
-          },
+    defaultValues: context?.accounts
+      ? context.accounts[0]
+      : {
+          color: "",
+          name: "",
+        },
     resolver: zodResolver(zodSchema.accounts),
   });
 
-  const { onError, onSave } = useFormActions();
+  const { onError, onSave, onSubmit, submitting } = useFormActions();
 
-  const _onSubmit = async (form: AccountsInfo) => {
-    try {
-      setLoadingButton(true);
-      const response = await upsertAccounts(form, Number(accountsId));
-
-      context?.mutateAccounts(response);
-      setLoadingButton(false);
-      navigate(-1);
-      onSave();
-    } catch (error) {
-      setLoadingButton(false);
-      onError(error);
-    }
-  };
+  const _onSubmit = (form: AccountsInfo) =>
+    onSubmit(
+      {
+        ...form,
+        id: accountsId,
+      },
+      {
+        create: (...params) => accountsImpl.create(...params),
+        update: (...params) => accountsImpl.update(...params),
+      }
+    )
+      .then(context?.mutateAccounts)
+      .then(onSave)
+      .then(() => navigate(-1))
+      .catch(onError);
 
   return (
     <>
       <Title order={2}>
-        {context?.accounts && context.accounts.length > 0
+        {context?.accounts
           ? `Editar Fonte de Receita # ${context.accounts[0].id}`
           : "Criar Fonte de Receita"}
       </Title>
@@ -87,11 +84,7 @@ const AccountsForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={
-              context?.accounts && context.accounts.length > 0
-                ? context.accounts[0].color
-                : ""
-            }
+            defaultValue={context?.accounts ? context.accounts[0].color : ""}
             label={"Cor da Fonte de Receita"}
             placeholder={"Defina uma Cor para a Fonte da Receita"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
@@ -113,7 +106,7 @@ const AccountsForm: React.FC = () => {
             }
             onValueChange={({ value }) => setValue("total", Number(value))}
             value={
-              context?.accounts && context.accounts.length > 0
+              context?.accounts
                 ? formattedAmount(Number(context.accounts[0]?.total))
                 : ""
             }
@@ -131,7 +124,7 @@ const AccountsForm: React.FC = () => {
             {"Cancelar"}
           </Button>
           <Button
-            loading={loadingButton}
+            loading={submitting}
             rightSection={
               <IconDeviceFloppy
                 style={{ height: rem(12), width: rem(12) }}

@@ -1,25 +1,28 @@
 import {
   Button,
+  Card,
   ComboboxItem,
-  Divider,
   Group,
   OptionsFilter,
   Select,
   SimpleGrid,
+  Title,
   rem,
 } from "@mantine/core";
-import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import { useAtom } from "jotai";
+import { IconCategory2, IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useOutletContext, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { KeyedMutator } from "swr";
 import { z } from "zod";
 
-import { modalOpened } from "../../../atoms/app.atom";
 import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
-import MantineModal from "../../../components/Modal/Modal";
 import { useFetcher } from "../../../hooks/useFetcher";
 import useFormActions from "../../../hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
@@ -37,9 +40,9 @@ type OutletContext = {
 };
 
 const SubCategoryForm: React.FC = () => {
+  const navigate = useNavigate();
   const { subCategoryId } = useParams();
   const { pathname } = useLocation();
-  const [, setOpened] = useAtom(modalOpened);
 
   const type = pathname.includes("receitas") ? 0 : 1;
 
@@ -75,7 +78,7 @@ const SubCategoryForm: React.FC = () => {
 
       mutateSubCategories && mutateSubCategories(response);
       setLoadingButton(false);
-      setOpened(false);
+      navigate(-1);
 
       return onSave();
     } catch (error) {
@@ -100,8 +103,17 @@ const SubCategoryForm: React.FC = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(_onSubmit)}>
-        <MantineModal title="Criar Nova SubCategoria">
+      <Group justify="center">
+        <IconCategory2 size="1.2rem" stroke={3} />
+        <Title order={3} ta={"center"} mt="xl" mb="xl">
+          {subCategories
+            ? `Edição de Subcategoria `
+            : `Criação de Subcategoria`}
+        </Title>
+      </Group>
+
+      <Card shadow="sm" radius="md" withBorder>
+        <form onSubmit={handleSubmit(_onSubmit)}>
           <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
             <InputText
               error={errors.name?.message as string}
@@ -111,12 +123,6 @@ const SubCategoryForm: React.FC = () => {
               type={"text"}
               register={register}
               required
-            />
-            <InputColor
-              defaultValue={subCategories?.color}
-              label={"Cor da Categoria"}
-              placeholder={"Defina uma Cor para Categoria"}
-              onChangeEnd={(colorHash) => setValue("color", colorHash)}
             />
             <Select
               value={subCategories && String(subCategories.categoryId)}
@@ -134,38 +140,39 @@ const SubCategoryForm: React.FC = () => {
               searchable
               onChange={(value) => setValue("categoryId", Number(value))}
             />
+            <InputColor
+              defaultValue={subCategories?.color}
+              label={"Cor da SubCategoria"}
+              placeholder={"Defina uma Cor para Categoria"}
+              onChangeEnd={(colorHash) => setValue("color", colorHash)}
+            />
           </SimpleGrid>
+        </form>
+        <Group justify="flex-start" mt="xl">
+          <Button
+            onClick={() => navigate(-1)}
+            leftSection={
+              <IconX style={{ height: rem(12), width: rem(12) }} stroke={1.5} />
+            }
+            variant="light"
+          >
+            {"Cancelar"}
+          </Button>
 
-          <Divider mt="xl" />
-          <Group justify="flex-start" mt="xl">
-            <Button
-              onClick={() => setOpened(false)}
-              leftSection={
-                <IconX
-                  style={{ height: rem(12), width: rem(12) }}
-                  stroke={1.5}
-                />
-              }
-              variant="light"
-            >
-              {"Cancelar"}
-            </Button>
-
-            <Button
-              loading={loadingButton}
-              rightSection={
-                <IconDeviceFloppy
-                  style={{ height: rem(12), width: rem(12) }}
-                  stroke={1.5}
-                />
-              }
-              type={"submit"}
-            >
-              {"Submit"}
-            </Button>
-          </Group>
-        </MantineModal>
-      </form>
+          <Button
+            loading={loadingButton}
+            rightSection={
+              <IconDeviceFloppy
+                style={{ height: rem(12), width: rem(12) }}
+                stroke={1.5}
+              />
+            }
+            type={"submit"}
+          >
+            {"Submit"}
+          </Button>
+        </Group>
+      </Card>
     </div>
   );
 };

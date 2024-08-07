@@ -1,31 +1,39 @@
-import { useDisclosure } from "@mantine/hooks";
+import { SegmentedControl } from "@mantine/core";
 import { useAtom } from "jotai";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import SubCategoriesView from "./SubCategoriesView";
-import SubCategoryForm from "./SubCategoryForm";
 import { modalOpened } from "../../../atoms/app.atom";
 import ListView from "../../../components/ListView/ListView";
+import FinanceMenu from "../../../components/Menu/FinanceMenu";
 
-type SubCategoriesProps = {
-  type: number;
-};
-
-const SubCategoriesTable: React.FC<SubCategoriesProps> = ({ type }) => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [isOpen, setIsOpen] = useState<boolean>();
-  const [opned, setOpened] = useAtom(modalOpened);
+const SubCategoriesTable = () => {
+  const [value, setValue] = useState("0");
+  const [opened, setOpened] = useAtom(modalOpened);
 
   return (
     <>
+      <SegmentedControl
+        radius="xl"
+        fullWidth
+        value={value}
+        onChange={setValue}
+        data={[
+          { label: "Receitas", value: "0" },
+          { label: "Despesas", value: "1" },
+        ]}
+      />
+
       <ListView
-        onClickCreate={() => setOpened(true)}
+        managementToolbarProps={{
+          buttons: <FinanceMenu />,
+        }}
         columns={[
           { key: "name", label: "Sub Categoria" },
           { key: "categories.name", label: "Categoria" },
           { key: "color", label: "Cor" },
         ]}
-        resource={`sub_categories?type=eq.${type}&order=id.asc`}
+        resource={`sub_categories?type=eq.${value}&order=id.asc`}
         relationships={`
             id, 
             name,
@@ -34,20 +42,11 @@ const SubCategoriesTable: React.FC<SubCategoriesProps> = ({ type }) => {
              id,
              name
               )`}
-        onClick={() => {
-          setIsOpen(true);
-          open();
+        onClickRow={() => {
+          setOpened(true);
         }}
       />
-      {isOpen && (
-        <SubCategoriesView
-          opened={opened}
-          close={close}
-          setIsOpen={setIsOpen}
-        />
-      )}
-
-      {opned && <SubCategoryForm />}
+      {opened && <SubCategoriesView />}
     </>
   );
 };

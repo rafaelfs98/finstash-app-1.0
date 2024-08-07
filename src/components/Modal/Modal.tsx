@@ -1,4 +1,5 @@
-import { Modal, ModalProps } from "@mantine/core";
+import { Button, Modal, ModalProps, rem } from "@mantine/core";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import React, { ReactNode } from "react";
 
@@ -10,20 +11,32 @@ type MantineModal = {
 } & Omit<ModalProps, "onClose" | "opened">;
 
 const MantineModal: React.FC<MantineModal> = ({ children, title = "" }) => {
-  const [opened] = useAtom(modalOpened);
+  const [opened, setOpened] = useAtom(modalOpened);
 
   return (
     <Modal
-      withCloseButton={false}
-      closeOnClickOutside={false}
-      closeOnEscape={false}
       opened={opened}
       size="xl"
-      onClose={() => {}}
+      withCloseButton={false}
+      onClose={() => setOpened(false)}
       title={title}
       centered
     >
       {children}
+
+      <Button
+        fullWidth
+        onClick={() => setOpened(false)}
+        leftSection={
+          <IconArrowLeft
+            style={{ height: rem(15), width: rem(15) }}
+            stroke={1.5}
+          />
+        }
+        variant="light"
+      >
+        {"Voltar"}
+      </Button>
     </Modal>
   );
 };

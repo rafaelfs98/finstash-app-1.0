@@ -1,5 +1,6 @@
 import { supabase } from "./Supabase/supabaseClient";
 import { AccountsType } from "./Types/finStash";
+import Rest from "../core/Rest";
 
 export const upsertAccounts = async (
   accounts: AccountsType,
@@ -26,3 +27,20 @@ export const upsertAccounts = async (
 export const deleteAccounts = async (accountsId: string) => {
   await supabase.from("accounts").delete().eq("id", accountsId);
 };
+
+class AccountsImpl extends Rest<AccountsType> {
+  constructor() {
+    super({
+      transformData: (accounts) => ({
+        ...accounts,
+        
+      }),
+      uri: "accounts",
+    });
+  }
+
+}
+
+const accountsImpl = new AccountsImpl();
+
+export { accountsImpl };

@@ -1,7 +1,8 @@
 import { Outlet, useParams } from "react-router-dom";
 
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../hooks/useFetcher";
+import { useFetch } from "../../../hooks/useFetch";
+import { accountsImpl } from "../../../services/Accounts";
 import { AccountsType } from "../../../services/Types/finStash";
 
 const AccountsOutlet = () => {
@@ -10,12 +11,14 @@ const AccountsOutlet = () => {
   const {
     data: accounts,
     mutate: mutateAccounts,
-    isLoading,
-  } = useFetcher<AccountsType>({
-    uri: `accounts?id=eq.${accountsId}`,
+    loading,
+  } = useFetch<AccountsType[]>(accountsImpl.resource, {
+    params: { customParams: { id: `eq.${accountsId}` } },
+    transformData: (response: AccountsType[]) =>
+      accountsImpl.transformData(response),
   });
 
-  if (isLoading) {
+  if (loading) {
     return <Loading />;
   }
 
