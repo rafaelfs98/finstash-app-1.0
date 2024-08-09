@@ -67,6 +67,7 @@ const CategoriesForm = () => {
       }
     )
       .then(mutateCategories)
+      .then(() => navigate(-1))
       .then(onSave)
       .catch(onError);
 
