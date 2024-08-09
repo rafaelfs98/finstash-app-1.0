@@ -1,21 +1,24 @@
 import { Outlet, useParams } from "react-router-dom";
 
 import Loading from "../../../components/Loader";
-import { useFetcher } from "../../../hooks/useFetcher";
+import { useFetch } from "../../../hooks/useFetch";
+import { subCategoriesImpl } from "../../../services/SubCategories";
 import { SubCategoriesType } from "../../../services/Types/finStash";
 
-const SubCategoryOutlet = () => {
+const SubCategoriesOutlet = () => {
   const { subCategoryId } = useParams<{ subCategoryId: string }>();
 
   const {
     data,
     mutate: mutateSubCategories,
-    isLoading,
-  } = useFetcher<SubCategoriesType>({
-    uri: `sub_categories?id=eq.${subCategoryId}`,
+    loading,
+  } = useFetch<SubCategoriesType[]>(subCategoriesImpl.resource, {
+    params: { customParams: { id: `eq.${subCategoryId}` } },
+    transformData: (response: SubCategoriesType[]) =>
+      subCategoriesImpl.transformData(response),
   });
 
-  if (isLoading) {
+  if (loading) {
     return <Loading />;
   }
 
@@ -34,4 +37,4 @@ const SubCategoryOutlet = () => {
   return null;
 };
 
-export default SubCategoryOutlet;
+export default SubCategoriesOutlet;

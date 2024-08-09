@@ -5,11 +5,11 @@ import { useFetch } from "../../../hooks/useFetch";
 import { catagoriesImpl } from "../../../services/Categories";
 import { CategoriesType } from "../../../services/Types/finStash";
 
-const CategoryOutlet = () => {
+const CategoriesOutlet = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
 
   const {
-    data: categories,
+    data,
     loading,
     mutate: mutateCategories,
   } = useFetch<CategoriesType[]>(catagoriesImpl.resource, {
@@ -22,7 +22,8 @@ const CategoryOutlet = () => {
     return <Loading />;
   }
 
-  if (categories) {
+  if (data) {
+    const categories = data[0];
     return (
       <Outlet
         context={{
@@ -36,4 +37,4 @@ const CategoryOutlet = () => {
   return null;
 };
 
-export default CategoryOutlet;
+export default CategoriesOutlet;

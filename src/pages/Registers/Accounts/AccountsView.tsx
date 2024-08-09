@@ -1,129 +1,71 @@
 import {
   Badge,
   Button,
-  Drawer,
   Fieldset,
   Group,
-  SimpleGrid,
-  Stack,
-  Text,
   rem,
+  SimpleGrid,
+  Text,
+  Title,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { IconArrowLeft, IconWallet } from "@tabler/icons-react";
+import React from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-import { selectedItemIdAtom } from "../../../atoms/app.atom";
-import Loading from "../../../components/Loader";
-import { useFetch } from "../../../hooks/useFetch";
-import { accountsImpl, deleteAccounts } from "../../../services/Accounts";
 import { AccountsType } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util/index";
 
-type AccountsViewProps = {
-  opened: boolean;
-  close: () => void;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+type OutletContext = {
+  accounts: AccountsType;
 };
 
-const AccountsView: React.FC<AccountsViewProps> = ({
-  opened,
-  close,
-  setIsOpen,
-}) => {
-  const [selectedItemId] = useAtom(selectedItemIdAtom);
+const AccountsView = () => {
+  const { accounts } = useOutletContext<OutletContext>() || {};
 
   const navigate = useNavigate();
 
-  const openDeleteModal = () =>
-    modals.openConfirmModal({
-      centered: true,
-      children: (
-        <Text size="sm">
-          Tem certeza de que deseja excluí-lo? Essa ação é destrutiva e não
-          haverá retorno.
-        </Text>
-      ),
-      confirmProps: { color: "red" },
-      labels: { cancel: "Cancelar", confirm: "Excluir" },
-      onConfirm: () => handleDelete(),
-      title: "Excluir",
-    });
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      await deleteAccounts(selectedItemId as string);
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      setIsDeleting(false);
-    }
-  };
-
-  const { data, loading } = useFetch<AccountsType[]>(accountsImpl.resource, {
-    params: { customParams: { id: `eq.${selectedItemId}` } },
-    transformData: (response: AccountsType[]) =>
-      accountsImpl.transformData(response),
-  });
-
-  const accounts = data || [];
-
   return (
-    <Drawer
-      opened={opened}
-      position="bottom"
-      closeOnClickOutside
-      onClose={() => {
-        setIsOpen(false);
-        return close;
-      }}
-      title="Detalhes"
-    >
-      {loading ? (
-        <Loading />
-      ) : (
-        <React.Fragment>
-          <Group justify="flex-end">
-            <Button
-              color="red"
-              radius="xl"
-              onClick={openDeleteModal}
-              disabled={isDeleting}
-            >
-              <IconTrash style={{ width: rem(20) }} stroke={1.5} />
-            </Button>
-            <Button
-              radius="xl"
-              onClick={() => navigate(`${selectedItemId}/update`)}
-            >
-              <IconPencil style={{ width: rem(20) }} stroke={1.5} />
-            </Button>
+    <React.Fragment>
+      <Group justify="center">
+        <IconWallet size="1.2rem" stroke={3} />
+        <Title order={3} ta={"center"} mt="xl" mb="xl">
+          {"Detalhes da Conta"}
+        </Title>
+      </Group>
+      <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 3 }}>
+        <Fieldset legend="Nome Da Conta:" variant="filled">
+          <Group>
+            <Text size="lg">{accounts?.name}</Text>
           </Group>
+        </Fieldset>
 
-          <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 3 }}>
-            <Stack>
-              <Fieldset legend="Contas:" variant="filled">
-                <Group>
-                  <Badge color={accounts[0]?.color} />
-                  <Text size="lg">{accounts[0]?.name}</Text>
-                </Group>
-              </Fieldset>
-            </Stack>
-            <Stack>
-              <Fieldset legend="Soma no Total:" variant="filled">
-                <Group>
-                  <Text size="lg">{formattedAmount(accounts[0]?.total)}</Text>
-                </Group>
-              </Fieldset>
-            </Stack>
-          </SimpleGrid>
-        </React.Fragment>
-      )}
-    </Drawer>
+        <Fieldset legend="Cor da Conta:" variant="filled">
+          <Group>
+            <Badge color={accounts?.color}>{accounts?.color}</Badge>
+          </Group>
+        </Fieldset>
+
+        <Fieldset legend="Saldo Na conta" variant="filled">
+          <Group>
+            <Text size="lg">{formattedAmount(accounts?.total)}</Text>
+          </Group>
+        </Fieldset>
+      </SimpleGrid>
+
+      <Group justify="flex-start" mt="xl">
+        <Button
+          onClick={() => navigate(-1)}
+          leftSection={
+            <IconArrowLeft
+              style={{ height: rem(15), width: rem(15) }}
+              stroke={1.5}
+            />
+          }
+        >
+          {"Voltar"}
+        </Button>
+      </Group>
+    </React.Fragment>
   );
 };
 

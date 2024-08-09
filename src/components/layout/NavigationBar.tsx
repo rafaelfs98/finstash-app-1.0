@@ -96,7 +96,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
                 onClick={() => {
                   handleLinkChildrenClick("Categorias");
                   toggle();
-                  navigate("cadastros/categorias/receitas");
+                  navigate("cadastros/categorias");
                 }}
                 active={activeLinkChildren === "Categorias"}
               />

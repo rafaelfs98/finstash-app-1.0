@@ -1,9 +1,14 @@
 import { Button, Menu, rem } from "@mantine/core";
 import { IconPigMoney, IconPlus, IconReceipt } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
+
+import { selectedFinanceType } from "../../atoms/app.atom";
 
 const FinanceMenu = () => {
   const navigate = useNavigate();
+
+  const [, setSelectedFincance] = useAtom(selectedFinanceType);
 
   return (
     <Menu shadow="md" width={200}>
@@ -16,7 +21,8 @@ const FinanceMenu = () => {
       <Menu.Dropdown>
         <Menu.Item
           onClick={() => {
-            navigate("create/receitas");
+            setSelectedFincance(0);
+            navigate("create");
           }}
           leftSection={
             <IconPigMoney style={{ height: rem(14), width: rem(14) }} />
@@ -26,7 +32,8 @@ const FinanceMenu = () => {
         </Menu.Item>
         <Menu.Item
           onClick={() => {
-            navigate("create/despesas");
+            setSelectedFincance(1);
+            navigate("create");
           }}
           leftSection={
             <IconReceipt style={{ height: rem(14), width: rem(14) }} />

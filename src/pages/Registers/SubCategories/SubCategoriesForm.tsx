@@ -10,23 +10,19 @@ import {
   rem,
 } from "@mantine/core";
 import { IconCategory2, IconDeviceFloppy, IconX } from "@tabler/icons-react";
-import { useState } from "react";
+import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
-import {
-  useLocation,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { KeyedMutator } from "swr";
 import { z } from "zod";
 
+import { selectedFinanceType } from "../../../atoms/app.atom";
 import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
 import { useFetcher } from "../../../hooks/useFetcher";
 import useFormActions from "../../../hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
-import { upsertSubCategories } from "../../../services/SubCategories";
+import { subCategoriesImpl } from "../../../services/SubCategories";
 import {
   CategoriesType,
   SubCategoriesType,
@@ -36,20 +32,17 @@ type SubCategoryInfo = z.infer<typeof zodSchema.subCategories>;
 
 type OutletContext = {
   subCategories: SubCategoriesType;
-  mutateSubCategories: KeyedMutator<SubCategoriesType[]>;
+  mutateSubCategories: KeyedMutator<SubCategoriesType>;
 };
 
-const SubCategoryForm: React.FC = () => {
+const SubCategoriesForm: React.FC = () => {
   const navigate = useNavigate();
   const { subCategoryId } = useParams();
-  const { pathname } = useLocation();
 
-  const type = pathname.includes("receitas") ? 0 : 1;
+  const [selectedFincance] = useAtom(selectedFinanceType);
 
   const { subCategories, mutateSubCategories } =
     useOutletContext<OutletContext>() || {};
-
-  const [loadingButton, setLoadingButton] = useState<boolean>();
 
   const {
     formState: { errors },
@@ -66,30 +59,28 @@ const SubCategoryForm: React.FC = () => {
 
     resolver: zodResolver(zodSchema.subCategories),
   });
-  const { onError, onSave } = useFormActions();
+  const { onError, onSave, onSubmit, submitting } = useFormActions();
 
-  const _onSubmit = async (form: SubCategoryInfo) => {
-    try {
-      setLoadingButton(true);
-      const response = await upsertSubCategories(
-        { ...form, type },
-        Number(subCategoryId)
-      );
-
-      mutateSubCategories && mutateSubCategories(response);
-      setLoadingButton(false);
-      navigate(-1);
-
-      return onSave();
-    } catch (error) {
-      setLoadingButton(false);
-      onError(error);
-    }
-  };
+  const _onSubmit = (form: SubCategoryInfo) =>
+    onSubmit(
+      {
+        ...form,
+        id: Number(subCategoryId),
+        type: Number(selectedFincance),
+      },
+      {
+        create: (...params) => subCategoriesImpl.create(...params),
+        update: (...params) => subCategoriesImpl.update(...params),
+      }
+    )
+      .then(mutateSubCategories)
+      .then(onSave)
+      .then(() => navigate(-1))
+      .catch(onError);
 
   const { data: categories } = useFetcher<CategoriesType>({
     select: "id, name",
-    uri: `categories?type=eq.${type}&order=id.asc`,
+    uri: `categories?type=eq.${selectedFincance}&order=id.asc`,
   });
 
   const optionsFilter: OptionsFilter = ({ options, search }) => {
@@ -160,7 +151,7 @@ const SubCategoryForm: React.FC = () => {
           </Button>
 
           <Button
-            loading={loadingButton}
+            loading={submitting}
             rightSection={
               <IconDeviceFloppy
                 style={{ height: rem(12), width: rem(12) }}
@@ -177,4 +168,4 @@ const SubCategoryForm: React.FC = () => {
   );
 };
 
-export default SubCategoryForm;
+export default SubCategoriesForm;

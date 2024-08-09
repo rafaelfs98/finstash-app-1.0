@@ -7,7 +7,6 @@ export type TransformData<T = any> = (data: T) => T;
 
 export type APIParametersOptions = {
   customParams?: { [key: string]: unknown };
-  fields?: string;
   order?: string;
   page?: number | string;
   pageSize?: number | string;
@@ -37,9 +36,11 @@ class Rest<ObjectModel = any> {
     this.uri = uri;
     this.resource = `${uri}`;
 
+
     if (fields) {
-      this.fields = `select=${fields}`;
-      this.resource = `${uri}&${this.fields}`;
+      this.resource = `${uri}?select=${fields}`;
+    } else {
+      this.resource = `${uri}`;
     }
 
     if (transformData) {
@@ -81,13 +82,8 @@ class Rest<ObjectModel = any> {
   }
 
   public async create(data: any): Promise<ObjectModel> {
-    const response = await fetcher.post(`${this.uri}`, data);
+    return await fetcher.post(`${this.uri}?select=* `, data);
 
-    if (response && response.name) {
-      this.cache.set(`${this.uri}/${response.name}`, response);
-    }
-
-    return response;
   }
 
   public async remove(id: number | string): Promise<void> {

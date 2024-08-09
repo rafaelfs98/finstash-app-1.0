@@ -1,118 +1,84 @@
 import {
   Badge,
   Button,
+  Card,
   Fieldset,
   Group,
   SimpleGrid,
-  Stack,
   Text,
+  Title,
   rem,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { IconArrowLeft, IconCategory2 } from "@tabler/icons-react";
+import React from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-import { selectedItemIdAtom } from "../../../atoms/app.atom";
-import Loading from "../../../components/Loader";
-import MantineModal from "../../../components/Modal/Modal";
-import { useFetcher } from "../../../hooks/useFetcher";
-import { deleteSubCategories } from "../../../services/SubCategories";
 import { SubCategoriesType } from "../../../services/Types/finStash";
 
-const SubCategorieView = () => {
-  const [selectedItemId] = useAtom(selectedItemIdAtom);
+type OutletContext = {
+  subCategories: SubCategoriesType;
+};
+
+const SubCategoriesView = () => {
+  const { subCategories } = useOutletContext<OutletContext>() || {};
 
   const navigate = useNavigate();
 
-  const openDeleteModal = () =>
-    modals.openConfirmModal({
-      centered: true,
-      children: (
-        <Text size="sm">
-          Tem certeza de que deseja excluí-lo? Essa ação é destrutiva e não
-          haverá retorno.
-        </Text>
-      ),
-      confirmProps: { color: "red" },
-      labels: { cancel: "Cancelar", confirm: "Excluir" },
-      onConfirm: () => handleDelete(),
-      title: "Excluir",
-    });
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      await deleteSubCategories(selectedItemId as string);
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      setIsDeleting(false);
-    }
-  };
-
-  const { data, isLoading } = useFetcher<SubCategoriesType>({
-    select: `
-    id, 
-    name,
-    color,
-    categories (
-     id,
-     name,
-     color
-      )`,
-    uri: `sub_categories?id=eq.${selectedItemId}`,
-  });
-
-  const subCategory = data || [];
-
   return (
-    <MantineModal withCloseButton={false} title="Detalhes">
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <React.Fragment>
-          <Group justify="flex-end" mt={2}>
+    <>
+      <React.Fragment>
+        <Group justify="center">
+          <IconCategory2 size="1.2rem" stroke={3} />
+          <Title order={3} ta={"center"} mt="xl" mb="xl">
+            {"Detalhes da Subcategoria"}
+          </Title>
+        </Group>
+        <Card shadow="sm" radius="md" withBorder>
+          <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 2 }}>
+            <Fieldset legend="Nome da Sub Categoria" variant="filled">
+              <Group>
+                <Text size="lg">{subCategories?.name}</Text>
+              </Group>
+            </Fieldset>
+            <Fieldset legend="Cor da Sub Categoria" variant="filled">
+              <Group>
+                <Badge color={subCategories?.color}>
+                  {subCategories?.color}
+                </Badge>
+              </Group>
+            </Fieldset>
+
+            <Fieldset legend="Nome da Categoria" variant="filled">
+              <Group>
+                <Text size="lg">{subCategories?.categories?.name}</Text>
+              </Group>
+            </Fieldset>
+            <Fieldset legend="Cor da Categoria" variant="filled">
+              <Group>
+                <Badge color={subCategories?.categories?.color}>
+                  {subCategories?.categories?.color}
+                </Badge>
+              </Group>
+            </Fieldset>
+          </SimpleGrid>
+
+          <Group justify="flex-start" mt="xl">
             <Button
-              color="red"
-              radius="xl"
-              onClick={openDeleteModal}
-              disabled={isDeleting}
+              onClick={() => navigate(-1)}
+              leftSection={
+                <IconArrowLeft
+                  style={{ height: rem(15), width: rem(15) }}
+                  stroke={1.5}
+                />
+              }
             >
-              <IconTrash style={{ width: rem(20) }} stroke={1.5} />
-            </Button>
-            <Button
-              radius="xl"
-              onClick={() => navigate(`${selectedItemId}/update`)}
-            >
-              <IconPencil style={{ width: rem(20) }} stroke={1.5} />
+              {"Voltar"}
             </Button>
           </Group>
-
-          <SimpleGrid mt="lg" mb="xl" cols={{ base: 1, sm: 1 }}>
-            <Stack>
-              <Fieldset legend="Sub Categoria:" variant="filled">
-                <Group>
-                  <Badge color={subCategory[0]?.color} />
-                  <Text size="lg">{subCategory[0]?.name}</Text>
-                </Group>
-              </Fieldset>
-            </Stack>
-            <Stack>
-              <Fieldset legend="Categoria:" variant="filled">
-                <Group>
-                  <Badge color={subCategory[0]?.categories?.color} />
-                  <Text size="lg">{subCategory[0]?.categories?.name}</Text>
-                </Group>
-              </Fieldset>
-            </Stack>
-          </SimpleGrid>
-        </React.Fragment>
-      )}
-    </MantineModal>
+        </Card>
+      </React.Fragment>
+    </>
   );
 };
 
-export default SubCategorieView;
+export default SubCategoriesView;
