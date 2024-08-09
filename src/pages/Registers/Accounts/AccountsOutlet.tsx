@@ -9,7 +9,7 @@ const AccountsOutlet = () => {
   const { accountsId } = useParams<{ accountsId: string }>();
 
   const {
-    data: accounts,
+    data,
     mutate: mutateAccounts,
     loading,
   } = useFetch<AccountsType[]>(accountsImpl.resource, {
@@ -22,7 +22,8 @@ const AccountsOutlet = () => {
     return <Loading />;
   }
 
-  if (accounts) {
+  if (data) {
+    const accounts = data[0];
     return (
       <Outlet
         context={{

@@ -1,28 +1,23 @@
-import { supabase } from "./Supabase/supabaseClient";
 import { SubCategoriesType } from "./Types/finStash";
+import Rest from "../core/Rest";
 
-export const upsertSubCategories = async (
-  categories: SubCategoriesType,
-  subCategoriesId?: number
-) => {
-  const { data, error } = await supabase
-    .from("sub_categories")
-    .upsert({
-      category_id: categories.categoryId,
-      color: categories.color,
-      id: subCategoriesId ? subCategoriesId : undefined,
-      name: categories.name,
-      type: categories.type,
-    })
-    .select();
 
-  if (error?.message) {
-    throw Error(error?.message);
+class SubCategoriesImpl extends Rest<SubCategoriesType> {
+  constructor() {
+    super({
+      fields: "id,name,color,categories(color,id,name)",
+      transformData: (subCategory) => ({
+        ...subCategory,
+        categoryName : subCategory.categories?.name
+
+        
+      }),
+      uri: "sub_categories",
+    });
   }
 
-  return data as SubCategoriesType[];
-};
+}
 
-export const deleteSubCategories = async (subCategoriesId: string) => {
-  await supabase.from("sub_categories").delete().eq("id", subCategoriesId);
-};
+const subCategoriesImpl= new SubCategoriesImpl();
+
+export { subCategoriesImpl };

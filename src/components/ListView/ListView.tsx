@@ -31,11 +31,11 @@ export interface TableColumn<T = any> {
 }
 
 type ListViewProps<T = any> = {
+  actions?: (itemId: number | string) => ReactNode;
   columns: TableColumn[];
   resource: string;
   params?: APIParametersOptions;
   relationships?: string;
-  onClickRow?: () => void;
   managementToolbarProps?: {
     addButton?: () => void;
     buttons?: ReactNode;
@@ -45,9 +45,9 @@ type ListViewProps<T = any> = {
 } & TableProps;
 
 const ListView: React.FC<ListViewProps> = ({
+  actions,
   columns,
   itemsPerPage = 10,
-  onClickRow,
   params,
   resource,
   managementToolbarProps,
@@ -112,9 +112,15 @@ const ListView: React.FC<ListViewProps> = ({
     (item: any, index: React.Key | null | undefined) => (
       <ListViewRow
         mutate={mutate}
-        onClick={onClickRow}
         key={index}
-        columns={columns}
+        columns={[
+          ...columns,
+          {
+            key: "id",
+            label: "",
+            render: (id) => actions && actions(id),
+          },
+        ]}
         item={item}
       />
     )
@@ -155,7 +161,14 @@ const ListView: React.FC<ListViewProps> = ({
           </Group>
 
           <ScrollArea>
-            <Table highlightOnHover mb={50} mx={"auto"} {...otherprops}>
+            <Table
+              highlightOnHover
+              mb={50}
+              mx={"auto"}
+              verticalSpacing="sm"
+              horizontalSpacing="lg"
+              {...otherprops}
+            >
               <Table.Thead>
                 <ListViewHeader
                   columns={columns}

@@ -5,17 +5,20 @@ const fetcher = async <T = any>(
   resource: RequestInfo,
   options?: RequestInit
 ): Promise<T | undefined> => {
-
   const response = await fetch(
+
     `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/${resource}`,
     {
       ...options,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json; charset=utf-8",
         apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+        prefer:'return=representation'
+
       },
     }
   );
+  
 
   if (!response.ok) {
     const error = new FetcherError(
@@ -44,16 +47,16 @@ fetcher.patch = (resource: RequestInfo, data: unknown, options?: RequestInit) =>
     method: "PATCH",
   });
 
-fetcher.post = <T = any>(
+fetcher.post = (
   resource: RequestInfo,
   data?: unknown,
   options?: RequestInit
 ) =>
-  fetcher<T>(resource, {
+  fetcher(resource, {
     ...options,
-    body: data ? JSON.stringify(data) : null,
+    body: JSON.stringify(data),
     method: "POST",
-  }) as Promise<T>;
+  });
 
 fetcher.put = (resource: RequestInfo, data: unknown, options?: RequestInit) =>
   fetcher(resource, {

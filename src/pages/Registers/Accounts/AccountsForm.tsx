@@ -7,7 +7,12 @@ import {
   Title,
   rem,
 } from "@mantine/core";
-import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
+import {
+  IconCategory,
+  IconCoins,
+  IconDeviceFloppy,
+  IconX,
+} from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { KeyedMutator } from "swr";
@@ -23,14 +28,16 @@ import { formattedAmount } from "../../../util";
 
 type AccountsInfo = z.infer<typeof zodSchema.accounts>;
 
+type OutletContext = {
+  accounts: AccountsType;
+  mutateAccounts: KeyedMutator<AccountsType>;
+};
+
 const AccountsForm: React.FC = () => {
   const navigate = useNavigate();
   const { accountsId } = useParams();
 
-  const context = useOutletContext<{
-    accounts: AccountsType[];
-    mutateAccounts: KeyedMutator<AccountsType>;
-  }>();
+  const { accounts, mutateAccounts } = useOutletContext<OutletContext>() || {};
 
   const {
     formState: { errors },
@@ -38,8 +45,8 @@ const AccountsForm: React.FC = () => {
     register,
     setValue,
   } = useForm<AccountsInfo>({
-    defaultValues: context?.accounts
-      ? context.accounts[0]
+    defaultValues: accounts
+      ? accounts
       : {
           color: "",
           name: "",
@@ -60,18 +67,19 @@ const AccountsForm: React.FC = () => {
         update: (...params) => accountsImpl.update(...params),
       }
     )
-      .then(context?.mutateAccounts)
+      .then(mutateAccounts)
       .then(onSave)
       .then(() => navigate(-1))
       .catch(onError);
 
   return (
     <>
-      <Title order={2}>
-        {context?.accounts
-          ? `Editar Fonte de Receita # ${context.accounts[0].id}`
-          : "Criar Fonte de Receita"}
-      </Title>
+      <Group justify="center">
+        <IconCategory size="1.2rem" stroke={3} />
+        <Title order={3} ta={"center"} mt="xl" mb="xl">
+          {accounts ? `Edição da Contas ` : `Criação da Conta`}
+        </Title>
+      </Group>
       <form onSubmit={handleSubmit(_onSubmit)}>
         <SimpleGrid mt="xl">
           <InputText
@@ -84,7 +92,7 @@ const AccountsForm: React.FC = () => {
             required
           />
           <InputColor
-            defaultValue={context?.accounts ? context.accounts[0].color : ""}
+            defaultValue={accounts ? accounts.color : ""}
             label={"Cor da Fonte de Receita"}
             placeholder={"Defina uma Cor para a Fonte da Receita"}
             onChangeEnd={(colorHash) => setValue("color", colorHash)}
@@ -105,11 +113,7 @@ const AccountsForm: React.FC = () => {
               />
             }
             onValueChange={({ value }) => setValue("total", Number(value))}
-            value={
-              context?.accounts
-                ? formattedAmount(Number(context.accounts[0]?.total))
-                : ""
-            }
+            value={accounts ? formattedAmount(Number(accounts?.total)) : ""}
           />
         </SimpleGrid>
         <Divider mt="xl" />

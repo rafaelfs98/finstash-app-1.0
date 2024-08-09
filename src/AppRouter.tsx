@@ -3,16 +3,18 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import OutletBridge from "./OutletBridge";
 import { Home } from "./pages/home";
+import AccountsTable from "./pages/Registers/Accounts/Accounts";
 import AccountsForm from "./pages/Registers/Accounts/AccountsForm";
 import AccountsOutlet from "./pages/Registers/Accounts/AccountsOutlet";
-import AccountsTable from "./pages/Registers/Accounts/AccountsTable";
-import Category from "./pages/Registers/Categories";
+import AccountsView from "./pages/Registers/Accounts/AccountsView";
 import CategoriesTable from "./pages/Registers/Categories/Categories";
-import CategoryForm from "./pages/Registers/Categories/CategoryForm";
-import CategoryOutlet from "./pages/Registers/Categories/CategoryOutlet";
-import SubCategoriesTable from "./pages/Registers/SubCategories/SubCategoriesTable";
-import SubCategoryForm from "./pages/Registers/SubCategories/SubCategoryForm";
-import SubCategoryOutlet from "./pages/Registers/SubCategories/SubCategoryOutlet";
+import CategoryForm from "./pages/Registers/Categories/CategoriesForm";
+import CategoryOutlet from "./pages/Registers/Categories/CategoriesOutlet";
+import CategoriesView from "./pages/Registers/Categories/CategoriesView";
+import SubCategoriesTable from "./pages/Registers/SubCategories/SubCategories";
+import SubCategoryForm from "./pages/Registers/SubCategories/SubCategoriesForm";
+import SubCategoryOutlet from "./pages/Registers/SubCategories/SubCategoriesOutlet";
+import SubCategoriesView from "./pages/Registers/SubCategories/SubCategoriesView";
 import Transactions from "./pages/Transactions";
 import ExpensesTable from "./pages/Transactions/Expenses/ExpensesTable";
 import RevenuesTable from "./pages/Transactions/Revenues/RevenuesTable";
@@ -26,38 +28,21 @@ const AppRouter = () => {
           <Route path="transações" element={<Transactions />}>
             <Route element={<ExpensesTable />} path="despesas" />
             <Route element={<RevenuesTable />} path="receitas" />
-            {/* <Route path="despesas" element={<OutletBridge />}>
-              <Route element={<TransactionsExpenseForm />} path="create" />
-              <Route element={<CategoryOutlet />} path=":categoryId">
-                <Route element={<CategoryForm />} path="update" />
-              </Route>
-            </Route> */}
           </Route>
-          <Route path="cadastros/categorias" element={<Category />}>
-            <Route element={<CategoriesTable type={0} />} path="receitas" />
-            <Route element={<CategoriesTable type={1} />} path="despesas" />
-            <Route path="receitas" element={<OutletBridge />}>
-              <Route element={<CategoryForm />} path="create" />
-              <Route element={<CategoryOutlet />} path=":categoryId">
-                <Route element={<CategoryForm />} path="update" />
-              </Route>
-            </Route>
-            <Route path="despesas" element={<OutletBridge />}>
-              <Route element={<CategoryForm />} path="create" />
-              <Route element={<CategoryOutlet />} path=":categoryId">
-                <Route element={<CategoryForm />} path="update" />
-              </Route>
+          <Route path="cadastros/categorias" element={<OutletBridge />}>
+            <Route element={<CategoriesTable />} index />
+            <Route element={<CategoryForm />} path="create" />
+            <Route element={<CategoryOutlet />} path=":categoryId">
+              <Route element={<CategoryForm />} path="update" />
+              <Route element={<CategoriesView />} path="view" />
             </Route>
           </Route>
           <Route path="cadastros/subcategorias" element={<OutletBridge />}>
             <Route element={<SubCategoriesTable />} index />
-            <Route path="create" element={<OutletBridge />}>
-              <Route element={<SubCategoryForm />} path="receitas" />
-              <Route element={<SubCategoryForm />} path="despesas" />
-            </Route>
+            <Route path="create" element={<SubCategoryForm />} />
             <Route element={<SubCategoryOutlet />} path=":subCategoryId">
               <Route element={<SubCategoryForm />} path="update" />
-              <Route element={<SubCategoryForm />} path="view" />
+              <Route element={<SubCategoriesView />} path="view" />
             </Route>
           </Route>
           <Route path="cadastros/contas" element={<OutletBridge />}>
@@ -65,7 +50,7 @@ const AppRouter = () => {
             <Route element={<AccountsForm />} path="create" />
             <Route element={<AccountsOutlet />} path=":accountsId">
               <Route element={<AccountsForm />} path="update" />
-              <Route element={<AccountsForm />} path="view" />
+              <Route element={<AccountsView />} path="view" />
             </Route>
           </Route>
         </Route>
