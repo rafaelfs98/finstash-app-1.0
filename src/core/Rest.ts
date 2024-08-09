@@ -82,7 +82,13 @@ class Rest<ObjectModel = any> {
   }
 
   public async create(data: any): Promise<ObjectModel> {
-    return await fetcher.post(`${this.uri}?select=* `, data);
+    const response = await fetcher.post(`${this.uri}?select=*`, data);
+
+    if (response && response.name) {
+      this.cache.set(`${this.uri}/${response.name}`, response);
+    }
+
+    return response;
 
   }
 
