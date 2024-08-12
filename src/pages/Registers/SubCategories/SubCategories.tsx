@@ -35,6 +35,7 @@ const SubCategories = () => {
         ]}
         actions={(id) => <SubCategoriesActions itemId={id} />}
         resource={subCategoriesImpl.resource}
+        params={{ customParams: { order: "id.asc", type: `eq.${value}` } }}
         transformData={(response) =>
           subCategoriesImpl.transformDataFromList(response)
         }
