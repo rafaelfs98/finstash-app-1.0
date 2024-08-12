@@ -74,7 +74,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
               onClick={() => {
                 handleLinkMainClick("transações");
                 toggle();
-                navigate("transações/receitas");
+                navigate("transacoes");
               }}
               active={activeLinkMain === "transações"}
             />
