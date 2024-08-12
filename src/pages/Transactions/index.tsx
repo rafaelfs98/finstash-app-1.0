@@ -1,67 +1,51 @@
-import { Tabs } from "@mantine/core";
-import { IconPigMoney, IconReceipt } from "@tabler/icons-react";
+import { SegmentedControl } from "@mantine/core";
 import React, { useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
-interface Tab {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-  route: string;
-}
-
-const tabs: Tab[] = [
-  {
-    icon: <IconPigMoney size="1.2rem" stroke={2} />,
-    label: "Receitas",
-    route: "receitas",
-    value: "receitas",
-  },
-  {
-    icon: <IconReceipt size="1.2rem" stroke={2} />,
-    label: "Despesas",
-    route: "despesas",
-    value: "despesas",
-  },
-];
+import TransactionsActions from "./TransactionsActions";
+import CardView from "../../components/CardView/CardView";
+import FinanceMenu from "../../components/Menu/FinanceMenu";
+import { useFetch } from "../../hooks/useFetch";
+import { expenseImpl } from "../../services/Expense";
+import { revenuesImpl } from "../../services/Revenues";
 
 const Transactions: React.FC = () => {
-  const navigate = useNavigate();
-  const [tabValue, setTabValue] = useState<string>();
+  const [value, setValue] = useState<"receitas" | "despesas">("receitas");
 
-  const location = useLocation();
-
-  const currentTab = location.pathname.split("/").pop();
-
-  const handleTabChange = (value: string) => {
-    setTabValue(value);
-    navigate(value);
-  };
+  const { data: items, loading } = useFetch(
+    value === "despesas" ? expenseImpl.resource : revenuesImpl.resource,
+    {
+      params: {
+        customParams: {
+          order: value === "despesas" ? "dueDate.asc" : "id.asc",
+        },
+      },
+    }
+  );
 
   return (
-    <Tabs
-      defaultValue={tabValue ? tabValue : currentTab}
-      onChange={() => handleTabChange}
-    >
-      <Tabs.List grow>
-        {tabs.map((tab) => (
-          <Tabs.Tab
-            key={tab.value}
-            onClick={() => handleTabChange(tab.route)}
-            value={tab.value}
-            leftSection={tab.icon}
-          >
-            {tab.label}
-          </Tabs.Tab>
-        ))}
-      </Tabs.List>
+    <>
+      <SegmentedControl
+        radius="xl"
+        fullWidth
+        value={value}
+        onChange={(value) => setValue(value as "receitas" | "despesas")}
+        data={[
+          { label: "Receitas", value: "receitas" },
+          { label: "Despesas", value: "despesas" },
+        ]}
+      />
 
-      {tabs.map((tab) => (
-        <Tabs.Panel key={tab.value} value={tab.value}>
-          <Outlet />
-        </Tabs.Panel>
-      ))}
-    </Tabs>
+      <CardView
+        managementToolbarProps={{
+          buttons: <FinanceMenu />,
+        }}
+        actions={(id) => <TransactionsActions type={value} itemId={id} />}
+        items={items}
+        loading={loading}
+        type={value}
+      />
+    </>
   );
 };
 
