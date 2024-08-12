@@ -1,22 +1,25 @@
-import { supabase } from './Supabase/supabaseClient';
 import { ExpenseData } from './Types/finStash';
+import Rest from '../core/Rest';
 
-export const updateExpensePaid = async (paid: boolean, expenseId: number) => {
-  const { data, error } = await supabase
-    .from('expense')
-    .update({
-      paid: paid
-    })
-    .eq('id', expenseId)
-    .select();
 
-  if (error) {
-    throw Error(error?.message);
+
+
+class ExpenseImpl extends Rest<ExpenseData> {
+  constructor() {
+    super({
+      fields: "id,amount,description,dueDate,paid,categories(id,name,color),sub_categories(id,name,color),accounts(id,name,color)",
+      transformData: (expense) => ({
+        ...expense,
+
+        
+      }),
+      uri: "expense",
+    });
   }
 
-  return data as ExpenseData[];
-};
+}
 
-export const deleteExpense = async (expenseId: string) => {
-  await supabase.from('expense').delete().eq('id', expenseId);
-};
+
+const expenseImpl= new ExpenseImpl();
+
+export { expenseImpl };

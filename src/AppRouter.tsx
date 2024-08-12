@@ -16,8 +16,10 @@ import SubCategoryForm from "./pages/Registers/SubCategories/SubCategoriesForm";
 import SubCategoryOutlet from "./pages/Registers/SubCategories/SubCategoriesOutlet";
 import SubCategoriesView from "./pages/Registers/SubCategories/SubCategoriesView";
 import Transactions from "./pages/Transactions";
-import ExpensesTable from "./pages/Transactions/Expenses/ExpensesTable";
-import RevenuesTable from "./pages/Transactions/Revenues/RevenuesTable";
+import ExpenseOutlet from "./pages/Transactions/Expenses/ExpenseOutlet";
+import ExpensesDetails from "./pages/Transactions/Expenses/ExpensesDetails";
+import RevenuesDetails from "./pages/Transactions/Revenues/RevenuesDetails";
+import RevenuesOutlet from "./pages/Transactions/Revenues/RevenuesOutlet";
 
 const AppRouter = () => {
   return (
@@ -25,9 +27,14 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="transações" element={<Transactions />}>
-            <Route element={<ExpensesTable />} path="despesas" />
-            <Route element={<RevenuesTable />} path="receitas" />
+          <Route path="transacoes" element={<OutletBridge />}>
+            <Route element={<Transactions />} index />
+            <Route element={<ExpenseOutlet />} path="expense/:expenseId">
+              <Route element={<ExpensesDetails />} path="view" />
+            </Route>
+            <Route element={<RevenuesOutlet />} path="revenue/:revenueId">
+              <Route element={<RevenuesDetails />} path="view" />
+            </Route>
           </Route>
           <Route path="cadastros/categorias" element={<OutletBridge />}>
             <Route element={<CategoriesTable />} index />
