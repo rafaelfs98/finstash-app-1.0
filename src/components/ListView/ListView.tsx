@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  ActionIcon,
   Button,
   Group,
   Pagination,
+  Popover,
   ScrollArea,
   Table,
   TableProps,
@@ -10,7 +12,7 @@ import {
   TextInput,
   rem,
 } from "@mantine/core";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
 import React, { ReactNode, useMemo, useState } from "react";
 import { KeyedMutator } from "swr";
 
@@ -132,20 +134,37 @@ const ListView: React.FC<ListViewProps> = ({
         <Loading />
       ) : (
         <>
-          <Group mt="xl" mb="xl" justify="space-between">
-            <TextInput
-              placeholder="Search by any field"
-              mb="md"
-              accessKey="s"
-              leftSection={
-                <IconSearch
-                  style={{ height: rem(16), width: rem(16) }}
-                  stroke={1.5}
+          <Group mt="xl" mb="xl" justify="flex-end">
+            <Popover
+              closeOnClickOutside
+              width={300}
+              trapFocus
+              position="bottom"
+              withArrow
+              shadow="md"
+            >
+              <Popover.Target>
+                <ActionIcon mb="md" variant="light" aria-label="Settings">
+                  <IconFilter stroke={1.5} />
+                </ActionIcon>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <TextInput
+                  placeholder="Search by any field"
+                  mb="md"
+                  label="Pesquisar"
+                  accessKey="s"
+                  leftSection={
+                    <IconSearch
+                      style={{ height: rem(16), width: rem(16) }}
+                      stroke={1.5}
+                    />
+                  }
+                  value={search}
+                  onChange={(event) => setSearch(event.currentTarget.value)}
                 />
-              }
-              value={search}
-              onChange={(event) => setSearch(event.currentTarget.value)}
-            />
+              </Popover.Dropdown>
+            </Popover>
 
             {managementToolbarProps?.buttons}
 

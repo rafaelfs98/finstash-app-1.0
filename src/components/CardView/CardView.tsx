@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  ActionIcon,
   Button,
   Card,
   CardProps,
   CardSection,
+  Divider,
   Group,
   Pagination,
+  Popover,
   ScrollArea,
   SimpleGrid,
   Text,
@@ -13,7 +16,7 @@ import {
   rem,
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
 import React, { ReactNode, useMemo, useState } from "react";
 
 import ExpenseView from "./ExpenseView";
@@ -31,7 +34,6 @@ type CardViewProps = {
 
 const CardView: React.FC<CardViewProps> = ({
   actions,
-
   items,
   itemsPerPage = 6,
   loading,
@@ -43,10 +45,12 @@ const CardView: React.FC<CardViewProps> = ({
   const [date, setDate] = useState<Date | null>(new Date());
 
   const filteredData = items?.filter((item) => {
-    const itemDate = new Date(item.dueDate);
+    const itemDate = item.dueDate ? new Date(item.dueDate) : null;
 
     const isInSelectedMonth =
+      type === "despesas" &&
       date &&
+      itemDate &&
       itemDate.getMonth() === date.getMonth() &&
       itemDate.getFullYear() === date.getFullYear();
 
@@ -65,10 +69,12 @@ const CardView: React.FC<CardViewProps> = ({
       }
     });
 
-    return matchesSearch && isInSelectedMonth;
+    return type === "despesas"
+      ? matchesSearch && isInSelectedMonth
+      : matchesSearch;
   });
 
-  const totalPages = Math.ceil(filteredData?.length / 6);
+  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -82,33 +88,53 @@ const CardView: React.FC<CardViewProps> = ({
 
   return (
     <>
-      <Group mt="xl" mb="xl" justify="space-between">
-        <Group justify="flex-start">
-          <TextInput
-            placeholder="Search by any field"
-            mb="md"
-            accessKey="s"
-            leftSection={
-              <IconSearch
-                style={{ height: rem(16), width: rem(16) }}
-                stroke={1.5}
-              />
-            }
-            value={search}
-            onChange={(event) => setSearch(event.currentTarget.value)}
-          />
-          {type === "despesas" && (
-            <MonthPickerInput
-              mb={"md"}
-              variant="filled"
-              ta="center"
-              onChange={setDate}
-              value={date}
-              valueFormat="MMMM/YYYY"
-              locale="pt-BR"
+      <Group mt="xl" justify="flex-end">
+        <Popover
+          closeOnClickOutside
+          width={300}
+          trapFocus
+          position="bottom"
+          withArrow
+          shadow="md"
+        >
+          <Popover.Target>
+            <ActionIcon mb="md" variant="light" aria-label="Settings">
+              <IconFilter stroke={1.5} />
+            </ActionIcon>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <TextInput
+              placeholder="Search by any field"
+              mb="md"
+              label="Pesquisar"
+              accessKey="s"
+              leftSection={
+                <IconSearch
+                  style={{ height: rem(16), width: rem(16) }}
+                  stroke={1.5}
+                />
+              }
+              value={search}
+              onChange={(event) => setSearch(event.currentTarget.value)}
             />
-          )}
-        </Group>
+            {type === "despesas" && (
+              <>
+                <Divider />
+
+                <MonthPickerInput
+                  mt="md"
+                  label="Data de Vencimento"
+                  variant="filled"
+                  ta="center"
+                  onChange={setDate}
+                  value={date}
+                  valueFormat="MMMM/YYYY"
+                  locale="pt-BR"
+                />
+              </>
+            )}
+          </Popover.Dropdown>
+        </Popover>
 
         {managementToolbarProps?.buttons}
 
@@ -127,7 +153,7 @@ const CardView: React.FC<CardViewProps> = ({
         <Loading />
       ) : (
         <>
-          <ScrollArea mt="lg">
+          <ScrollArea>
             {slicedData.length > 0 ? (
               <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
                 {slicedData.map((item) => {
@@ -148,7 +174,7 @@ const CardView: React.FC<CardViewProps> = ({
                       {type === "despesas" ? (
                         <ExpenseView item={item} />
                       ) : (
-                        <RevenueView item />
+                        <RevenueView item={item} />
                       )}
                     </Card>
                   );
@@ -157,7 +183,7 @@ const CardView: React.FC<CardViewProps> = ({
             ) : (
               <Card shadow="sm" padding="lg" radius="md" withBorder>
                 <Text ta="center" fw={500}>
-                  Ops! Não encontramos nenhuma transacao para esta data.
+                  Ops! Não encontramos nenhuma transação para esta data.
                 </Text>
               </Card>
             )}
