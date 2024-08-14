@@ -14,7 +14,10 @@ import { IconCoins, IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 import InputText from "../../../components/Inputs/InputText";
-import { useFetcher } from "../../../hooks/useFetcher";
+import { useFetch } from "../../../hooks/useFetch";
+import { accountsImpl } from "../../../services/Accounts";
+import { catagoriesImpl } from "../../../services/Categories";
+import { subCategoriesImpl } from "../../../services/SubCategories";
 import {
   AccountsType,
   CategoriesType,
@@ -29,24 +32,23 @@ type ExpenseFormProps = {
 const ExpenseForm: React.FC<ExpenseFormProps> = () => {
   const [categoryId, setCategoryId] = useState<string>();
 
-  const { data: categories } = useFetcher<CategoriesType>({
-    select: "id,name",
-    uri: `categories?type=eq.1&order=id.asc`,
+  const { data: accounts } = useFetch<AccountsType[]>(accountsImpl.resource, {
+    params: { customParams: { order: "id.asc" } },
   });
 
-  const { data: subCategories } = useFetcher<SubCategoriesType>(
-    categoryId
-      ? {
-          select: "id,name",
-          uri: `sub_categories?category_id=eq.${categoryId}&order=id.asc`,
-        }
-      : { uri: "" }
+  const { data: categories } = useFetch<CategoriesType[]>(
+    catagoriesImpl.resource,
+    { params: { customParams: { order: "id.asc", type: "eq.1" } } }
   );
 
-  const { data: accounts } = useFetcher<AccountsType>({
-    select: "id, name",
-    uri: `accounts?order=id.asc`,
-  });
+  const { data: subCategories } = useFetch<SubCategoriesType[]>(
+    categoryId ? subCategoriesImpl.resource : "",
+    {
+      params: {
+        customParams: { category_id: `eq.${categoryId}`, order: "id.asc" },
+      },
+    }
+  );
 
   const optionsFilter: OptionsFilter = ({ options, search }) => {
     const splittedSearch = search.toLowerCase().trim().split(" ");

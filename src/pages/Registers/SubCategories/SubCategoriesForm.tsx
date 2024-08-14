@@ -19,9 +19,10 @@ import { z } from "zod";
 import { selectedFinanceType } from "../../../atoms/app.atom";
 import InputColor from "../../../components/Inputs/InputColor";
 import InputText from "../../../components/Inputs/InputText";
-import { useFetcher } from "../../../hooks/useFetcher";
+import { useFetch } from "../../../hooks/useFetch";
 import useFormActions from "../../../hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
+import { catagoriesImpl } from "../../../services/Categories";
 import { subCategoriesImpl } from "../../../services/SubCategories";
 import {
   CategoriesType,
@@ -78,10 +79,14 @@ const SubCategoriesForm: React.FC = () => {
       .then(() => navigate(-1))
       .catch(onError);
 
-  const { data: categories } = useFetcher<CategoriesType>({
-    select: "id, name",
-    uri: `categories?type=eq.${selectedFincance}&order=id.asc`,
-  });
+  const { data: categories } = useFetch<CategoriesType[]>(
+    catagoriesImpl.resource,
+    {
+      params: {
+        customParams: { order: "id.asc", type: `eq.${selectedFincance}` },
+      },
+    }
+  );
 
   const optionsFilter: OptionsFilter = ({ options, search }) => {
     const splittedSearch = search.toLowerCase().trim().split(" ");
