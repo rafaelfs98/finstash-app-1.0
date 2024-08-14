@@ -15,7 +15,7 @@ const RevenueView: React.FC<RevenueViewProps> = ({ item }) => {
     <>
       <Group justify="space-between" mb="xs">
         <Stack>
-          <Text>
+          <Text mt="md">
             {"Data : " + dayjs(item.transactionDate).format("DD/MM/YYYY")}
           </Text>
           <Text size="xl">{item.description}</Text>

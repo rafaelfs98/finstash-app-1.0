@@ -14,9 +14,7 @@ interface FilteredData {
 const useFinanceData = (
   totalChecked: boolean,
   monthChecked: boolean,
-  rangeChecked: boolean,
   value: Date | null,
-  valueRange: [Date | null, Date | null]
 ): FilteredData => {
 
 
@@ -46,26 +44,7 @@ const useFinanceData = (
       );
       return { filteredExpense, filteredRevenues };
     }
-    if (rangeChecked && valueRange) {
-      const [start, end] = valueRange;
-      const startDate = start ? dayjs(start).startOf("month") : null;
-      const endDate = end ? dayjs(end).endOf("month") : null;
-      const filteredExpense = expense?.filter((item) => {
-        const itemDate = dayjs(item.dueDate);
-        return (
-          (!startDate || itemDate.isAfter(startDate)) &&
-          (!endDate || itemDate.isBefore(endDate))
-        );
-      });
-      const filteredRevenues = revenues?.filter((item) => {
-        const itemDate = dayjs(item.transactionDate);
-        return (
-          (!startDate || itemDate.isAfter(startDate)) &&
-          (!endDate || itemDate.isBefore(endDate))
-        );
-      });
-      return { filteredExpense, filteredRevenues };
-    }
+    
     return { filteredExpense: expense, filteredRevenues: revenues };
   };
 

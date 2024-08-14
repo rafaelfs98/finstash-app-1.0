@@ -1,12 +1,14 @@
 import {
-  Accordion,
+  ActionIcon,
   Card,
   Checkbox,
+  Group,
+  Popover,
   SimpleGrid,
   Skeleton,
-  Stack,
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
+import { IconFilter } from "@tabler/icons-react";
 import React, { useState } from "react";
 
 import AccountsChart from "./AccountsChart/AccountsChart";
@@ -25,13 +27,8 @@ import {
 export function Home() {
   const currentMonth = new Date();
   const [value, setValue] = useState<Date | null>(currentMonth);
-  const [valueRange, setValueRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
   const [totalChecked, setTotalChecked] = useState<boolean>(true);
   const [monthChecked, setMonthChecked] = useState<boolean>(false);
-  const [rangeChecked, setRangeChecked] = useState<boolean>(false);
 
   const { data: accounts, loading: isLoadingAccounts } = useFetch<
     AccountsType[]
@@ -40,9 +37,7 @@ export function Home() {
   const { filteredExpense, filteredRevenues, isLoading } = useFinanceData(
     totalChecked,
     monthChecked,
-    rangeChecked,
-    value,
-    valueRange
+    value
   );
 
   if (isLoading || isLoadingAccounts) {
@@ -57,62 +52,49 @@ export function Home() {
     if (!state) {
       setTotalChecked(setter === setTotalChecked);
       setMonthChecked(setter === setMonthChecked);
-      setRangeChecked(setter === setRangeChecked);
     }
   };
 
   return (
     <React.Fragment>
       <Card mt="md">
-        <Accordion mb="md" variant="contained">
-          <Accordion.Item value="Filtros">
-            <Accordion.Control>Filtros</Accordion.Control>
-            <Accordion.Panel>
-              <SimpleGrid mb="md">
-                <Stack>
-                  <Checkbox
-                    label="Total"
-                    checked={totalChecked}
-                    onChange={() =>
-                      handleCheckboxChange(setTotalChecked, totalChecked)
-                    }
-                  />
-                  <Checkbox
-                    label="Mês"
-                    checked={monthChecked}
-                    onChange={() =>
-                      handleCheckboxChange(setMonthChecked, monthChecked)
-                    }
-                  />
-                  <Checkbox
-                    label="Multiplos Meses"
-                    checked={rangeChecked}
-                    onChange={() =>
-                      handleCheckboxChange(setRangeChecked, rangeChecked)
-                    }
-                  />
-                </Stack>
-                {!totalChecked && monthChecked && (
-                  <MonthPickerInput
-                    label="Pick date"
-                    placeholder="Pick date"
-                    value={value}
-                    onChange={setValue}
-                  />
-                )}
-                {!totalChecked && rangeChecked && (
-                  <MonthPickerInput
-                    type="range"
-                    label="Pick dates range"
-                    placeholder="Pick dates range"
-                    value={valueRange}
-                    onChange={setValueRange}
-                  />
-                )}
-              </SimpleGrid>
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
+        <Group justify="flex-end">
+          <Popover width={300} position="bottom" withArrow shadow="md">
+            <Popover.Target>
+              <ActionIcon mb="md" variant="filled" aria-label="Settings">
+                <IconFilter stroke={1.5} />
+              </ActionIcon>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <Checkbox
+                mb="md"
+                label="Total"
+                checked={totalChecked}
+                onChange={() =>
+                  handleCheckboxChange(setTotalChecked, totalChecked)
+                }
+              />
+              <Checkbox
+                mb="md"
+                label="Mês"
+                checked={monthChecked}
+                onChange={() =>
+                  handleCheckboxChange(setMonthChecked, monthChecked)
+                }
+              />
+              {!totalChecked && monthChecked && (
+                <MonthPickerInput
+                  mb="md"
+                  label="Pick date"
+                  placeholder="Pick date"
+                  value={value}
+                  onChange={setValue}
+                />
+              )}
+            </Popover.Dropdown>
+          </Popover>
+        </Group>
+
         <TransactionsStats
           expense={filteredExpense as ExpenseData[]}
           revenues={filteredRevenues as RevenuesType[]}
