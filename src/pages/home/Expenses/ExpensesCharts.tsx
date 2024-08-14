@@ -32,8 +32,8 @@ const ExpensesCharts: React.FC<ExpensesChartsProps> = ({ expense }) => {
   return (
     <React.Fragment>
       <Stack>
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Text size="lg" mb="md">
+        <Card shadow="sm">
+          <Text size="lg" mb="xl">
             Despesas por categorias
           </Text>
           {expense.length ? (

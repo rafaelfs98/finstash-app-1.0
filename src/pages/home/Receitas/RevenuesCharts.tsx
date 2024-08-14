@@ -32,13 +32,13 @@ const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
   return (
     <React.Fragment>
       <Stack>
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Text size="lg" mb="md">
+        <Card shadow="sm">
+          <Text size="lg" mb="xl">
             Receitas por categorias
           </Text>
           {revenues.length ? (
             <BarChart
-              h={300}
+              h={200}
               data={barChartDataRevenues}
               dataKey="categoryName"
               type="stacked"

@@ -13,8 +13,9 @@ import AccountsChart from "./AccountsChart/AccountsChart";
 import ExpensesCharts from "./Expenses/ExpensesCharts";
 import RevenuesCharts from "./Receitas/RevenuesCharts";
 import TransactionsStats from "./TransactionsStats";
-import { useFetcher } from "../../hooks/useFetcher";
+import { useFetch } from "../../hooks/useFetch";
 import useFinanceData from "../../hooks/useFinanceData";
+import { accountsImpl } from "../../services/Accounts";
 import {
   AccountsType,
   ExpenseData,
@@ -32,10 +33,9 @@ export function Home() {
   const [monthChecked, setMonthChecked] = useState<boolean>(false);
   const [rangeChecked, setRangeChecked] = useState<boolean>(false);
 
-  const { data: accounts, isLoading: isLoadingAccounts } =
-    useFetcher<AccountsType>({
-      uri: "accounts",
-    });
+  const { data: accounts, loading: isLoadingAccounts } = useFetch<
+    AccountsType[]
+  >(accountsImpl.resource);
 
   const { filteredExpense, filteredRevenues, isLoading } = useFinanceData(
     totalChecked,

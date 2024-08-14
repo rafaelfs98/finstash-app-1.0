@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 
-import { useFetcher } from "./useFetcher";
+import { useFetch } from "./useFetch";
+import { expenseImpl } from "../services/Expense";
+import { revenuesImpl } from "../services/Revenues";
 import { ExpenseData, RevenuesType } from "../services/Types/finStash";
 
 interface FilteredData {
@@ -16,56 +18,18 @@ const useFinanceData = (
   value: Date | null,
   valueRange: [Date | null, Date | null]
 ): FilteredData => {
-  const { data: expense, isLoading: isLoadingExpense } =
-    useFetcher<ExpenseData>({
-      select: `
-      id,
-      amount,
-      description,
-      dueDate,
-      paid,
-      categories (
-       id,
-       name,
-       color
-      ),
-      sub_categories (
-        id,
-        name,
-        color
-      ),
-      accounts (
-       id,
-       name,
-       color
-      )`,
-      uri: "expense",
-    });
 
-  const { data: revenues, isLoading: isLoadingRevenues } =
-    useFetcher<RevenuesType>({
-      select: `
-      id,
-      amount,
-      description,
-      transactionDate,
-      categories (
-        id,
-        name,
-        color
-        ),
-        sub_categories (
-          id,
-          name,
-          color
-          ),
-          accounts (
-            id,
-            name,
-            color
-            )`,
-      uri: "revenues?order=id.asc",
-    });
+
+    const { data: expense, loading: isLoadingExpense } = useFetch<ExpenseData[]>(
+ expenseImpl.resource,
+    );
+
+    const { data: revenues, loading: isLoadingRevenues } = useFetch<RevenuesType[]>(
+      revenuesImpl.resource,
+         );
+     
+
+ 
 
   const filterData = () => {
     if (totalChecked) {
