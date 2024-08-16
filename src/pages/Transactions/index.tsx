@@ -24,28 +24,28 @@ const Transactions: React.FC = () => {
   );
 
   return (
-    <>
-      <SegmentedControl
-        radius="xl"
-        fullWidth
-        value={value}
-        onChange={(value) => setValue(value as "receitas" | "despesas")}
-        data={[
-          { label: "Receitas", value: "receitas" },
-          { label: "Despesas", value: "despesas" },
-        ]}
-      />
-
-      <CardView
-        managementToolbarProps={{
-          buttons: <FinanceMenu />,
-        }}
-        actions={(id) => <TransactionsActions type={value} itemId={id} />}
-        items={items}
-        loading={loading}
-        type={value}
-      />
-    </>
+    <CardView
+      managementToolbarProps={{
+        buttons: <FinanceMenu />,
+      }}
+      actions={(id) => <TransactionsActions type={value} itemId={id} />}
+      items={items}
+      segmentedControl={
+        <SegmentedControl
+          radius="xl"
+          fullWidth
+          value={value}
+          onChange={(value) => setValue(value as "receitas" | "despesas")}
+          data={[
+            { label: "Receitas", value: "receitas" },
+            { label: "Despesas", value: "despesas" },
+          ]}
+        />
+      }
+      title="Transações"
+      loading={loading}
+      type={value}
+    />
   );
 };
 

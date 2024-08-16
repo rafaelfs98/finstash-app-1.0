@@ -19,6 +19,7 @@ const Accounts = () => {
           render: (cor) => <Badge color={cor} size="sm" />,
         },
       ]}
+      title="Contas"
       resource={accountsImpl.resource}
       params={{ customParams: { order: "id.asc" } }}
       actions={(itemId) => <AccountsActions itemId={itemId} />}

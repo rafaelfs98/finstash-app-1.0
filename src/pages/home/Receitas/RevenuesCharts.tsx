@@ -32,7 +32,7 @@ const RevenuesCharts: React.FC<RevenuesChartsProps> = ({ revenues }) => {
   return (
     <React.Fragment>
       <Stack>
-        <Card shadow="sm">
+        <Card>
           <Text size="lg" mb="xl">
             Receitas por categorias
           </Text>

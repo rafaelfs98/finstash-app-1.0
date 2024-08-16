@@ -11,17 +11,6 @@ const SubCategories = () => {
 
   return (
     <>
-      <SegmentedControl
-        radius="xl"
-        fullWidth
-        value={value}
-        onChange={setValue}
-        data={[
-          { label: "Receitas", value: "0" },
-          { label: "Despesas", value: "1" },
-        ]}
-      />
-
       <ListView
         managementToolbarProps={{
           buttons: <FinanceMenu />,
@@ -33,11 +22,22 @@ const SubCategories = () => {
           },
           { key: "categoryName", label: "Categoria" },
         ]}
+        title="Sub Categorias"
         actions={(id) => <SubCategoriesActions itemId={id} />}
         resource={subCategoriesImpl.resource}
         params={{ customParams: { order: "id.asc", type: `eq.${value}` } }}
         transformData={(response) =>
           subCategoriesImpl.transformDataFromList(response)
+        }
+        segmentedControl={
+          <SegmentedControl
+            value={value}
+            onChange={setValue}
+            data={[
+              { label: "Receitas", value: "0" },
+              { label: "Despesas", value: "1" },
+            ]}
+          />
         }
       />
     </>

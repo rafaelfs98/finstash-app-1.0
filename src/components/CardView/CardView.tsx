@@ -8,6 +8,7 @@ import {
   Divider,
   Group,
   Pagination,
+  Paper,
   Popover,
   ScrollArea,
   SimpleGrid,
@@ -17,19 +18,23 @@ import {
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
-import React, { ReactNode, useMemo, useState } from "react";
+import { useAtom } from "jotai";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 
 import ExpenseView from "./ExpenseView";
 import RevenueView from "./RevenueView";
+import { pageTitle } from "../../atoms/app.atom";
 import Loading from "../Loader";
 
 type CardViewProps = {
   actions?: (itemId: number | string) => ReactNode;
   items: any[];
+  itemsPerPage?: number;
   loading: boolean;
   managementToolbarProps?: { addButton?: () => void; buttons?: ReactNode };
+  segmentedControl?: ReactNode;
+  title?: string;
   type: "receitas" | "despesas";
-  itemsPerPage?: number;
 } & CardProps;
 
 const CardView: React.FC<CardViewProps> = ({
@@ -38,11 +43,14 @@ const CardView: React.FC<CardViewProps> = ({
   itemsPerPage = 6,
   loading,
   managementToolbarProps,
+  segmentedControl,
+  title,
   type,
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
   const [date, setDate] = useState<Date | null>(new Date());
+  const [, setTitle] = useAtom(pageTitle);
 
   const filteredData = items?.filter((item) => {
     const itemDate = item.dueDate ? new Date(item.dueDate) : null;
@@ -86,69 +94,75 @@ const CardView: React.FC<CardViewProps> = ({
     return filteredData?.slice(startIndex, endIndex);
   }, [currentPage, filteredData, itemsPerPage]);
 
+  useEffect(() => {
+    setTitle(String(title));
+  }, [setTitle, title]);
+
   return (
-    <>
-      <Group mt="xl" justify="flex-end">
-        <Popover
-          closeOnClickOutside
-          width={300}
-          trapFocus
-          position="bottom"
-          withArrow
-          shadow="md"
-        >
-          <Popover.Target>
-            <ActionIcon mb="md" variant="light" aria-label="Settings">
-              <IconFilter stroke={1.5} />
-            </ActionIcon>
-          </Popover.Target>
-          <Popover.Dropdown>
-            <TextInput
-              placeholder="Search by any field"
-              mb="md"
-              label="Pesquisar"
-              accessKey="s"
-              leftSection={
-                <IconSearch
-                  style={{ height: rem(16), width: rem(16) }}
-                  stroke={1.5}
-                />
-              }
-              value={search}
-              onChange={(event) => setSearch(event.currentTarget.value)}
-            />
-            {type === "despesas" && (
-              <>
-                <Divider />
-
-                <MonthPickerInput
-                  mt="md"
-                  label="Data de Vencimento"
-                  variant="filled"
-                  ta="center"
-                  onChange={setDate}
-                  value={date}
-                  valueFormat="MMMM/YYYY"
-                  locale="pt-BR"
-                />
-              </>
-            )}
-          </Popover.Dropdown>
-        </Popover>
-
-        {managementToolbarProps?.buttons}
-
-        {managementToolbarProps?.addButton && (
-          <Button
-            mb="md"
-            size="compact-lg"
-            onClick={managementToolbarProps?.addButton}
+    <Paper withBorder p="md" radius="md">
+      <Group justify="space-between">
+        <Group justify="flex-start">{segmentedControl}</Group>
+        <Group mt="xl" justify="flex-end">
+          <Popover
+            closeOnClickOutside
+            width={300}
+            trapFocus
+            position="bottom"
+            withArrow
+            shadow="md"
           >
-            <IconPlus size="1rem" />
-          </Button>
-        )}
-      </Group>
+            <Popover.Target>
+              <ActionIcon mb="md" variant="light" aria-label="Settings">
+                <IconFilter stroke={1.5} />
+              </ActionIcon>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <TextInput
+                placeholder="Search by any field"
+                mb="md"
+                label="Pesquisar"
+                accessKey="s"
+                leftSection={
+                  <IconSearch
+                    style={{ height: rem(16), width: rem(16) }}
+                    stroke={1.5}
+                  />
+                }
+                value={search}
+                onChange={(event) => setSearch(event.currentTarget.value)}
+              />
+              {type === "despesas" && (
+                <>
+                  <Divider />
 
+                  <MonthPickerInput
+                    mt="md"
+                    label="Data de Vencimento"
+                    variant="filled"
+                    ta="center"
+                    onChange={setDate}
+                    value={date}
+                    valueFormat="MMMM/YYYY"
+                    locale="pt-BR"
+                  />
+                </>
+              )}
+            </Popover.Dropdown>
+          </Popover>
+
+          {managementToolbarProps?.buttons}
+
+          {managementToolbarProps?.addButton && (
+            <Button
+              mb="md"
+              size="compact-lg"
+              onClick={managementToolbarProps?.addButton}
+            >
+              <IconPlus size="1rem" />
+            </Button>
+          )}
+        </Group>
+      </Group>
       {loading ? (
         <Loading />
       ) : (
@@ -166,7 +180,12 @@ const CardView: React.FC<CardViewProps> = ({
                       mb="10"
                       withBorder
                     >
-                      <CardSection withBorder inheritPadding py="xs">
+                      <CardSection
+                        withBorder
+                        inheritPadding
+                        py="xs"
+                        bg="#1864ab"
+                      >
                         <Group justify="flex-end" mb="xs">
                           {actions && actions(item.id)}
                         </Group>
@@ -201,7 +220,7 @@ const CardView: React.FC<CardViewProps> = ({
           </Group>
         </>
       )}
-    </>
+    </Paper>
   );
 };
 

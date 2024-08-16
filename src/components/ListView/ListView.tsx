@@ -4,6 +4,7 @@ import {
   Button,
   Group,
   Pagination,
+  Paper,
   Popover,
   ScrollArea,
   Table,
@@ -13,11 +14,13 @@ import {
   rem,
 } from "@mantine/core";
 import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
-import React, { ReactNode, useMemo, useState } from "react";
+import { useAtom } from "jotai";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { KeyedMutator } from "swr";
 
 import ListViewHeader from "./ListViewHeader";
 import ListViewRow from "./ListViewRow";
+import { pageTitle } from "../../atoms/app.atom";
 import { APIParametersOptions } from "../../core/Rest";
 import { useFetch } from "../../hooks/useFetch";
 import Loading from "../Loader";
@@ -35,24 +38,25 @@ export interface TableColumn<T = any> {
 type ListViewProps<T = any> = {
   actions?: (itemId: number | string) => ReactNode;
   columns: TableColumn[];
-  resource: string;
+  itemsPerPage?: number;
+  managementToolbarProps?: { addButton?: () => void; buttons?: ReactNode };
   params?: APIParametersOptions;
   relationships?: string;
-  managementToolbarProps?: {
-    addButton?: () => void;
-    buttons?: ReactNode;
-  };
+  resource: string;
+  segmentedControl?: ReactNode;
+  title?: string;
   transformData?: (data: T) => T;
-  itemsPerPage?: number;
 } & TableProps;
 
 const ListView: React.FC<ListViewProps> = ({
   actions,
   columns,
   itemsPerPage = 10,
+  managementToolbarProps,
   params,
   resource,
-  managementToolbarProps,
+  segmentedControl,
+  title,
   transformData,
   ...otherprops
 }) => {
@@ -60,6 +64,7 @@ const ListView: React.FC<ListViewProps> = ({
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [, setTitle] = useAtom(pageTitle);
 
   const { data, loading, mutate } = useFetch(resource, {
     params,
@@ -128,99 +133,108 @@ const ListView: React.FC<ListViewProps> = ({
     )
   );
 
+  useEffect(() => {
+    setTitle(String(title));
+  }, [setTitle, title]);
+
   return (
     <div>
       {loading ? (
         <Loading />
       ) : (
         <>
-          <Group mt="xl" mb="xl" justify="flex-end">
-            <Popover
-              closeOnClickOutside
-              width={300}
-              trapFocus
-              position="bottom"
-              withArrow
-              shadow="md"
-            >
-              <Popover.Target>
-                <ActionIcon mb="md" variant="light" aria-label="Settings">
-                  <IconFilter stroke={1.5} />
-                </ActionIcon>
-              </Popover.Target>
-              <Popover.Dropdown>
-                <TextInput
-                  placeholder="Search by any field"
-                  mb="md"
-                  label="Pesquisar"
-                  accessKey="s"
-                  leftSection={
-                    <IconSearch
-                      style={{ height: rem(16), width: rem(16) }}
-                      stroke={1.5}
+          <Paper withBorder p="md" radius="md">
+            <Group justify="space-between">
+              <Group justify="flex-start">{segmentedControl}</Group>
+              <Group mt="xl" mb="xl" justify="flex-end">
+                <Popover
+                  closeOnClickOutside
+                  width={300}
+                  trapFocus
+                  position="bottom"
+                  withArrow
+                  shadow="md"
+                >
+                  <Popover.Target>
+                    <ActionIcon mb="md" variant="light" aria-label="Settings">
+                      <IconFilter stroke={1.5} />
+                    </ActionIcon>
+                  </Popover.Target>
+                  <Popover.Dropdown>
+                    <TextInput
+                      placeholder="Search by any field"
+                      mb="md"
+                      label="Pesquisar"
+                      accessKey="s"
+                      leftSection={
+                        <IconSearch
+                          style={{ height: rem(16), width: rem(16) }}
+                          stroke={1.5}
+                        />
+                      }
+                      value={search}
+                      onChange={(event) => setSearch(event.currentTarget.value)}
                     />
-                  }
-                  value={search}
-                  onChange={(event) => setSearch(event.currentTarget.value)}
-                />
-              </Popover.Dropdown>
-            </Popover>
+                  </Popover.Dropdown>
+                </Popover>
 
-            {managementToolbarProps?.buttons}
+                {managementToolbarProps?.buttons}
 
-            {managementToolbarProps?.addButton && (
-              <Button
-                mb="md"
-                size="compact-lg"
-                onClick={managementToolbarProps?.addButton}
-              >
-                <IconPlus size="1rem" />
-              </Button>
-            )}
-          </Group>
-
-          <ScrollArea>
-            <Table
-              highlightOnHover
-              mb={50}
-              mx={"auto"}
-              verticalSpacing="sm"
-              horizontalSpacing="lg"
-              {...otherprops}
-            >
-              <Table.Thead>
-                <ListViewHeader
-                  columns={columns}
-                  sortColumn={sortColumn}
-                  sortOrder={sortOrder}
-                  handleSort={handleSort}
-                />
-              </Table.Thead>
-              <Table.Tbody>
-                {rows.length > 0 ? (
-                  rows
-                ) : (
-                  <Table.Tr>
-                    <Table.Td colSpan={columns.length}>
-                      <Text fw={500} ta="center">
-                        Nothing found
-                      </Text>
-                    </Table.Td>
-                  </Table.Tr>
+                {managementToolbarProps?.addButton && (
+                  <Button
+                    mb="md"
+                    size="compact-lg"
+                    onClick={managementToolbarProps?.addButton}
+                  >
+                    <IconPlus size="1rem" />
+                  </Button>
                 )}
-              </Table.Tbody>
-            </Table>
-          </ScrollArea>
-          <Group justify="flex-end">
-            <Pagination
-              size="sm"
-              withEdges
-              radius="md"
-              total={totalPages}
-              value={currentPage}
-              onChange={handlePageChange}
-            />
-          </Group>
+              </Group>
+            </Group>
+
+            <ScrollArea>
+              <Table
+                mb={50}
+                mx={"auto"}
+                verticalSpacing="sm"
+                horizontalSpacing="lg"
+                {...otherprops}
+                {...otherprops}
+              >
+                <Table.Thead>
+                  <ListViewHeader
+                    columns={columns}
+                    sortColumn={sortColumn}
+                    sortOrder={sortOrder}
+                    handleSort={handleSort}
+                  />
+                </Table.Thead>
+                <Table.Tbody>
+                  {rows.length > 0 ? (
+                    rows
+                  ) : (
+                    <Table.Tr>
+                      <Table.Td colSpan={columns.length}>
+                        <Text fw={500} ta="center">
+                          Nothing found
+                        </Text>
+                      </Table.Td>
+                    </Table.Tr>
+                  )}
+                </Table.Tbody>
+              </Table>
+            </ScrollArea>
+            <Group justify="flex-end">
+              <Pagination
+                size="sm"
+                withEdges
+                radius="md"
+                total={totalPages}
+                value={currentPage}
+                onChange={handlePageChange}
+              />
+            </Group>
+          </Paper>
         </>
       )}
     </div>

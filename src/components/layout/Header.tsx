@@ -1,7 +1,8 @@
-import { AppShell, Burger, Flex, Image } from "@mantine/core";
+import { AppShell, Burger, Flex, Title } from "@mantine/core";
+import { useAtom } from "jotai";
 import React from "react";
 
-import ThemeTogle from "./ThemeToglle";
+import { pageTitle } from "../../atoms/app.atom";
 import classes from "../../styles/MantineCss/Header.module.css";
 
 type HeaderProps = {
@@ -10,15 +11,11 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
+  const [title] = useAtom(pageTitle);
+
   return (
     <AppShell.Header className={classes.header} withBorder>
-      <Flex
-        h="100%"
-        px="md"
-        justify="space-between"
-        direction="row"
-        wrap="nowrap"
-      >
+      <Flex h="100%" px="md" justify="flex-start" direction="row" wrap="nowrap">
         <Burger
           mt="md"
           opened={opened}
@@ -26,8 +23,9 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
           hiddenFrom="sm"
           size="sm"
         />
-        <Image w="auto" h={70} fit="contain" src="/Finstash_Pesonal.png" />
-        <ThemeTogle mt={15} />
+        <Title ml="md" mt={"lg"} order={3}>
+          {title}
+        </Title>
       </Flex>
     </AppShell.Header>
   );

@@ -61,8 +61,8 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
       withinPortal
     >
       <Menu.Target>
-        <ActionIcon variant="filled">
-          <IconDots style={{ height: rem(16), width: rem(16) }} stroke={2} />
+        <ActionIcon variant="white">
+          <IconDots style={{ height: rem(20), width: rem(20) }} stroke={2} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>

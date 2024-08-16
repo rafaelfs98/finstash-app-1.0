@@ -9,12 +9,14 @@ import {
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import { IconFilter } from "@tabler/icons-react";
-import React, { useState } from "react";
+import { useAtom } from "jotai";
+import React, { useEffect, useState } from "react";
 
 import AccountsChart from "./AccountsChart/AccountsChart";
 import ExpensesCharts from "./Expenses/ExpensesCharts";
 import RevenuesCharts from "./Receitas/RevenuesCharts";
 import TransactionsStats from "./TransactionsStats";
+import { pageTitle } from "../../atoms/app.atom";
 import { useFetch } from "../../hooks/useFetch";
 import useFinanceData from "../../hooks/useFinanceData";
 import { accountsImpl } from "../../services/Accounts";
@@ -29,6 +31,7 @@ export function Home() {
   const [value, setValue] = useState<Date | null>(currentMonth);
   const [totalChecked, setTotalChecked] = useState<boolean>(true);
   const [monthChecked, setMonthChecked] = useState<boolean>(false);
+  const [, setTitle] = useAtom(pageTitle);
 
   const { data: accounts, loading: isLoadingAccounts } = useFetch<
     AccountsType[]
@@ -39,6 +42,10 @@ export function Home() {
     monthChecked,
     value
   );
+
+  useEffect(() => {
+    setTitle("Resumo Financeiro");
+  }, [setTitle]);
 
   if (isLoading || isLoadingAccounts) {
     return <Skeleton height={300} />;

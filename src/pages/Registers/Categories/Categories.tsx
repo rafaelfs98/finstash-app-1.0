@@ -11,17 +11,8 @@ const CategoriesTable = () => {
 
   return (
     <>
-      <SegmentedControl
-        radius="xl"
-        fullWidth
-        value={value}
-        onChange={setValue}
-        data={[
-          { label: "Receitas", value: "0" },
-          { label: "Despesas", value: "1" },
-        ]}
-      />
       <ListView
+        title=" Categorias"
         managementToolbarProps={{ buttons: <FinanceMenu /> }}
         columns={[
           {
@@ -39,6 +30,16 @@ const CategoriesTable = () => {
         params={{ customParams: { order: "id.asc", type: `eq.${value}` } }}
         transformData={(response) =>
           catagoriesImpl.transformDataFromList(response)
+        }
+        segmentedControl={
+          <SegmentedControl
+            value={value}
+            onChange={setValue}
+            data={[
+              { label: "Receitas", value: "0" },
+              { label: "Despesas", value: "1" },
+            ]}
+          />
         }
       />
     </>
