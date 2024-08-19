@@ -10,7 +10,7 @@ import { expenseImpl } from "../../services/Expense";
 import { revenuesImpl } from "../../services/Revenues";
 
 const Transactions: React.FC = () => {
-  const [value, setValue] = useState<"receitas" | "despesas">("receitas");
+  const [value, setValue] = useState<"receitas" | "despesas">("despesas");
 
   const { data: items, loading } = useFetch(
     value === "despesas" ? expenseImpl.resource : revenuesImpl.resource,
@@ -26,7 +26,12 @@ const Transactions: React.FC = () => {
   return (
     <CardView
       managementToolbarProps={{
-        buttons: <FinanceMenu />,
+        buttons: (
+          <FinanceMenu
+            expenseUri="adicionar-despesa"
+            revenueUri="revenue/create"
+          />
+        ),
       }}
       actions={(id) => <TransactionsActions type={value} itemId={id} />}
       items={items}
@@ -37,8 +42,8 @@ const Transactions: React.FC = () => {
           value={value}
           onChange={(value) => setValue(value as "receitas" | "despesas")}
           data={[
-            { label: "Receitas", value: "receitas" },
             { label: "Despesas", value: "despesas" },
+            { label: "Receitas", value: "receitas" },
           ]}
         />
       }

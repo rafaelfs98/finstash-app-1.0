@@ -32,7 +32,7 @@ const NavigationLinkWithLabel: React.FC<NavigationLinkWithLabelProps> = ({
   return (
     <Stack justify="center" gap={0}>
       <NavLink
-        mt="xl"
+        mt="xs"
         title="Inicio"
         label="Inicio"
         variant="filled"
@@ -69,7 +69,7 @@ const NavigationLinkWithLabel: React.FC<NavigationLinkWithLabelProps> = ({
         onClick={() => {
           handleLinkMainClick("Contas");
           toggle();
-          navigate("cadastros/contas");
+          navigate("contas");
         }}
         active={activeLinkMain === "Contas"}
       />
@@ -82,7 +82,7 @@ const NavigationLinkWithLabel: React.FC<NavigationLinkWithLabelProps> = ({
         onClick={() => {
           handleLinkMainClick("Categorias");
           toggle();
-          navigate("cadastros/categorias");
+          navigate("categorias");
         }}
         active={activeLinkMain === "Categorias"}
       />
@@ -96,7 +96,7 @@ const NavigationLinkWithLabel: React.FC<NavigationLinkWithLabelProps> = ({
         onClick={() => {
           handleLinkMainClick("SubCategorias");
           toggle();
-          navigate("cadastros/subcategorias");
+          navigate("sub-categorias");
         }}
         active={activeLinkMain === "SubCategorias"}
       />

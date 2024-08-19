@@ -84,8 +84,8 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
           onClick={() =>
             navigate(
               type === "despesas"
-                ? `expense/${itemId}/view`
-                : `revenue/${itemId}/view`
+                ? `despesa/${itemId}/detalhes-da-despesa`
+                : `receita/${itemId}/detalhes-da-receita`
             )
           }
           leftSection={
