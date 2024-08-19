@@ -54,7 +54,7 @@ const SubCategoriesActions: React.FC<CategoriesActionsProps> = ({ itemId }) => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
-          onClick={() => navigate(`${itemId}/view`)}
+          onClick={() => navigate(`${itemId}/visualizar`)}
           leftSection={
             <IconEye style={{ height: rem(16), width: rem(16) }} stroke={1.5} />
           }
@@ -62,7 +62,7 @@ const SubCategoriesActions: React.FC<CategoriesActionsProps> = ({ itemId }) => {
           Detalhes
         </Menu.Item>
         <Menu.Item
-          onClick={() => navigate(`${itemId}/update`)}
+          onClick={() => navigate(`${itemId}/atualizar`)}
           leftSection={
             <IconPencil
               style={{ height: rem(16), width: rem(16) }}

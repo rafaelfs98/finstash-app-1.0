@@ -10,7 +10,7 @@ const Accounts = () => {
 
   return (
     <ListView
-      managementToolbarProps={{ addButton: () => navigate("create") }}
+      managementToolbarProps={{ addButton: () => navigate("criar") }}
       columns={[
         { key: "name", label: "Conta" },
         {

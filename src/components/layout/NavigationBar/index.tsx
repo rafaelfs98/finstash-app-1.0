@@ -1,4 +1,4 @@
-import { AppShell, Group, Image, Text } from "@mantine/core";
+import { AppShell, Divider, Group, Image, Text } from "@mantine/core";
 
 import NavigationLink from "./NavigationLink";
 import classes from "../../../styles/MantineCss/Navbar.module.css";
@@ -17,6 +17,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ toggle }) => {
             FinStash
           </Text>
         </Group>
+        <Divider />
       </AppShell.Section>
 
       <AppShell.Section grow>

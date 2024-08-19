@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ opened, toggle }) => {
           opened={opened}
           onClick={toggle}
           hiddenFrom="sm"
-          size="sm"
+          size="md"
         />
         <Title ml="md" mt={"lg"} order={3}>
           {title}
