@@ -7,6 +7,7 @@ import {
   CardSection,
   Divider,
   Group,
+  Modal,
   Pagination,
   Paper,
   Popover,
@@ -14,20 +15,27 @@ import {
   SimpleGrid,
   Text,
   TextInput,
+  Tooltip,
   rem,
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
-import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
+import {
+  IconFileImport,
+  IconFilter,
+  IconPlus,
+  IconSearch,
+} from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import React, { ReactNode, useEffect, useMemo, useState } from "react";
 
 import ExpenseView from "./ExpenseView";
 import RevenueView from "./RevenueView";
 import { pageTitle } from "../../atoms/app.atom";
+import { expenseImpl } from "../../services/Expense";
 import Loading from "../Loader";
 
 type CardViewProps = {
-  actions?: (itemId: number | string) => ReactNode;
+  actions?: (item: any) => ReactNode;
   items: any[];
   itemsPerPage?: number;
   loading: boolean;
@@ -51,6 +59,7 @@ const CardView: React.FC<CardViewProps> = ({
   const [search, setSearch] = useState<string>("");
   const [date, setDate] = useState<Date | null>(new Date());
   const [, setTitle] = useAtom(pageTitle);
+  const [showModal, setShowModal] = useState(false);
 
   const filteredData = items?.filter((item) => {
     const itemDate = item.dueDate ? new Date(item.dueDate) : null;
@@ -98,11 +107,95 @@ const CardView: React.FC<CardViewProps> = ({
     setTitle(String(title));
   }, [setTitle, title]);
 
+  const handleImportFixedExpenses = async () => {
+    try {
+      if (!date) {
+        throw new Error("Data de vencimento não selecionada.");
+      }
+
+      const previousMonthDate = new Date(date);
+      previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
+
+      const previousMonth = previousMonthDate.getMonth();
+      const previousYear = previousMonthDate.getFullYear();
+
+      const fixedExpenses = items.filter(
+        (expense) =>
+          expense.repeat === true &&
+          new Date(expense.dueDate).getMonth() === previousMonth &&
+          new Date(expense.dueDate).getFullYear() === previousYear
+      );
+
+      if (fixedExpenses.length > 0) {
+        const currentMonth = date.getMonth();
+        const currentYear = date.getFullYear();
+
+        for (const expense of fixedExpenses) {
+          await expenseImpl.create({
+            accountsId: expense.accounts.id,
+            amount: expense.amount,
+            categoryId: expense.categories.id,
+            description: expense.description,
+            dueDate: new Date(
+              currentYear,
+              currentMonth,
+              new Date(expense.dueDate).getDay()
+            )
+              .toISOString()
+              .split("T")[0],
+            installments: expense.installments,
+            paid: false,
+            paymentDate: null,
+            repeat: expense.repeat,
+            subCategoryId: expense.sub_categories.id,
+          });
+        }
+
+        setShowModal(false);
+      } else {
+        alert("Não há despesas fixas para importar do mês anterior.");
+        setShowModal(false);
+      }
+    } catch (error) {
+      console.error("Erro ao importar despesas fixas:", error);
+      setShowModal(false);
+    }
+  };
+
   return (
-    <Paper withBorder p="md" radius="md">
-      <Group justify="space-between">
+    <>
+      <Modal
+        opened={showModal}
+        onClose={() => setShowModal(false)}
+        title="Importar Despesas Fixas"
+        centered
+      >
+        <Text>
+          Gostaria de importar as despesas fixas do mês anterior para o mês
+          atual?
+        </Text>
+        <Group justify="flex-end" mt="md">
+          <Button variant="outline" onClick={() => setShowModal(false)}>
+            Cancelar
+          </Button>
+          <Button onClick={handleImportFixedExpenses}>Importar</Button>
+        </Group>
+      </Modal>
+
+      <Paper withBorder p="md" radius="md">
         <Group justify="flex-start">{segmentedControl}</Group>
         <Group mt="xl" justify="flex-end">
+          {type === "despesas" && (
+            <Tooltip label="Importar as despesas fixas">
+              <Button
+                mb="md"
+                variant="subtle"
+                onClick={() => setShowModal(true)}
+              >
+                <IconFileImport />
+              </Button>
+            </Tooltip>
+          )}
           <Popover
             closeOnClickOutside
             width={300}
@@ -149,9 +242,7 @@ const CardView: React.FC<CardViewProps> = ({
               )}
             </Popover.Dropdown>
           </Popover>
-
           {managementToolbarProps?.buttons}
-
           {managementToolbarProps?.addButton && (
             <Button
               mb="md"
@@ -162,65 +253,66 @@ const CardView: React.FC<CardViewProps> = ({
             </Button>
           )}
         </Group>
-      </Group>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <ScrollArea>
-            {slicedData.length > 0 ? (
-              <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
-                {slicedData.map((item) => {
-                  return (
-                    <Card
-                      key={item.id}
-                      shadow="sm"
-                      padding="lg"
-                      radius="md"
-                      mb="10"
-                      withBorder
-                    >
-                      <CardSection
+
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <ScrollArea>
+              {slicedData.length > 0 ? (
+                <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
+                  {slicedData.map((item) => {
+                    return (
+                      <Card
+                        key={item.id}
+                        shadow="sm"
+                        padding="lg"
+                        radius="md"
+                        mb="10"
                         withBorder
-                        inheritPadding
-                        py="xs"
-                        bg="#1864ab"
                       >
-                        <Group justify="flex-end" mb="xs">
-                          {actions && actions(item.id)}
-                        </Group>
-                      </CardSection>
-                      {type === "despesas" ? (
-                        <ExpenseView item={item} />
-                      ) : (
-                        <RevenueView item={item} />
-                      )}
-                    </Card>
-                  );
-                })}
-              </SimpleGrid>
-            ) : (
-              <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Text ta="center" fw={500}>
-                  Ops! Não encontramos nenhuma transação para esta data.
-                </Text>
-              </Card>
-            )}
-          </ScrollArea>
-          <Group justify="flex-end">
-            <Pagination
-              mt={20}
-              size="sm"
-              withEdges
-              radius="md"
-              total={totalPages}
-              value={currentPage}
-              onChange={handlePageChange}
-            />
-          </Group>
-        </>
-      )}
-    </Paper>
+                        <CardSection
+                          withBorder
+                          inheritPadding
+                          py="xs"
+                          bg="#1864ab"
+                        >
+                          <Group justify="flex-end" mb="xs">
+                            {actions && actions(item)}
+                          </Group>
+                        </CardSection>
+                        {type === "despesas" ? (
+                          <ExpenseView item={item} />
+                        ) : (
+                          <RevenueView item={item} />
+                        )}
+                      </Card>
+                    );
+                  })}
+                </SimpleGrid>
+              ) : (
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                  <Text ta="center" fw={500}>
+                    Ops! Não encontramos nenhuma transação para esta data.
+                  </Text>
+                </Card>
+              )}
+            </ScrollArea>
+            <Group justify="flex-end">
+              <Pagination
+                mt={20}
+                size="sm"
+                withEdges
+                radius="md"
+                total={totalPages}
+                value={currentPage}
+                onChange={handlePageChange}
+              />
+            </Group>
+          </>
+        )}
+      </Paper>
+    </>
   );
 };
 

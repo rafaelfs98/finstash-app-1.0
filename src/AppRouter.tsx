@@ -32,6 +32,7 @@ const AppRouter = () => {
             <Route element={<Transactions />} index />
             <Route element={<ExpenseForm />} path="adicionar-despesa" />
             <Route element={<ExpenseOutlet />} path="despesa/:expenseId">
+              <Route element={<ExpenseForm />} path="atualizar" />
               <Route element={<ExpensesDetails />} path="detalhes-da-despesa" />
             </Route>
             <Route element={<RevenuesOutlet />} path="receita/:revenueId">

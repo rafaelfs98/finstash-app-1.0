@@ -3,7 +3,6 @@ import { Outlet, useParams } from "react-router-dom";
 import Loading from "../../../components/Loader";
 import { useFetch } from "../../../hooks/useFetch";
 import { expenseImpl } from "../../../services/Expense";
-import { subCategoriesImpl } from "../../../services/SubCategories";
 import { ExpenseData } from "../../../services/Types/finStash";
 
 const ExpenseOutlet = () => {
@@ -16,7 +15,7 @@ const ExpenseOutlet = () => {
   } = useFetch<ExpenseData[]>(expenseImpl.resource, {
     params: { customParams: { id: `eq.${expenseId}` } },
     transformData: (response: ExpenseData[]) =>
-      subCategoriesImpl.transformData(response),
+      expenseImpl.transformData(response),
   });
 
   if (loading) {

@@ -31,19 +31,21 @@ export type RevenuesType = {
   transactionDate: string | null;
 };
 
+
 export type ExpenseData = {
-  accountsId: number | null;
+  accountsId?: number;
   amount: number | null;
   categoryId: number | null;
   description: string | null;
   dueDate: string | null;
   id?: number;
   installments: number | null;
-  paid: boolean | null;
+  paid?: boolean;
+  paymentDate: string | null; 
   repeat: boolean | null;
-  subCategoryId: number | null;
+  subCategoryId?: number;
   categories?: CategoriesType;
   sub_categories?: SubCategoriesType;
   accounts?: AccountsType;
-  paymentDate?: string;
 };
+

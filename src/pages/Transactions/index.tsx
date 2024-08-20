@@ -33,7 +33,7 @@ const Transactions: React.FC = () => {
           />
         ),
       }}
-      actions={(id) => <TransactionsActions type={value} itemId={id} />}
+      actions={(item) => <TransactionsActions type={value} item={item} />}
       items={items}
       segmentedControl={
         <SegmentedControl

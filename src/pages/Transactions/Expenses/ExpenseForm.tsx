@@ -19,22 +19,71 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { KeyedMutator } from "swr";
+import { z } from "zod";
 
 import InputText from "../../../components/Inputs/InputText";
 import { useFetch } from "../../../hooks/useFetch";
+import useFormActions from "../../../hooks/useFormActions";
+import zodSchema, { zodResolver } from "../../../schema/zod";
 import { accountsImpl } from "../../../services/Accounts";
 import { catagoriesImpl } from "../../../services/Categories";
+import { expenseImpl } from "../../../services/Expense";
 import { subCategoriesImpl } from "../../../services/SubCategories";
 import {
   AccountsType,
   CategoriesType,
+  ExpenseData,
   SubCategoriesType,
 } from "../../../services/Types/finStash";
 
+type ExpenseInfo = z.infer<typeof zodSchema.expense>;
+
+type OutletContext = {
+  expense: ExpenseData;
+  mutateExpense: KeyedMutator<ExpenseData>;
+};
+
 const ExpenseForm = () => {
   const navigate = useNavigate();
-  const [categoryId, setCategoryId] = useState<string>();
+  const { expenseId } = useParams();
+
+  const { expense, mutateExpense } = useOutletContext<OutletContext>() || {};
+  const [categoryId, setCategoryId] = useState<string | undefined>(
+    String(expense?.categories?.id)
+  );
+
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+  } = useForm<ExpenseData>({
+    defaultValues: expense ? expense : { description: " ", installments: 1 },
+    resolver: zodResolver(zodSchema.expense),
+  });
+
+  console.log("errors:", errors);
+  const { onError, onSave, onSubmit, submitting } = useFormActions();
+
+  const _onSubmit = (form: ExpenseInfo) =>
+    onSubmit(
+      {
+        ...form,
+        id: Number(expenseId),
+      },
+      {
+        create: (...params) => expenseImpl.create(...params),
+        update: (...params) => expenseImpl.update(...params),
+      }
+    )
+      .then(mutateExpense)
+      .then(onSave)
+      .then(() => navigate(-1))
+      .catch(onError);
 
   const { data: accounts } = useFetch<AccountsType[]>(accountsImpl.resource, {
     params: { customParams: { order: "id.asc" } },
@@ -49,7 +98,10 @@ const ExpenseForm = () => {
     categoryId ? subCategoriesImpl.resource : "",
     {
       params: {
-        customParams: { category_id: `eq.${categoryId}`, order: "id.asc" },
+        customParams: {
+          category_id: `eq.${categoryId}`,
+          order: "id.asc",
+        },
       },
     }
   );
@@ -62,6 +114,16 @@ const ExpenseForm = () => {
       )
     );
   };
+
+  const watchCategoryId = watch("categoryId");
+  const watchAccountId = watch("accountsId");
+  const watchPaymentDate = watch("paymentDate");
+  const watchDueDate = watch("dueDate");
+  const watchAmount = watch("amount");
+  const watchRepeat = watch("repeat");
+  const watchInstallments = watch("installments");
+  const watchSubCategoryId = watch("subCategoryId");
+
   return (
     <div>
       <Group justify="center">
@@ -71,9 +133,10 @@ const ExpenseForm = () => {
         </Title>
       </Group>
       <Card shadow="sm" radius="md" withBorder>
-        <form>
+        <form onSubmit={handleSubmit(_onSubmit)}>
           <SimpleGrid mt="xl" cols={{ base: 1, sm: 2 }}>
             <Select
+              value={String(watchCategoryId) || ""}
               data={
                 categories?.map((item) => ({
                   label: String(item.name),
@@ -83,13 +146,17 @@ const ExpenseForm = () => {
               filter={optionsFilter}
               label="Categoria"
               nothingFoundMessage
-              onChange={(value) => setCategoryId(value as string)}
+              onChange={(value) => {
+                setCategoryId(value as string);
+                setValue("categoryId", Number(value));
+              }}
               placeholder="Selecione uma Categoria"
               radius="lg"
               searchable
             />
 
             <Select
+              value={String(watchAccountId) || ""}
               data={
                 accounts?.map((item) => ({
                   label: String(item.name),
@@ -98,6 +165,7 @@ const ExpenseForm = () => {
               }
               filter={optionsFilter}
               label="Conta"
+              onChange={(value) => setValue("accountsId", Number(value))}
               nothingFoundMessage
               placeholder="Selecione um Banco Para o Débito"
               radius="lg"
@@ -105,16 +173,34 @@ const ExpenseForm = () => {
             />
 
             <DateInput
+              value={
+                watchPaymentDate
+                  ? new Date(`${watchPaymentDate}T00:00:00`)
+                  : null
+              }
               label="Data de Pagamento"
               locale="pt-BR"
+              onChange={(value) =>
+                setValue(
+                  "paymentDate",
+                  value ? value.toISOString().split("T")[0] : ""
+                )
+              }
               placeholder="Selecione a Data de Pagamento"
               radius="lg"
               valueFormat="DD/MM/YYYY"
             />
 
             <DateInput
+              value={watchDueDate ? new Date(`${watchDueDate}T00:00:00`) : null}
               label="Data de Vencimento"
               locale="pt-BR"
+              onChange={(value) =>
+                setValue(
+                  "dueDate",
+                  value ? value.toISOString().split("T")[0] : ""
+                )
+              }
               placeholder="Selecione a Data de Vencimento"
               radius="lg"
               valueFormat="DD/MM/YYYY"
@@ -122,9 +208,10 @@ const ExpenseForm = () => {
 
             <InputText
               label="Descrição"
-              name="name"
+              name="description"
               placeholder="Descrição"
               required
+              register={register}
               type="text"
             />
 
@@ -143,19 +230,39 @@ const ExpenseForm = () => {
                 />
               }
               thousandSeparator="."
+              onValueChange={({ value }) => setValue("amount", Number(value))}
+              value={watchAmount || ""}
             />
 
-            <InputText
-              defaultValue={0}
+            <Select
+              data={["sim", "não"]}
+              label="Despesa Fixa"
+              placeholder="Seleciona se a Despesa é fixa"
+              radius="lg"
+              onChange={(value) => setValue("repeat", value === "sim")}
+              value={watchRepeat ? "sim" : "não"}
+            />
+
+            <NumberInput
               label="Número de Parcelas"
-              name="name"
+              name="installments"
               placeholder="Digite o número de Parcelas"
-              required
-              type="text"
+              radius="lg"
+              rightSection={
+                <IconCoins
+                  style={{ height: rem(20), width: rem(20) }}
+                  stroke={1.5}
+                />
+              }
+              onValueChange={({ value }) =>
+                setValue("installments", Number(value))
+              }
+              value={watchInstallments || 1}
             />
 
             {categoryId && (
               <Select
+                value={String(watchSubCategoryId) || ""}
                 data={
                   subCategories?.map((item) => ({
                     label: String(item.name),
@@ -168,6 +275,7 @@ const ExpenseForm = () => {
                 placeholder="Selecione uma Sub Categoria"
                 radius="lg"
                 searchable
+                onChange={(value) => setValue("subCategoryId", Number(value))}
               />
             )}
           </SimpleGrid>
@@ -188,7 +296,7 @@ const ExpenseForm = () => {
             </Button>
 
             <Button
-              // loading={loadingButton}
+              loading={submitting}
               rightSection={
                 <IconDeviceFloppy
                   style={{ height: rem(12), width: rem(12) }}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ActionIcon, Menu, rem, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -14,12 +15,12 @@ import { expenseImpl } from "../../services/Expense";
 import { revenuesImpl } from "../../services/Revenues";
 
 type TransactionsActionsProps = {
-  itemId: number | string;
+  item: any;
   type: "receitas" | "despesas";
 };
 
 const TransactionsActions: React.FC<TransactionsActionsProps> = ({
-  itemId,
+  item,
   type,
 }) => {
   const navigate = useNavigate();
@@ -44,8 +45,8 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
     setIsDeleting(true);
     try {
       type === "despesas"
-        ? await expenseImpl.remove(itemId as string)
-        : await revenuesImpl.remove(itemId as string);
+        ? await expenseImpl.remove(item?.id as string)
+        : await revenuesImpl.remove(item?.id as string);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -66,26 +67,32 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-          leftSection={
-            <IconCurrencyDollar
-              style={{ height: rem(16), width: rem(16) }}
-              stroke={1.5}
-            />
-          }
-        >
-          Pagar
-        </Menu.Item>
+        {type === "despesas" && (
+          <Menu.Item
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+
+              expenseImpl.updatePaidStatus(true, item?.id as number);
+            }}
+            leftSection={
+              <IconCurrencyDollar
+                style={{ height: rem(16), width: rem(16) }}
+                stroke={1.5}
+              />
+            }
+            disabled={!!item.paid}
+          >
+            Pagar
+          </Menu.Item>
+        )}
+
         <Menu.Item
           onClick={() =>
             navigate(
               type === "despesas"
-                ? `despesa/${itemId}/detalhes-da-despesa`
-                : `receita/${itemId}/detalhes-da-receita`
+                ? `despesa/${item?.id}/detalhes-da-despesa`
+                : `receita/${item?.id}/detalhes-da-receita`
             )
           }
           leftSection={
@@ -95,7 +102,13 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
           Detalhes
         </Menu.Item>
         <Menu.Item
-          onClick={() => navigate(`${itemId}/update`)}
+          onClick={() =>
+            navigate(
+              type === "despesas"
+                ? `despesa/${item?.id}/atualizar`
+                : `receita/${item?.id}/atualizar`
+            )
+          }
           leftSection={
             <IconPencil
               style={{ height: rem(16), width: rem(16) }}

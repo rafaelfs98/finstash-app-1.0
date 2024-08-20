@@ -60,6 +60,7 @@ const SubCategoriesForm: React.FC = () => {
 
     resolver: zodResolver(zodSchema.subCategories),
   });
+  console.log("errors:", errors);
   const { onError, onSave, onSubmit, submitting } = useFormActions();
 
   const _onSubmit = (form: SubCategoryInfo) =>
