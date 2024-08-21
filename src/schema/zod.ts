@@ -27,8 +27,18 @@ const zodSchema = {
     subCategoryId: z.number().optional(),
   }),
 
+  revenue: z.object({
+    accountId: z.number(),
+  amount: z.number(),
+  categoryId: z.number(),
+  description: z.string(),
+  id: z.number().optional(),
+  subCategoryId: z.number(),
+  transactionDate: z.string(),
+  }),
+
   subCategories: z.object({
-    categoryId: z.number(),
+    category_id: z.number(),
     color: z.string(),
     name: z.string(),
   }),

@@ -9,7 +9,7 @@ export type SubCategoriesType = {
   name: string;
   color: string;
   type: number;
-  categoryId?: number;
+  category_id?: number;
   categories?: CategoriesType;
 };
 export type AccountsType = {
@@ -19,16 +19,17 @@ export type AccountsType = {
   total: number;
 };
 export type RevenuesType = {
-  accontId: number | null;
-  amount: number | null;
-  categoryId: number | null;
+  accountId: number ;
+  amount: number ;
+  categoryId: number ;
   id?: number;
-  description: string | null;
+  description: string ;
   categories?: CategoriesType;
   sub_categories?: SubCategoriesType;
   accounts?: AccountsType;
-  subCategoryId: number | null;
-  transactionDate: string | null;
+  subCategoryId: number ;
+  transactionDate: string ;
+  prevAmount? : number;
 };
 
 

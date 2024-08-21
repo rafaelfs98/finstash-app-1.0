@@ -7,14 +7,14 @@ import { subCategoriesImpl } from "../../../services/SubCategories";
 import { RevenuesType } from "../../../services/Types/finStash";
 
 const RevenuesOutlet = () => {
-  const { revenuesId } = useParams<{ revenuesId: string }>();
+  const { revenueId } = useParams<{ revenueId: string }>();
 
   const {
     data,
     mutate: mutateRevenues,
     loading,
   } = useFetch<RevenuesType[]>(revenuesImpl.resource, {
-    params: { customParams: { id: `eq.${revenuesId}` } },
+    params: { customParams: { id: `eq.${revenueId}` } },
     transformData: (response: RevenuesType[]) =>
       subCategoriesImpl.transformData(response),
   });

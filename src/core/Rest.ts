@@ -113,6 +113,14 @@ class Rest<ObjectModel = any> {
     );
   }
 
+  public getOne(id: number): Promise<ObjectModel[] | undefined> {
+		return this.fetcher(this.getResource(id));
+	}
+
+  public getResource(id: number | string) {
+		return `${this.uri}?id=eq.${id}`;
+	}
+
   public transformDataFromList(response: ObjectModel[]): ObjectModel[] {
     return Array.isArray(response) ? response.map(this.transformData) : [];
   }

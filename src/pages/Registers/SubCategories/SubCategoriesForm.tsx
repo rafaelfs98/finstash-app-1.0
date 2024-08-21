@@ -60,10 +60,10 @@ const SubCategoriesForm: React.FC = () => {
 
     resolver: zodResolver(zodSchema.subCategories),
   });
-  console.log("errors:", errors);
   const { onError, onSave, onSubmit, submitting } = useFormActions();
+  console.log("errors:", errors);
 
-  const _onSubmit = (form: SubCategoryInfo) =>
+  const _onSubmit = (form: SubCategoryInfo) => {
     onSubmit(
       {
         ...form,
@@ -79,6 +79,7 @@ const SubCategoriesForm: React.FC = () => {
       .then(onSave)
       .then(() => navigate(-1))
       .catch(onError);
+  };
 
   const { data: categories } = useFetch<CategoriesType[]>(
     catagoriesImpl.resource,
@@ -122,7 +123,7 @@ const SubCategoriesForm: React.FC = () => {
               required
             />
             <Select
-              value={subCategories && String(subCategories.categoryId)}
+              value={subCategories && String(subCategories.category_id)}
               radius="lg"
               nothingFoundMessage
               label="Categoria"
@@ -135,7 +136,7 @@ const SubCategoriesForm: React.FC = () => {
               }
               filter={optionsFilter}
               searchable
-              onChange={(value) => setValue("categoryId", Number(value))}
+              onChange={(value) => setValue("category_id", Number(value))}
             />
             <InputColor
               defaultValue={subCategories?.color}
@@ -144,31 +145,34 @@ const SubCategoriesForm: React.FC = () => {
               onChangeEnd={(colorHash) => setValue("color", colorHash)}
             />
           </SimpleGrid>
-        </form>
-        <Group justify="flex-start" mt="xl">
-          <Button
-            onClick={() => navigate(-1)}
-            leftSection={
-              <IconX style={{ height: rem(12), width: rem(12) }} stroke={1.5} />
-            }
-            variant="light"
-          >
-            {"Cancelar"}
-          </Button>
+          <Group justify="flex-start" mt="xl">
+            <Button
+              onClick={() => navigate(-1)}
+              leftSection={
+                <IconX
+                  style={{ height: rem(12), width: rem(12) }}
+                  stroke={1.5}
+                />
+              }
+              variant="light"
+            >
+              {"Cancelar"}
+            </Button>
 
-          <Button
-            loading={submitting}
-            rightSection={
-              <IconDeviceFloppy
-                style={{ height: rem(12), width: rem(12) }}
-                stroke={1.5}
-              />
-            }
-            type={"submit"}
-          >
-            {"Submit"}
-          </Button>
-        </Group>
+            <Button
+              loading={submitting}
+              rightSection={
+                <IconDeviceFloppy
+                  style={{ height: rem(12), width: rem(12) }}
+                  stroke={1.5}
+                />
+              }
+              type={"submit"}
+            >
+              {"Submit"}
+            </Button>
+          </Group>
+        </form>
       </Card>
     </div>
   );
