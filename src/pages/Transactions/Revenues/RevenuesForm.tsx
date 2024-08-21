@@ -30,30 +30,41 @@ import useFormActions from "../../../hooks/useFormActions";
 import zodSchema, { zodResolver } from "../../../schema/zod";
 import { accountsImpl } from "../../../services/Accounts";
 import { catagoriesImpl } from "../../../services/Categories";
-import { expenseImpl } from "../../../services/Expense";
+import { revenuesImpl } from "../../../services/Revenues";
 import { subCategoriesImpl } from "../../../services/SubCategories";
 import {
   AccountsType,
   CategoriesType,
-  ExpenseData,
+  RevenuesType,
   SubCategoriesType,
 } from "../../../services/Types/finStash";
 
-type ExpenseInfo = z.infer<typeof zodSchema.expense>;
+type RevenuesInfo = z.infer<typeof zodSchema.revenue>;
 
 type OutletContext = {
-  expense: ExpenseData;
-  mutateExpense: KeyedMutator<ExpenseData>;
+  revenues: RevenuesType;
+  mutateRevenues: KeyedMutator<RevenuesType>;
 };
 
-const ExpenseForm = () => {
+const RevenuesForm = () => {
   const navigate = useNavigate();
-  const { expenseId } = useParams();
+  const { revenueId } = useParams();
 
-  const { expense, mutateExpense } = useOutletContext<OutletContext>() || {};
+  const { revenues, mutateRevenues } = useOutletContext<OutletContext>() || {};
   const [categoryId, setCategoryId] = useState<string | undefined>(
-    String(expense?.categoryId)
+    String(revenues?.categoryId)
   );
+
+  const defaultValues = revenues
+    ? {
+        accountId: revenues.accountId,
+        amount: revenues.amount,
+        categoryId: revenues.categoryId,
+        description: revenues.description,
+        subCategoryId: revenues.subCategoryId,
+        transactionDate: revenues.transactionDate,
+      }
+    : undefined;
 
   const {
     formState: { errors },
@@ -61,26 +72,27 @@ const ExpenseForm = () => {
     register,
     setValue,
     watch,
-  } = useForm<ExpenseData>({
-    defaultValues: expense ? expense : { description: " ", installments: 1 },
-    resolver: zodResolver(zodSchema.expense),
+  } = useForm<RevenuesType>({
+    defaultValues,
+    resolver: zodResolver(zodSchema.revenue),
   });
 
   console.log("errors:", errors);
   const { onError, onSave, onSubmit, submitting } = useFormActions();
 
-  const _onSubmit = (form: ExpenseInfo) =>
+  const _onSubmit = (form: RevenuesInfo) =>
     onSubmit(
       {
         ...form,
-        id: Number(expenseId),
+        id: Number(revenueId),
+        prevAmount: revenues && revenues.amount,
       },
       {
-        create: (...params) => expenseImpl.create(...params),
-        update: (...params) => expenseImpl.update(...params),
+        create: (...params) => revenuesImpl.create(...params),
+        update: (...params) => revenuesImpl.update(...params),
       }
     )
-      .then(mutateExpense)
+      .then(mutateRevenues)
       .then(onSave)
       .then(() => navigate(-1))
       .catch(onError);
@@ -91,7 +103,7 @@ const ExpenseForm = () => {
 
   const { data: categories } = useFetch<CategoriesType[]>(
     catagoriesImpl.resource,
-    { params: { customParams: { order: "id.asc", type: "eq.1" } } }
+    { params: { customParams: { order: "id.asc", type: "eq.0" } } }
   );
 
   const { data: subCategories } = useFetch<SubCategoriesType[]>(
@@ -116,12 +128,10 @@ const ExpenseForm = () => {
   };
 
   const watchCategoryId = watch("categoryId");
-  const watchAccountId = watch("accountsId");
-  const watchPaymentDate = watch("paymentDate");
-  const watchDueDate = watch("dueDate");
+  const watchAccountId = watch("accountId");
+  console.log("watchAccountId:", watchAccountId);
+  const watchTransactionDate = watch("transactionDate");
   const watchAmount = watch("amount");
-  const watchRepeat = watch("repeat");
-  const watchInstallments = watch("installments");
   const watchSubCategoryId = watch("subCategoryId");
 
   return (
@@ -165,39 +175,23 @@ const ExpenseForm = () => {
               }
               filter={optionsFilter}
               label="Conta"
-              onChange={(value) => setValue("accountsId", Number(value))}
+              onChange={(value) => setValue("accountId", Number(value))}
               nothingFoundMessage
               placeholder="Selecione um Banco Para o Débito"
               radius="lg"
               searchable
             />
-
             <DateInput
               value={
-                watchPaymentDate
-                  ? new Date(`${watchPaymentDate}T00:00:00`)
+                watchTransactionDate
+                  ? new Date(`${watchTransactionDate}T00:00:00`)
                   : null
               }
-              label="Data de Pagamento"
-              locale="pt-BR"
-              onChange={(value) =>
-                setValue(
-                  "paymentDate",
-                  value ? value.toISOString().split("T")[0] : ""
-                )
-              }
-              placeholder="Selecione a Data de Pagamento"
-              radius="lg"
-              valueFormat="DD/MM/YYYY"
-            />
-
-            <DateInput
-              value={watchDueDate ? new Date(`${watchDueDate}T00:00:00`) : null}
               label="Data de Vencimento"
               locale="pt-BR"
               onChange={(value) =>
                 setValue(
-                  "dueDate",
+                  "transactionDate",
                   value ? value.toISOString().split("T")[0] : ""
                 )
               }
@@ -217,7 +211,7 @@ const ExpenseForm = () => {
 
             <NumberInput
               decimalSeparator=","
-              label="Valor da Despesa"
+              label="Valor da Receita"
               name="amount"
               placeholder="Digite o valor"
               prefix="R$ "
@@ -232,32 +226,6 @@ const ExpenseForm = () => {
               thousandSeparator="."
               onValueChange={({ value }) => setValue("amount", Number(value))}
               value={watchAmount || ""}
-            />
-
-            <Select
-              data={["sim", "não"]}
-              label="Despesa Fixa"
-              placeholder="Seleciona se a Despesa é fixa"
-              radius="lg"
-              onChange={(value) => setValue("repeat", value === "sim")}
-              value={watchRepeat ? "sim" : "não"}
-            />
-
-            <NumberInput
-              label="Número de Parcelas"
-              name="installments"
-              placeholder="Digite o número de Parcelas"
-              radius="lg"
-              rightSection={
-                <IconCoins
-                  style={{ height: rem(20), width: rem(20) }}
-                  stroke={1.5}
-                />
-              }
-              onValueChange={({ value }) =>
-                setValue("installments", Number(value))
-              }
-              value={watchInstallments || 1}
             />
 
             {categoryId && (
@@ -314,4 +282,4 @@ const ExpenseForm = () => {
   );
 };
 
-export default ExpenseForm;
+export default RevenuesForm;

@@ -1,10 +1,11 @@
+import { accountsImpl } from './Accounts';
 import { ExpenseData } from './Types/finStash';
 import Rest from '../core/Rest';
 
 class ExpenseImpl extends Rest<ExpenseData> {
   constructor() {
     super({
-      fields: "id,amount,categoryId,accountsId,subCategoryId,description,dueDate,paid,repeat,paymentDate,categories(id,name,color),sub_categories(id,name,color),accounts(id,name,color)",
+      fields: "id,amount,categoryId,accountsId,subCategoryId,description,dueDate,paid,repeat,paymentDate,categories(id,name,color),sub_categories(id,name,color),accounts(id,name,color,total)",
       transformData: (expense) => ({
         ...expense,
 
@@ -39,15 +40,48 @@ class ExpenseImpl extends Rest<ExpenseData> {
   }
 
   
-  public async updatePaidStatus(paid: boolean, expenseId: number) {
+  public async updatePaidStatus(expense: ExpenseData, paymentDate:string) {
+    
+    const accountTotal = expense.accounts?.total  || 0;
+    const amountValue = Number(expense.amount) || 0;
+    
+    const newTotal = accountTotal - amountValue;
+    console.log("newTotal:", newTotal);
 
-    await this.update(expenseId, {
-      paid 
+
+   const response = await this.update(Number(expense.id), {
+      paid: true,
+      paymentDate,
     });
+
+    await accountsImpl.update(Number(expense.accountsId), {
+      total: newTotal,
+    });
+
+    return response;
+
    
   }
+
+  public async removeExpense(id: number, data: ExpenseData) {
   
+    const response = await super.remove(id);
+
+    if(data.paid){
+
+          const accounts = await accountsImpl.getOne(Number(data.accountsId));
+          const accountTotal = accounts && accounts[0]?.total || 0;
+          const amountValue = Number(data.amount) || 0;
+        
+          const adjustedTotal = accountTotal +  amountValue; 
+        
+          await accountsImpl.update(Number(data.accountsId), { total: adjustedTotal });
+    }
   
+    return response;
+  }
+  
+
 
 }
 

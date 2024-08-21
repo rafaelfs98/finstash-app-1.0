@@ -29,7 +29,7 @@ const Transactions: React.FC = () => {
         buttons: (
           <FinanceMenu
             expenseUri="adicionar-despesa"
-            revenueUri="revenue/create"
+            revenueUri="adicionar-receita"
           />
         ),
       }}

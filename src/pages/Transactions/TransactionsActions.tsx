@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ActionIcon, Menu, rem, Text } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import { modals } from "@mantine/modals";
 import {
   IconCurrencyDollar,
@@ -24,6 +25,12 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
   type,
 }) => {
   const navigate = useNavigate();
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [isPaid, setIsPaid] = useState<boolean>(false);
+  const [paymentDate, setPaymentDate] = useState<string>(
+    new Date().toISOString().split("T")[0] || ""
+  );
+  console.log("paymentDate:", paymentDate);
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
@@ -39,14 +46,46 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
       onConfirm: () => handleDelete(),
       title: "Excluir",
     });
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const openPaidModal = () =>
+    modals.openConfirmModal({
+      centered: true,
+      children: (
+        <DateInput
+          value={new Date()}
+          label="Data de Pagamento"
+          locale="pt-BR"
+          onChange={(value) =>
+            setPaymentDate(value ? value.toISOString().split("T")[0] : "")
+          }
+          placeholder="Selecione a Data de Pagamento"
+          radius="lg"
+          valueFormat="DD/MM/YYYY"
+        />
+      ),
+      confirmProps: { color: "green" },
+      labels: { cancel: "Cancelar", confirm: "Pagar" },
+      onConfirm: () => handlePaid(),
+      title: "Pagar a Conta",
+    });
+
+  const handlePaid = async () => {
+    setIsPaid(true);
+    try {
+      await expenseImpl.updatePaidStatus(item, paymentDate);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      setIsPaid(false);
+    }
+  };
 
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
       type === "despesas"
-        ? await expenseImpl.remove(item?.id as string)
-        : await revenuesImpl.remove(item?.id as string);
+        ? await expenseImpl.removeExpense(item?.id, item)
+        : await revenuesImpl.removeRevenue(item?.id, item);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -73,7 +112,7 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
               event.preventDefault();
               event.stopPropagation();
 
-              expenseImpl.updatePaidStatus(true, item?.id as number);
+              openPaidModal();
             }}
             leftSection={
               <IconCurrencyDollar
@@ -81,7 +120,7 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
                 stroke={1.5}
               />
             }
-            disabled={!!item.paid}
+            disabled={!!item.paid || isPaid}
           >
             Pagar
           </Menu.Item>
@@ -116,6 +155,7 @@ const TransactionsActions: React.FC<TransactionsActionsProps> = ({
             />
           }
           color="blue"
+          disabled={type === "despesas" && !!item.paid}
         >
           Editar
         </Menu.Item>

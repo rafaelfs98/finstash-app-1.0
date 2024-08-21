@@ -117,7 +117,7 @@ export type Database = {
       };
       revenues: {
         Row: {
-          accontId: number | null;
+          accountId: number | null;
           amount: number | null;
           categoryId: number | null;
           description: string | null;
@@ -126,7 +126,7 @@ export type Database = {
           transactionDate: string | null;
         };
         Insert: {
-          accontId?: number | null;
+          accountId?: number | null;
           amount?: number | null;
           categoryId?: number | null;
           description?: string | null;
@@ -135,7 +135,7 @@ export type Database = {
           transactionDate?: string | null;
         };
         Update: {
-          accontId?: number | null;
+          accountId?: number | null;
           amount?: number | null;
           categoryId?: number | null;
           description?: string | null;
@@ -146,7 +146,7 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "revenues_accontId_fkey";
-            columns: ["accontId"];
+            columns: ["accountId"];
             isOneToOne: false;
             referencedRelation: "accounts";
             referencedColumns: ["id"];

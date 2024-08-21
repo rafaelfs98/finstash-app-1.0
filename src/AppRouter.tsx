@@ -20,6 +20,7 @@ import ExpenseForm from "./pages/Transactions/Expenses/ExpenseForm";
 import ExpenseOutlet from "./pages/Transactions/Expenses/ExpenseOutlet";
 import ExpensesDetails from "./pages/Transactions/Expenses/ExpensesDetails";
 import RevenuesDetails from "./pages/Transactions/Revenues/RevenuesDetails";
+import RevenuesForm from "./pages/Transactions/Revenues/RevenuesForm";
 import RevenuesOutlet from "./pages/Transactions/Revenues/RevenuesOutlet";
 
 const AppRouter = () => {
@@ -35,7 +36,9 @@ const AppRouter = () => {
               <Route element={<ExpenseForm />} path="atualizar" />
               <Route element={<ExpensesDetails />} path="detalhes-da-despesa" />
             </Route>
+            <Route element={<RevenuesForm />} path="adicionar-receita" />
             <Route element={<RevenuesOutlet />} path="receita/:revenueId">
+              <Route element={<RevenuesForm />} path="atualizar" />
               <Route element={<RevenuesDetails />} path="detalhes-da-receita" />
             </Route>
           </Route>
