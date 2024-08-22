@@ -62,10 +62,12 @@ const CardView: React.FC<CardViewProps> = ({
   const [showModal, setShowModal] = useState(false);
 
   const filteredData = items?.filter((item) => {
-    const itemDate = item.dueDate ? new Date(item.dueDate) : null;
+    const itemDate =
+      item.dueDate || item.transactionDate
+        ? new Date(item.dueDate || item.transactionDate)
+        : null;
 
     const isInSelectedMonth =
-      type === "despesas" &&
       date &&
       itemDate &&
       itemDate.getMonth() === date.getMonth() &&
@@ -86,9 +88,7 @@ const CardView: React.FC<CardViewProps> = ({
       }
     });
 
-    return type === "despesas"
-      ? matchesSearch && isInSelectedMonth
-      : matchesSearch;
+    return matchesSearch && isInSelectedMonth;
   });
 
   const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
@@ -224,22 +224,19 @@ const CardView: React.FC<CardViewProps> = ({
                 value={search}
                 onChange={(event) => setSearch(event.currentTarget.value)}
               />
-              {type === "despesas" && (
-                <>
-                  <Divider />
 
-                  <MonthPickerInput
-                    mt="md"
-                    label="Data de Vencimento"
-                    variant="filled"
-                    ta="center"
-                    onChange={setDate}
-                    value={date}
-                    valueFormat="MMMM/YYYY"
-                    locale="pt-BR"
-                  />
-                </>
-              )}
+              <Divider />
+
+              <MonthPickerInput
+                mt="md"
+                label="Data de Vencimento"
+                variant="filled"
+                ta="center"
+                onChange={setDate}
+                value={date}
+                valueFormat="MMMM/YYYY"
+                locale="pt-BR"
+              />
             </Popover.Dropdown>
           </Popover>
           {managementToolbarProps?.buttons}

@@ -117,7 +117,6 @@ const ExpenseForm = () => {
 
   const watchCategoryId = watch("categoryId");
   const watchAccountId = watch("accountsId");
-  const watchPaymentDate = watch("paymentDate");
   const watchDueDate = watch("dueDate");
   const watchAmount = watch("amount");
   const watchRepeat = watch("repeat");
@@ -129,7 +128,7 @@ const ExpenseForm = () => {
       <Group justify="center">
         <IconReceipt size="1.2rem" stroke={3} />
         <Title order={3} ta={"center"} mt="xl" mb="xl">
-          {`Criação de Despesa`}
+          {expense ? `Atualizar Despesa` : `Criar Despesa`}
         </Title>
       </Group>
       <Card shadow="sm" radius="md" withBorder>
@@ -170,25 +169,6 @@ const ExpenseForm = () => {
               placeholder="Selecione um Banco Para o Débito"
               radius="lg"
               searchable
-            />
-
-            <DateInput
-              value={
-                watchPaymentDate
-                  ? new Date(`${watchPaymentDate}T00:00:00`)
-                  : null
-              }
-              label="Data de Pagamento"
-              locale="pt-BR"
-              onChange={(value) =>
-                setValue(
-                  "paymentDate",
-                  value ? value.toISOString().split("T")[0] : ""
-                )
-              }
-              placeholder="Selecione a Data de Pagamento"
-              radius="lg"
-              valueFormat="DD/MM/YYYY"
             />
 
             <DateInput

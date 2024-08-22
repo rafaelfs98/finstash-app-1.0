@@ -15,7 +15,7 @@ import { DateInput } from "@mantine/dates";
 import {
   IconCoins,
   IconDeviceFloppy,
-  IconReceipt,
+  IconPigMoney,
   IconX,
 } from "@tabler/icons-react";
 import { useState } from "react";
@@ -129,7 +129,6 @@ const RevenuesForm = () => {
 
   const watchCategoryId = watch("categoryId");
   const watchAccountId = watch("accountId");
-  console.log("watchAccountId:", watchAccountId);
   const watchTransactionDate = watch("transactionDate");
   const watchAmount = watch("amount");
   const watchSubCategoryId = watch("subCategoryId");
@@ -137,9 +136,9 @@ const RevenuesForm = () => {
   return (
     <div>
       <Group justify="center">
-        <IconReceipt size="1.2rem" stroke={3} />
+        <IconPigMoney size="1.2rem" stroke={3} />
         <Title order={3} ta={"center"} mt="xl" mb="xl">
-          {`Criação de Despesa`}
+          {revenues ? "Atualizar Receita" : "Criar Receita"}
         </Title>
       </Group>
       <Card shadow="sm" radius="md" withBorder>
@@ -177,7 +176,7 @@ const RevenuesForm = () => {
               label="Conta"
               onChange={(value) => setValue("accountId", Number(value))}
               nothingFoundMessage
-              placeholder="Selecione um Banco Para o Débito"
+              placeholder="Selecione um Banco Para o Credito"
               radius="lg"
               searchable
             />
@@ -187,7 +186,7 @@ const RevenuesForm = () => {
                   ? new Date(`${watchTransactionDate}T00:00:00`)
                   : null
               }
-              label="Data de Vencimento"
+              label="Data da Receita"
               locale="pt-BR"
               onChange={(value) =>
                 setValue(
@@ -195,7 +194,7 @@ const RevenuesForm = () => {
                   value ? value.toISOString().split("T")[0] : ""
                 )
               }
-              placeholder="Selecione a Data de Vencimento"
+              placeholder="Selecione a Data da Receita"
               radius="lg"
               valueFormat="DD/MM/YYYY"
             />

@@ -19,11 +19,11 @@ import { RevenuesType } from "../../../services/Types/finStash";
 import { formattedAmount } from "../../../util";
 
 type OutletContext = {
-  revenue: RevenuesType;
+  revenues: RevenuesType;
 };
 
 const RevenuesDetails = () => {
-  const { revenue } = useOutletContext<OutletContext>() || {};
+  const { revenues } = useOutletContext<OutletContext>() || {};
   const navigate = useNavigate();
 
   return (
@@ -39,7 +39,7 @@ const RevenuesDetails = () => {
             <Fieldset legend="Data da Receita:" variant="filled">
               <Group>
                 <Text size="lg">
-                  {dayjs(revenue?.transactionDate).format("DD/MM/YYYY")}
+                  {dayjs(revenues?.transactionDate).format("DD/MM/YYYY")}
                 </Text>
               </Group>
             </Fieldset>
@@ -48,7 +48,7 @@ const RevenuesDetails = () => {
             <Fieldset legend="Valor:" variant="filled">
               <Group>
                 <Text size="lg">
-                  {formattedAmount(Number(revenue?.amount))}
+                  {formattedAmount(Number(revenues?.amount))}
                 </Text>
               </Group>
             </Fieldset>
@@ -56,29 +56,29 @@ const RevenuesDetails = () => {
           <Stack>
             <Fieldset legend="Descrição:" variant="filled">
               <Group>
-                <Text size="lg">{revenue?.description}</Text>
+                <Text size="lg">{revenues?.description}</Text>
               </Group>
             </Fieldset>
           </Stack>
           <Stack>
             <Fieldset legend="Conta de Entrada:" variant="filled">
               <Group>
-                <Badge color={revenue?.accounts?.color} />
-                <Text size="lg">{revenue?.accounts?.name}</Text>
+                <Badge color={revenues?.accounts?.color} />
+                <Text size="lg">{revenues?.accounts?.name}</Text>
               </Group>
             </Fieldset>
           </Stack>
           <Stack>
             <Fieldset legend="Categorias/SubCategorias:" variant="filled">
               <Group>
-                <Badge color={revenue?.categories?.color} />
-                <Text size="lg">{revenue?.categories?.name}</Text>
+                <Badge color={revenues?.categories?.color} />
+                <Text size="lg">{revenues?.categories?.name}</Text>
 
                 <Text size="lg">
-                  {revenue?.sub_categories?.name ? " / " : ""}
+                  {revenues?.sub_categories?.name ? " / " : ""}
                 </Text>
-                <Badge color={revenue?.sub_categories?.color} />
-                <Text size="lg">{revenue?.sub_categories?.name}</Text>
+                <Badge color={revenues?.sub_categories?.color} />
+                <Text size="lg">{revenues?.sub_categories?.name}</Text>
               </Group>
             </Fieldset>
           </Stack>

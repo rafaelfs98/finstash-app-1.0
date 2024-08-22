@@ -82,7 +82,7 @@ const ExpensesDetails = () => {
           </Stack>
 
           <Stack>
-            <Fieldset legend="Repete:" variant="filled">
+            <Fieldset legend="Despesa Fixa:" variant="filled">
               <Group>
                 <Text size="lg">{expense?.repeat ? "Sim" : "Não"}</Text>
               </Group>
